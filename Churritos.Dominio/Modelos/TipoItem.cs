@@ -9,8 +9,8 @@ namespace Churritos.Dominio.Modelos
         public const string TipoItemCoberturasField = nameof(_tipoItemCoberturas);
         public const string TipoItemRecheiosField = nameof(_tipoItemRecheios);
         
-        ICollection<TipoItemCobertura> _tipoItemCoberturas;
-        ICollection<TipoItemRecheio> _tipoItemRecheios;
+        protected ICollection<TipoItemCobertura> _tipoItemCoberturas;
+        protected ICollection<TipoItemRecheio> _tipoItemRecheios;
         
         public TipoItem()
         {
@@ -22,6 +22,6 @@ namespace Churritos.Dominio.Modelos
         public string Nome { get; set; }
 
         public IReadOnlyCollection<Cobertura> Coberturas => _tipoItemCoberturas.Select(x => x.Cobertura).ToArray();
-        public IReadOnlyCollection<Recheio> Recheio => _tipoItemRecheios.Select(x => x.Recheio).ToArray();                
+        public IReadOnlyCollection<Recheio> Recheios => _tipoItemRecheios.Select(x => x.Recheio).ToArray();                
     }
 }

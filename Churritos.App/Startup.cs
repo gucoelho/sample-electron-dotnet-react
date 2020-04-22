@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Churritos.Dominio.Dados;
+using Churritos.Dominio.Repositorios;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,19 +12,34 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Churritos.App
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        
+        readonly IConfiguration configuration;
+        readonly IWebHostEnvironment environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            this.environment = environment;
+            this.configuration = configuration;
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSpaStaticFiles(configuration =>
+            services.AddDbContext<ContextoDaAplicação>(options => options.UseSqlite("Data Source=churritos.db;"));
+            
+            services.AddScoped<CoberturaRepositorio>();
+            
+            services.AddSpaStaticFiles(config =>
             {
-                configuration.RootPath = "client-app/build";
+                config.RootPath = "client-app/build";
             }); 
         }
 
@@ -34,6 +51,7 @@ namespace Churritos.App
                 app.UseDeveloperExceptionPage();
             }
             
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -42,9 +60,7 @@ namespace Churritos.App
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
             
             app.UseSpa(spa =>

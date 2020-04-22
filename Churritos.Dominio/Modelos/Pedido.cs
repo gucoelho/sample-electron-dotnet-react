@@ -6,18 +6,16 @@ namespace Churritos.Dominio.Modelos
 {
     public class Pedido
     {
-        private readonly ICollection<ItemPedido> _itens;
+        public static string ItensPedidoField = nameof(_itens);
+        protected ICollection<ItemPedido> _itens;
 
-        public Pedido()
-        {
-            _itens = new List<ItemPedido>();
-        }
-        
+        public Pedido() => _itens = new List<ItemPedido>();
+
         public int Id { get; set; }
         
         public DateTime DataCriação { get; set; }
 
-        public IEnumerable<Item> Itens => _itens.Select(x => x.Item);
+        public IReadOnlyCollection<Item> Itens => _itens.Select(x => x.Item).ToArray();
 
         public decimal ValorTotal => Itens.Sum(x => x.Valor);
 

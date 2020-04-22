@@ -2,11 +2,20 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
+
 function App() {
+  
+  async function getCoberturas () {
+    const response = await fetch('api/cobertura');
+    const data = await response.json();
+    console.log(data);
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <header className="App-header" onClick={() => getCoberturas()}>
+        <img src={logo} className="App-logo" alt="logo"  />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
