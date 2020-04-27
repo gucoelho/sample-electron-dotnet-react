@@ -4,7 +4,7 @@
     {    
         public int Id { get; set; }
 
-        public TipoItem Tipo { get; set; }
+        public Categoria Categoria { get; set; }
         public decimal Valor { get; set; } 
     }
 }

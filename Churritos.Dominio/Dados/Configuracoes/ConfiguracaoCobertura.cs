@@ -17,7 +17,7 @@ namespace Churritos.Dominio.Dados.Configuracoes
 
             builder.Property(x => x.Nome);
 
-            builder.HasMany<TipoItemCobertura>()
+            builder.HasMany<CategoriaCobertura>()
                 .WithOne()
                 .HasForeignKey("CoberturaId");
         }

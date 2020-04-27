@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Churritos.Dominio.Dados.Configuracoes
 {
-    public class ConfiguracaoTipoItem : IEntityTypeConfiguration<TipoItem>
+    public class ConfiguracaoCategoria : IEntityTypeConfiguration<Categoria>
     {
-        public void Configure(EntityTypeBuilder<TipoItem> builder)
+        public void Configure(EntityTypeBuilder<Categoria> builder)
         {
-            builder.ToTable("TipoItem");
+            builder.ToTable("Categoria");
             
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
@@ -20,13 +20,13 @@ namespace Churritos.Dominio.Dados.Configuracoes
             builder.Ignore(x => x.Coberturas);
             builder.Ignore(x => x.Recheios);
 
-            builder.HasMany<TipoItemCobertura>(TipoItem.TipoItemCoberturasField)
+            builder.HasMany<CategoriaCobertura>(Categoria.CategoriaCoberturasField)
                 .WithOne()
-                .HasForeignKey("TipoItemId");
+                .HasForeignKey("CategoriaId");
             
-            builder.HasMany<TipoItemRecheio>(TipoItem.TipoItemRecheiosField)
+            builder.HasMany<CategoriaRecheio>(Categoria.CategoriaRecheiosField)
                 .WithOne()
-                .HasForeignKey("TipoItemId");
+                .HasForeignKey("CategoriaId");
         }
     }
 }

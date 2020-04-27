@@ -19,7 +19,7 @@ namespace Churritos.Dominio.Dados
             builder.ApplyConfigurationsFromAssembly(typeof(ContextoDaAplicação).Assembly);
             CriarSeedCobertura(builder);
             CriarSeedRecheio(builder);
-            CriarTipoItem(builder);
+            CriarCategoria(builder);
         }
 
         private void CriarSeedCobertura(ModelBuilder builder)
@@ -28,12 +28,92 @@ namespace Churritos.Dominio.Dados
                 new Cobertura
                 {
                     Id = 1,
-                    Nome = "Confete"
+                    Nome = "Coco"
                 },
                 new Cobertura
                 {
                     Id = 2,
-                    Nome = "Coco"
+                    Nome = "Confete"
+                },
+                new Cobertura
+                {
+                    Id = 3,
+                    Nome = "Granulado"
+                },
+                new Cobertura
+                {
+                    Id = 4,
+                    Nome = "Granulado colorido"
+                },
+                new Cobertura
+                {
+                    Id = 5,
+                    Nome = "Choco ball"
+                },
+                new Cobertura
+                {
+                    Id = 6,
+                    Nome = "Amendoim moído"
+                },
+                new Cobertura
+                {
+                    Id = 7,
+                    Nome = "Oreo"
+                },
+                new Cobertura
+                {
+                    Id = 8,
+                    Nome = "Kit kat preto"
+                },
+                new Cobertura
+                {
+                    Id = 9,
+                    Nome = "Kit kat branco"
+                },
+                new Cobertura
+                {
+                    Id = 10,
+                    Nome = "Ouro branco"
+                },
+                new Cobertura
+                {
+                    Id = 11,
+                    Nome = "Sonho de valsa"
+                },
+                new Cobertura
+                {
+                    Id = 12,
+                    Nome = "Ovomantine"
+                },
+                new Cobertura
+                {
+                    Id = 13,
+                    Nome = "Ninho em pó"
+                },
+                new Cobertura
+                {
+                    Id = 14,
+                    Nome = "Morango"
+                },
+                new Cobertura
+                {
+                    Id = 15,
+                    Nome = "Banana"
+                },
+                new Cobertura
+                {
+                    Id = 16,
+                    Nome = "Cheddar"
+                },
+                new Cobertura
+                {
+                    Id = 17,
+                    Nome = "Catupiry"
+                },
+                new Cobertura
+                {
+                    Id = 18,
+                    Nome = "Cream cheese"
                 }
             );
         }
@@ -49,28 +129,78 @@ namespace Churritos.Dominio.Dados
                 {
                     Id = 2,
                     Nome = "Chocolate"
+                },
+                new Recheio
+                {
+                    Id = 3,
+                    Nome = "Goiabada"
+                },
+                new Recheio
+                {
+                    Id = 4,
+                    Nome = "Misto"
+                },
+                new Recheio
+                {
+                    Id = 5,
+                    Nome = "Nutella"
+                },
+                new Recheio
+                {
+                    Id = 6,
+                    Nome = "Ninho"
+                },
+                new Recheio
+                {
+                    Id = 7,
+                    Nome = "Nutella com ninho"
+                },
+                new Recheio
+                {
+                    Id = 8,
+                    Nome = "Frango"
+                },
+                new Recheio
+                {
+                    Id = 9,
+                    Nome = "Calabresa"
+                },
+                new Recheio
+                {
+                    Id = 10,
+                    Nome = "Carne moída"
+                },
+                new Recheio
+                {
+                    Id = 11,
+                    Nome = "Carne seca"
+                },
+                new Recheio
+                {
+                    Id = 12,
+                    Nome = "Pizza"
                 }
             );
         }
-        private void CriarTipoItem(ModelBuilder builder)
+        private void CriarCategoria(ModelBuilder builder)
         {
-            builder.Entity<TipoItem>().HasData(
-                new TipoItem
+            builder.Entity<Categoria>().HasData(
+                new Categoria
                 {
                     Id = 1,
                     Nome = "Doces Tradicionais"
                 },
-                new TipoItem
+                new Categoria
                 {
                     Id = 2,
                     Nome = "Doces Especiais"
                 },
-                new TipoItem
+                new Categoria
                 {
                     Id = 3,
                     Nome = "Doces Gelados"
                 },
-                new TipoItem
+                new Categoria
                 {
                     Id = 4,
                     Nome = "Salgados"

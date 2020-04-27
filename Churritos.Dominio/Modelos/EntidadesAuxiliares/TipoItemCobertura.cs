@@ -1,8 +1,8 @@
 ﻿namespace Churritos.Dominio.Modelos.EntidadesAuxiliares
 {
-    public class TipoItemCobertura
+    public class CategoriaCobertura
     {
-        public TipoItem Tipo;
+        public Categoria Categoria;
         public Cobertura Cobertura;
     }
 }

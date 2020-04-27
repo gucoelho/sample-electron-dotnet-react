@@ -36,6 +36,7 @@ namespace Churritos.App
             services.AddDbContext<ContextoDaAplicação>(options => options.UseSqlite("Data Source=churritos.db;"));
             
             services.AddScoped<CoberturaRepositorio>();
+            services.AddScoped<RecheioRepositorio>();
             
             services.AddSpaStaticFiles(config =>
             {
