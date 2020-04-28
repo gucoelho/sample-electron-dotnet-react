@@ -37,21 +37,21 @@ namespace Churritos.App
             
             services.AddScoped<CoberturaRepositorio>();
             services.AddScoped<RecheioRepositorio>();
+            services.AddScoped<CategoriaRepositorio>();
             
             services.AddSpaStaticFiles(config =>
             {
                 config.RootPath = "client-app/build";
-            }); 
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ContextoDaAplicação contexto)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -64,6 +64,8 @@ namespace Churritos.App
                 endpoints.MapControllers();
             });
             
+            contexto.Database.Migrate();
+            
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "client-app";
@@ -73,7 +75,7 @@ namespace Churritos.App
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            
+
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }

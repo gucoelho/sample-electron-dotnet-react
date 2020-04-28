@@ -21,6 +21,7 @@ namespace Churritos.Dominio.Dados
             CriarSeedRecheio(builder);
             CriarCategoria(builder);
         }
+        
 
         private void CriarSeedCobertura(ModelBuilder builder)
         {

@@ -16,6 +16,9 @@ import PaginaPedido from './paginas/PaginaPedidos';
 import PaginaCoberturas from './paginas/PaginaCoberturas';
 import PaginaRecheios from './paginas/PaginaRecheios';
 import PaginaCategorias from './paginas/PaginaCategorias';
+import ChurritosImg from './assets/images/Churritos.png';
+import Category from '@material-ui/icons/Category';
+import BrokenImageIcon from '@material-ui/icons/BrokenImage';
 
 const drawerWidth = 240;
 
@@ -33,7 +36,13 @@ const AppDrawer = styled(Drawer)`
 `
 
 const ToolbarGap = styled.div`
-  height: 64px;
+  height: 128px;
+  display: flex;
+  justify-content: center;
+`
+
+const Logo = styled.img`
+  height: 100%;
 `
 
 function App() {
@@ -47,7 +56,9 @@ function App() {
             variant="permanent"
             anchor="left"
           >
-            <ToolbarGap />
+            <ToolbarGap>
+             <Logo src={ChurritosImg} /> 
+            </ToolbarGap>
             <Divider />
             <List>
               <ListItem button component={Link} to="/pedidos" key="pedidos">
@@ -58,7 +69,7 @@ function App() {
               </ListItem>
              <ListItem button component={Link} to="/categorias" key="categorias">
                 <ListItemIcon>
-                  <InvertColors />
+                  <Category />
                 </ListItemIcon>
                 <ListItemText primary="Categorias" />
               </ListItem>
@@ -70,7 +81,7 @@ function App() {
               </ListItem>
               <ListItem button component={Link} to="/recheios" key="Categorias">
                 <ListItemIcon>
-                  <InvertColors />
+                  <BrokenImageIcon />
                 </ListItemIcon>
                 <ListItemText primary="Recheios" />
               </ListItem>

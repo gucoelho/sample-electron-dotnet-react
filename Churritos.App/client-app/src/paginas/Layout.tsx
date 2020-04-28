@@ -10,6 +10,7 @@ const drawerWidth = 240;
 const ApplicationBar = styled(AppBar)`
       width: ${`calc(100% - ${drawerWidth}px)`};
       margin-left: ${drawerWidth}px;
+      background-color: #67c1c0;
 `
 const Content = styled.section`
   margin-top: 64px;
