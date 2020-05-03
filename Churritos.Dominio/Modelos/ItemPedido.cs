@@ -8,5 +8,7 @@
         public Item Item { get; set; }
         public Cobertura CoberturaSelecionada { get; set; }
         public Recheio RecheioSelecionado { get; set; }
+        
+        public decimal Valor { get; set; }
     }
 }

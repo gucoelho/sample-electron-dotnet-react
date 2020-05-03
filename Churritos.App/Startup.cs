@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Churritos.Dominio.Dados;
 using Churritos.Dominio.Repositorios;
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +40,7 @@ namespace Churritos.App
             services.AddScoped<CoberturaRepositorio>();
             services.AddScoped<RecheioRepositorio>();
             services.AddScoped<CategoriaRepositorio>();
+            services.AddScoped<ItemRepositório>();
             
             services.AddSpaStaticFiles(config =>
             {
@@ -45,7 +48,6 @@ namespace Churritos.App
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ContextoDaAplicação contexto)
         {
             if (env.IsDevelopment())
@@ -68,15 +70,32 @@ namespace Churritos.App
             
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "client-app";
-
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "client-app");
+                
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
+            
+            if (HybridSupport.IsElectronActive)
+            {
+                ElectronBootstrap();
+            }
+        }
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+
+        private async void ElectronBootstrap()
+        {
+            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                Width = 1152,
+                Height = 864,
+                Show = false
+            });
+            
+            browserWindow.OnReadyToShow += () => browserWindow.Show();
+            browserWindow.SetTitle("Administração Churritos");
         }
     }
 }

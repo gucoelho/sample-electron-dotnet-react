@@ -1,4 +1,6 @@
-﻿using Churritos.Dominio.Modelos;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Churritos.Dominio.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Churritos.Dominio.Dados
@@ -19,10 +21,50 @@ namespace Churritos.Dominio.Dados
             builder.ApplyConfigurationsFromAssembly(typeof(ContextoDaAplicação).Assembly);
             CriarSeedCobertura(builder);
             CriarSeedRecheio(builder);
-            CriarCategoria(builder);
+            var categorias = CriarCategoria(builder);
+            CriarSeedProdutos(builder, categorias);
         }
-        
 
+        private void CriarSeedProdutos(ModelBuilder builder, List<Categoria> categorias)
+        {
+            builder.Entity<Item>().HasData(
+                new Item
+                {
+                    Id = 1,
+                    Nome = "Churros Doce Tradicional",
+                    CategoriaId = 1,
+                    Valor = 8
+                },
+                new Item
+                {
+                    Id = 2,
+                    Nome = "Churros Doce Especial",
+                    CategoriaId = 2,
+                    Valor = 12
+                },
+                new Item
+                {
+                    Id = 3,
+                    CategoriaId = 3,
+                    Nome = "Churros Doce Gelado",
+                    Valor = 16
+                },
+                new Item
+                {
+                    Id = 4,
+                    CategoriaId = 4,
+                    Nome = "Churros Salgado",
+                    Valor = 10
+                },
+                new Item
+                {
+                    Id = 5,
+                    CategoriaId = 5,
+                    Nome = "Churros Salgado",
+                    Valor = 12
+                }
+            );
+        }
         private void CriarSeedCobertura(ModelBuilder builder)
         {
             builder.Entity<Cobertura>().HasData(
@@ -183,9 +225,10 @@ namespace Churritos.Dominio.Dados
                 }
             );
         }
-        private void CriarCategoria(ModelBuilder builder)
+        private List<Categoria> CriarCategoria(ModelBuilder builder)
         {
-            builder.Entity<Categoria>().HasData(
+            var categorias = new List<Categoria>()
+            {
                 new Categoria
                 {
                     Id = 1,
@@ -205,8 +248,15 @@ namespace Churritos.Dominio.Dados
                 {
                     Id = 4,
                     Nome = "Salgados"
+                },
+                new Categoria
+                {
+                    Id = 5,
+                    Nome = "Salgados Especiais"
                 }
-            );
+            };
+            builder.Entity<Categoria>().HasData(categorias);
+            return categorias;
         }
     }
 }

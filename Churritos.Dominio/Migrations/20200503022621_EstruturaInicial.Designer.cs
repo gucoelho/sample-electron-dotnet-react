@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200427035209_EstruturaInicial")]
+    [Migration("20200503022621_EstruturaInicial")]
     partial class EstruturaInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,11 @@ namespace Churritos.Dominio.Migrations
                         {
                             Id = 4,
                             Nome = "Salgados"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nome = "Salgados Especiais"
                         });
                 });
 
@@ -216,8 +221,11 @@ namespace Churritos.Dominio.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoriaId")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("TEXT");
@@ -227,6 +235,39 @@ namespace Churritos.Dominio.Migrations
                     b.HasIndex("CategoriaId");
 
                     b.ToTable("Item");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoriaId = 1,
+                            Nome = "Churros Doce Tradicional",
+                            Valor = 8m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoriaId = 2,
+                            Valor = 12m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoriaId = 3,
+                            Valor = 16m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoriaId = 4,
+                            Valor = 10m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoriaId = 5,
+                            Valor = 12m
+                        });
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.ItemPedido", b =>
@@ -246,6 +287,9 @@ namespace Churritos.Dominio.Migrations
 
                     b.Property<int?>("RecheioSelecionadoId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -401,7 +445,9 @@ namespace Churritos.Dominio.Migrations
                 {
                     b.HasOne("Churritos.Dominio.Modelos.Categoria", "Categoria")
                         .WithMany()
-                        .HasForeignKey("CategoriaId");
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.ItemPedido", b =>

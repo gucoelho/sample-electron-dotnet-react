@@ -65,7 +65,8 @@ namespace Churritos.Dominio.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CategoriaId = table.Column<int>(nullable: true),
+                    CategoriaId = table.Column<int>(nullable: false),
+                    Nome = table.Column<string>(nullable: true),
                     Valor = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -76,7 +77,7 @@ namespace Churritos.Dominio.Migrations
                         column: x => x.CategoriaId,
                         principalTable: "Categoria",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,6 +165,7 @@ namespace Churritos.Dominio.Migrations
                     ItemId = table.Column<int>(nullable: true),
                     CoberturaSelecionadaId = table.Column<int>(nullable: true),
                     RecheioSelecionadoId = table.Column<int>(nullable: true),
+                    Valor = table.Column<decimal>(nullable: false),
                     PedidoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -214,6 +216,11 @@ namespace Churritos.Dominio.Migrations
                 table: "Categoria",
                 columns: new[] { "Id", "Nome" },
                 values: new object[] { 4, "Salgados" });
+
+            migrationBuilder.InsertData(
+                table: "Categoria",
+                columns: new[] { "Id", "Nome" },
+                values: new object[] { 5, "Salgados Especiais" });
 
             migrationBuilder.InsertData(
                 table: "Cobertura",
@@ -364,6 +371,31 @@ namespace Churritos.Dominio.Migrations
                 table: "Recheio",
                 columns: new[] { "Id", "Nome" },
                 values: new object[] { 12, "Pizza" });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
+                values: new object[] { 1, 1, "Churros Doce Tradicional", 8m });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
+                values: new object[] { 2, 2, null, 12m });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
+                values: new object[] { 3, 3, null, 16m });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
+                values: new object[] { 4, 4, null, 10m });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
+                values: new object[] { 5, 5, null, 12m });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoriaCobertura_CategoriaId1",

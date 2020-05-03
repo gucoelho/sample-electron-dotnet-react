@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Layout from './Layout'
+import Layout from '../Layout'
 import MaterialTable from 'material-table'
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const PaginaPedidos = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -12,6 +14,7 @@ const PaginaPedidos = () => {
     }, []);
 
     return <Layout pagename="Pedidos">
+        <Button component={Link} to="/pedidos/criar" >Novo pedido</Button>
         <MaterialTable
             columns={[
                 { title: 'ID', field: 'id' },

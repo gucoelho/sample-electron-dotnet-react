@@ -5,6 +5,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Churritos.App", "Churritos.App\Churritos.App.csproj", "{AFCD87ED-29B0-4205-9B3E-E40FD82575EB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Itens", "Solution Itens", "{7D950B0E-6658-4E1E-9899-B18F47311F75}"
+ProjectSection(SolutionItems) = preProject
+	Remove-Migration.ps1 = Remove-Migration.ps1
+	Add-Migration.ps1 = Add-Migration.ps1
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
