@@ -12,17 +12,17 @@ const SeletorProduto = styled(Paper)`
     border-radius: 0;
 `
 
-const SelecionarCobertura = ({adicionarCobertura} : any) => {
+const SelecionarCobertura = ({adicionarCobertura, produtoId } : any) => {
     const [coberturas, setCoberturas] = useState([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
          setLoading(true)
-         fetch("/api/cobertura")
+         fetch(`/api/produto/${produtoId}/coberturas`)
             .then(res => res.json())
             .then(data => setCoberturas(data))
             .then(() => setLoading(false))
-    }, [])
+    }, [produtoId])
 
    return <div>
      {loading && <LinearProgress />}

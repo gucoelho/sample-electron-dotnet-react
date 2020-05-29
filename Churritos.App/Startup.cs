@@ -42,6 +42,7 @@ namespace Churritos.App
             services.AddScoped<RecheioRepositorio>();
             services.AddScoped<CategoriaRepositorio>();
             services.AddScoped<ProdutoRepositório>();
+            services.AddScoped<PedidoRepositório>();
             
             services.AddSpaStaticFiles(config =>
             {

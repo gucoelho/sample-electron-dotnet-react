@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200529014618_MigracaoInicial")]
+    [Migration("20200529025018_MigracaoInicial")]
     partial class MigracaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,54 +165,34 @@ namespace Churritos.Dominio.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.CategoriaCobertura", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.ProdutoCobertura", b =>
                 {
-                    b.Property<int>("CategoriaId")
+                    b.Property<int>("ProdutoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CoberturaId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoriaId1")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CoberturaId2")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CategoriaId", "CoberturaId");
-
-                    b.HasIndex("CategoriaId1");
+                    b.HasKey("ProdutoId", "CoberturaId");
 
                     b.HasIndex("CoberturaId");
 
-                    b.HasIndex("CoberturaId2");
-
-                    b.ToTable("CategoriaCobertura");
+                    b.ToTable("ProdutoCobertura");
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.CategoriaRecheio", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.ProdutoRecheio", b =>
                 {
-                    b.Property<int>("CategoriaId")
+                    b.Property<int>("ProdutoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("RecheioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CategoriaId1")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("RecheioId2")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CategoriaId", "RecheioId");
-
-                    b.HasIndex("CategoriaId1");
+                    b.HasKey("ProdutoId", "RecheioId");
 
                     b.HasIndex("RecheioId");
 
-                    b.HasIndex("RecheioId2");
-
-                    b.ToTable("CategoriaRecheio");
+                    b.ToTable("ProdutoRecheio");
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.Pedido", b =>
@@ -399,50 +379,34 @@ namespace Churritos.Dominio.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.CategoriaCobertura", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.ProdutoCobertura", b =>
                 {
-                    b.HasOne("Churritos.Dominio.Modelos.Categoria", null)
-                        .WithMany("_categoriaCoberturas")
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Churritos.Dominio.Modelos.Categoria", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriaId1");
-
-                    b.HasOne("Churritos.Dominio.Modelos.Cobertura", null)
+                    b.HasOne("Churritos.Dominio.Modelos.Cobertura", "Cobertura")
                         .WithMany()
                         .HasForeignKey("CoberturaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Churritos.Dominio.Modelos.Cobertura", null)
-                        .WithMany()
-                        .HasForeignKey("CoberturaId2");
+                    b.HasOne("Churritos.Dominio.Modelos.Produto", "Produto")
+                        .WithMany("ProdutoCoberturas")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.CategoriaRecheio", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.ProdutoRecheio", b =>
                 {
-                    b.HasOne("Churritos.Dominio.Modelos.Categoria", null)
-                        .WithMany("_categoriaRecheios")
-                        .HasForeignKey("CategoriaId")
+                    b.HasOne("Churritos.Dominio.Modelos.Produto", "Produto")
+                        .WithMany("ProdutoRecheios")
+                        .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Churritos.Dominio.Modelos.Categoria", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriaId1");
-
-                    b.HasOne("Churritos.Dominio.Modelos.Recheio", null)
+                    b.HasOne("Churritos.Dominio.Modelos.Recheio", "Recheio")
                         .WithMany()
                         .HasForeignKey("RecheioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Churritos.Dominio.Modelos.Recheio", null)
-                        .WithMany()
-                        .HasForeignKey("RecheioId2");
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.Produto", b =>

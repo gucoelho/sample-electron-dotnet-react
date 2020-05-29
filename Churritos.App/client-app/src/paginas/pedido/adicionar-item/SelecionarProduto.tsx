@@ -17,7 +17,6 @@ const SelecionarProduto = ({adicionarItem} : any) => {
          setLoading(true)
          fetch("/api/produto")
             .then(res => res.json())
-            .then(data => data.map((item: Item) => ({...item, valor: formatarValor(item.valor)})))
             .then(data => setProdutos(data))
             .then(() => setLoading(false))
     }, [])
@@ -29,7 +28,7 @@ const SelecionarProduto = ({adicionarItem} : any) => {
              {produtos.map((p :Item) => 
              <SeletorProduto key={p.id}>
                 <ListItem button onClick={() => adicionarItem(p)}>
-                    <ListItemText primary={`${p.nome} - ${p.valor}`} />
+                    <ListItemText primary={`${p.nome} - ${formatarValor(p.valor)}`} />
                 </ListItem>
             </SeletorProduto>)}
          </List>)}

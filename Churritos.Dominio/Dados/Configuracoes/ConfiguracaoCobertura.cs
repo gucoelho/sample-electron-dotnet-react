@@ -17,9 +17,9 @@ namespace Churritos.Dominio.Dados.Configuracoes
 
             builder.Property(x => x.Nome);
 
-            builder.HasMany<CategoriaCobertura>()
-                .WithOne()
-                .HasForeignKey("CoberturaId");
+            builder.HasMany<ProdutoCobertura>()
+                .WithOne(x => x.Cobertura)
+                .HasForeignKey(x => x.CoberturaId);
         }
     }
 }

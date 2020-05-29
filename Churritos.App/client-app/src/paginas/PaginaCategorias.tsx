@@ -19,6 +19,8 @@ const PaginaCoberturas = () => {
             columns={[
                 { title: 'ID', field: 'id' },
                 { title: 'Nome', field: 'nome' },
+                { title: '', field: '' },
+                { title: '', field: '' },
             ]}
             data={categorias}
             title="Lista de categorias"

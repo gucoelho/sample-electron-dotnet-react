@@ -15,10 +15,10 @@ namespace Churritos.Dominio.Repositorios
         
         public async Task<IEnumerable<Recheio>> ObterTodosOsRecheios() => await _contexto.Recheios.ToListAsync();
 
-        public IEnumerable<Recheio> ObterTodosOsRecheiosDaCategoria(int categoriaId) => _contexto.Categorias
-                .Include($"{Categoria.CategoriaRecheiosField}")
+        public IEnumerable<Recheio> ObterTodosOsRecheiosDoProduto(int produtoId) => _contexto.Produtos
+                .Include(x => x.ProdutoRecheios)
                 .AsEnumerable()
-                .Where(x => x.Id == categoriaId)
+                .Where(x => x.Id == produtoId)
                 .SelectMany(x => x.Recheios);
     }
 }

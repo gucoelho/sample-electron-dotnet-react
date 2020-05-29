@@ -12,13 +12,12 @@ namespace Churritos.Dominio.Repositorios
 
         public PedidoRepositório(ContextoDaAplicação contexto) => _contexto = contexto;
 
-        public async Task<IEnumerable<Pedido>> ObterTodosOsPedidos() => await _contexto.Pedidos.ToListAsync();
+        public async Task<IEnumerable<Pedido>> ObterTodosOsPedidos() => 
+            await _contexto.Pedidos.Include($"{Pedido.ProdutosPedidoField}.{nameof(Produto)}").ToListAsync();
 
-        public async Task AdicionarProdutosNoPedido(IEnumerable<ProdutoPedido> itens, Pedido pedido)
+        public async Task AdicionarPedido(Pedido pedido)
         {
-            foreach (var itemPedido in itens)
-                pedido.AdicionarProdutoPedido(itemPedido);
-
+            _contexto.Add(pedido);
             await _contexto.SaveChangesAsync();
         }
 

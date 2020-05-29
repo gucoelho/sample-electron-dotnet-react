@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Churritos.Dominio.Dados.Configuracoes;
 using Churritos.Dominio.Modelos;
+using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Microsoft.EntityFrameworkCore;
 
 namespace Churritos.Dominio.Dados
@@ -19,22 +21,54 @@ namespace Churritos.Dominio.Dados
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(ContextoDaAplicação).Assembly);
-            CriarSeedCobertura(builder);
-            CriarSeedRecheio(builder);
+            builder.ApplyConfiguration(new ConfiguracaoCategoria());
+            builder.ApplyConfiguration(new ConfiguracaoCobertura());
+            builder.ApplyConfiguration(new ConfiguracaoRecheio());
+            builder.ApplyConfiguration(new ConfiguracaoProduto());
+            builder.ApplyConfiguration(new ConfiguracaoProdutoCobertura());
+            builder.ApplyConfiguration(new ConfiguracaoProdutoRecheio());
+            builder.ApplyConfiguration(new ConfiguracaoPedido());
+            builder.ApplyConfiguration(new ConfiguracaoProdutoPedido());
+            
+            var coberturas = CriarSeedCobertura(builder);
+            var recheios = CriarSeedRecheio(builder);
             var categorias = CriarCategoria(builder);
-            CriarSeedProdutos(builder, categorias);
+            var produtos = CriarSeedProdutos(builder);
+            VincularProdutosComRecheiosECoberturas(builder, coberturas, recheios, produtos);
         }
 
-        private void CriarSeedProdutos(ModelBuilder builder, List<Categoria> categorias)
+        private void VincularProdutosComRecheiosECoberturas(ModelBuilder builder, List<Cobertura> coberturas, List<Recheio> recheios, List<Produto> produtos)
         {
-            builder.Entity<Produto>().HasData(
+            var coberturasDosProdutos = produtos.SelectMany(
+                x => coberturas.Select(y => new ProdutoCobertura
+            {
+                ProdutoId = x.Id,
+                CoberturaId = y.Id
+            }));
+            
+            builder.Entity<ProdutoCobertura>().HasData(coberturasDosProdutos);
+            
+            var recheiosDosProdutos = produtos.SelectMany(
+                x => recheios.Select(y => new ProdutoRecheio()
+            {
+                ProdutoId = x.Id,
+                RecheioId = y.Id
+            }));
+            
+            builder.Entity<ProdutoRecheio>().HasData(recheiosDosProdutos);
+        }
+
+        private List<Produto> CriarSeedProdutos(ModelBuilder builder)
+        {
+            var produtos = new List<Produto>
+            {
                 new Produto
                 {
                     Id = 1,
                     Nome = "Churros Doce Tradicional",
                     CategoriaId = 1,
-                    Valor = 8
+                    Valor = 8,
+
                 },
                 new Produto
                 {
@@ -64,11 +98,17 @@ namespace Churritos.Dominio.Dados
                     Nome = "Churros Salgado Especial",
                     Valor = 12
                 }
+            };
+            builder.Entity<Produto>().HasData(
+                produtos
             );
+
+            return produtos;
         }
-        private void CriarSeedCobertura(ModelBuilder builder)
+        private List<Cobertura> CriarSeedCobertura(ModelBuilder builder)
         {
-            builder.Entity<Cobertura>().HasData(
+            var coberturas = new List<Cobertura>
+            {
                 new Cobertura
                 {
                     Id = 1,
@@ -159,11 +199,14 @@ namespace Churritos.Dominio.Dados
                     Id = 18,
                     Nome = "Cream cheese"
                 }
-            );
+            };
+            builder.Entity<Cobertura>().HasData(coberturas);
+            return coberturas;
         }
-        private void CriarSeedRecheio(ModelBuilder builder)
+        private List<Recheio> CriarSeedRecheio(ModelBuilder builder)
         {
-            builder.Entity<Recheio>().HasData(
+            var recheios = new List<Recheio>
+            {
                 new Recheio
                 {
                     Id = 1,
@@ -224,7 +267,9 @@ namespace Churritos.Dominio.Dados
                     Id = 12,
                     Nome = "Pizza"
                 }
-            );
+            };
+            builder.Entity<Recheio>().HasData(recheios);
+            return recheios;
         }
         private List<Categoria> CriarCategoria(ModelBuilder builder)
         {

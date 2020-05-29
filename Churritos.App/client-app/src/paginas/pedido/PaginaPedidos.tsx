@@ -3,12 +3,22 @@ import Layout from '../Layout'
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import { formatarValor } from '../../utils'
+
+// TODO: Unificar Itens
+interface Item {
+    id: number,
+    nome: string,
+    valor: number
+}
+
+
 
 const PaginaPedidos = () => {
     const [pedidos, setPedidos] = useState([]);
 
     useEffect(() => {
-        fetch("/api/pedidos")
+        fetch("/api/pedido")
             .then(res => res.json())
             .then(data => setPedidos(data))
     }, []);
@@ -22,7 +32,7 @@ const PaginaPedidos = () => {
                 { title: 'Quantidade', field: 'quantidade' },
                 { title: 'Valor', field: 'valor' },
             ]}
-            data={pedidos}
+            data={pedidos.map((p: Item) => ({...p, valor: formatarValor(p.valor)}))}
             title="Lista de pedidos"
             options={{search: false}}
             />

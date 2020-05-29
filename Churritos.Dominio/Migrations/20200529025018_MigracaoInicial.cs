@@ -81,79 +81,27 @@ namespace Churritos.Dominio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoriaCobertura",
+                name: "ProdutoCobertura",
                 columns: table => new
                 {
-                    CategoriaId = table.Column<int>(nullable: false),
-                    CoberturaId = table.Column<int>(nullable: false),
-                    CategoriaId1 = table.Column<int>(nullable: true),
-                    CoberturaId2 = table.Column<int>(nullable: true)
+                    ProdutoId = table.Column<int>(nullable: false),
+                    CoberturaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoriaCobertura", x => new { x.CategoriaId, x.CoberturaId });
+                    table.PrimaryKey("PK_ProdutoCobertura", x => new { x.ProdutoId, x.CoberturaId });
                     table.ForeignKey(
-                        name: "FK_CategoriaCobertura_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
-                        principalTable: "Categoria",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoriaCobertura_Categoria_CategoriaId1",
-                        column: x => x.CategoriaId1,
-                        principalTable: "Categoria",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CategoriaCobertura_Cobertura_CoberturaId",
+                        name: "FK_ProdutoCobertura_Cobertura_CoberturaId",
                         column: x => x.CoberturaId,
                         principalTable: "Cobertura",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoriaCobertura_Cobertura_CoberturaId2",
-                        column: x => x.CoberturaId2,
-                        principalTable: "Cobertura",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoriaRecheio",
-                columns: table => new
-                {
-                    CategoriaId = table.Column<int>(nullable: false),
-                    RecheioId = table.Column<int>(nullable: false),
-                    CategoriaId1 = table.Column<int>(nullable: true),
-                    RecheioId2 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoriaRecheio", x => new { x.CategoriaId, x.RecheioId });
-                    table.ForeignKey(
-                        name: "FK_CategoriaRecheio_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
-                        principalTable: "Categoria",
+                        name: "FK_ProdutoCobertura_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produto",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoriaRecheio_Categoria_CategoriaId1",
-                        column: x => x.CategoriaId1,
-                        principalTable: "Categoria",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CategoriaRecheio_Recheio_RecheioId",
-                        column: x => x.RecheioId,
-                        principalTable: "Recheio",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoriaRecheio_Recheio_RecheioId2",
-                        column: x => x.RecheioId2,
-                        principalTable: "Recheio",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,6 +143,30 @@ namespace Churritos.Dominio.Migrations
                         principalTable: "Recheio",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProdutoRecheio",
+                columns: table => new
+                {
+                    ProdutoId = table.Column<int>(nullable: false),
+                    RecheioId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProdutoRecheio", x => new { x.ProdutoId, x.RecheioId });
+                    table.ForeignKey(
+                        name: "FK_ProdutoRecheio_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProdutoRecheio_Recheio_RecheioId",
+                        column: x => x.RecheioId,
+                        principalTable: "Recheio",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -398,39 +370,14 @@ namespace Churritos.Dominio.Migrations
                 values: new object[] { 5, 5, "Churros Salgado Especial", 12m });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoriaCobertura_CategoriaId1",
-                table: "CategoriaCobertura",
-                column: "CategoriaId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriaCobertura_CoberturaId",
-                table: "CategoriaCobertura",
-                column: "CoberturaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriaCobertura_CoberturaId2",
-                table: "CategoriaCobertura",
-                column: "CoberturaId2");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriaRecheio_CategoriaId1",
-                table: "CategoriaRecheio",
-                column: "CategoriaId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriaRecheio_RecheioId",
-                table: "CategoriaRecheio",
-                column: "RecheioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriaRecheio_RecheioId2",
-                table: "CategoriaRecheio",
-                column: "RecheioId2");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produto_CategoriaId",
                 table: "Produto",
                 column: "CategoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProdutoCobertura_CoberturaId",
+                table: "ProdutoCobertura",
+                column: "CoberturaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProdutoPedido_CoberturaSelecionadaId",
@@ -451,18 +398,23 @@ namespace Churritos.Dominio.Migrations
                 name: "IX_ProdutoPedido_RecheioSelecionadoId",
                 table: "ProdutoPedido",
                 column: "RecheioSelecionadoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProdutoRecheio_RecheioId",
+                table: "ProdutoRecheio",
+                column: "RecheioId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoriaCobertura");
-
-            migrationBuilder.DropTable(
-                name: "CategoriaRecheio");
+                name: "ProdutoCobertura");
 
             migrationBuilder.DropTable(
                 name: "ProdutoPedido");
+
+            migrationBuilder.DropTable(
+                name: "ProdutoRecheio");
 
             migrationBuilder.DropTable(
                 name: "Cobertura");

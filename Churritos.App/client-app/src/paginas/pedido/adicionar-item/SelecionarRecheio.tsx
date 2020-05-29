@@ -12,17 +12,17 @@ const SeletorProduto = styled(Paper)`
     border-radius: 0;
 `
 
-const SelecionarRecheio = ({adicionarRecheio, categoriaId} : any) => {
+const SelecionarRecheio = ({adicionarRecheio, produtoId} : any) => {
     const [recheios, setRecheios] = useState([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
          setLoading(true)
-         fetch(`/api/recheio/${categoriaId}`)
+         fetch(`/api/produto/${produtoId}/recheios`)
             .then(res => res.json())
             .then(data => setRecheios(data))
             .then(() => setLoading(false))
-    }, [categoriaId])
+    }, [produtoId])
 
    return <div>
      {loading && <LinearProgress />}

@@ -17,9 +17,9 @@ namespace Churritos.Dominio.Dados.Configuracoes
 
             builder.Property(x => x.Nome);
 
-            builder.HasMany<CategoriaRecheio>()
-                .WithOne()
-                .HasForeignKey("RecheioId");
+            builder.HasMany<ProdutoRecheio>()
+                .WithOne(x => x.Recheio)
+                .HasForeignKey(x => x.RecheioId);
         }
     }
 }

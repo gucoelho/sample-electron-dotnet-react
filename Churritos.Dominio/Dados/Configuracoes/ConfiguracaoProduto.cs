@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Churritos.Dominio.Dados.Configuracoes
 {
-    public class ConfiguracaoItem : IEntityTypeConfiguration<Produto>
+    public class ConfiguracaoProduto : IEntityTypeConfiguration<Produto>
     {
         
         public void Configure(EntityTypeBuilder<Produto> builder)
@@ -20,6 +20,17 @@ namespace Churritos.Dominio.Dados.Configuracoes
             builder.HasMany<ProdutoPedido>()
                 .WithOne(x => x.Produto)
                 .HasForeignKey("ProdutoId");
+            
+            builder.Ignore(x => x.Coberturas);
+            builder.Ignore(x => x.Recheios);
+
+            builder.HasMany(x => x.ProdutoCoberturas)
+                .WithOne(x => x.Produto)
+                .HasForeignKey(x => x.ProdutoId);
+            
+            builder.HasMany(x => x.ProdutoRecheios)
+                .WithOne(x => x.Produto)
+                .HasForeignKey(x => x.ProdutoId);
         }
     }
 }

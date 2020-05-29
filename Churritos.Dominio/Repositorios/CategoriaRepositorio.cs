@@ -14,8 +14,6 @@ namespace Churritos.Dominio.Repositorios
         
         public async Task<IEnumerable<Categoria>> ObterTodasAsCategorias() => 
             await _contexto.Set<Categoria>()
-                .Include($"{Categoria.CategoriaRecheiosField}")
-                .Include($"{Categoria.CategoriaCoberturasField}")
                 .ToListAsync();
     }
 }

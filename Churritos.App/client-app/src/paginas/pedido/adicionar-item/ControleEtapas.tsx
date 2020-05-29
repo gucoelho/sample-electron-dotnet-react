@@ -46,7 +46,7 @@ function getStepContent(step: number) {
 }
 
 
-function HorizontalLinearStepper({ activeStep, setActiveStep } : any) {
+function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem } : any) {
   const classes = useStyles();
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const steps = getSteps();
@@ -127,6 +127,10 @@ function HorizontalLinearStepper({ activeStep, setActiveStep } : any) {
               <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                 Back
               </Button>
+
+              <Button disabled={activeStep !== 3} onClick={adicionarItem} className={classes.button}>
+                Adicionar
+              </Button>
             </div>
           </div>
         )}
@@ -146,7 +150,7 @@ interface Recheio {
 }
 
 
-const ControleEtapas = () => {
+const ControleEtapas = ({adicionarItemPedido} : any) => {
     const [etapa, setEtapa] = useState(0);
     const [item, setItem] = useState<Item>()
     const [cobertura, setCobertura] = useState<Cobertura>()
@@ -172,17 +176,24 @@ const ControleEtapas = () => {
         setEtapa((prevActiveStep : number) => prevActiveStep + 1);
     }
 
+    const finalizarItem = () => {
+        adicionarItemPedido({
+          produto: item,
+          cobertura: cobertura,
+          recheio: recheio
+        })
+    }
+
 
     return (
     <>
-        <HorizontalLinearStepper activeStep={etapa} setActiveStep={setEtapa}/>
+        <HorizontalLinearStepper activeStep={etapa} setActiveStep={setEtapa} adicionarItem={finalizarItem} />
         <div>{item?.nome}</div>
-        <div>{item?.categoriaId}</div>
         <div>{cobertura?.nome}</div>
         <div>{recheio?.nome}</div>
         {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
-        {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} categoriaId={item?.categoriaId} />)}
-        {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} />)}
+        {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
+        {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
     </>
     )
 
