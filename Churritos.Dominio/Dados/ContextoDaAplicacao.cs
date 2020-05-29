@@ -10,7 +10,8 @@ namespace Churritos.Dominio.Dados
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Cobertura> Coberturas { get; set; }
         public DbSet<Recheio> Recheios { get; set; }
-        public DbSet<Item> Itens { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
         public ContextoDaAplicação(DbContextOptions<ContextoDaAplicação> options) : base(options)
         {
@@ -27,40 +28,40 @@ namespace Churritos.Dominio.Dados
 
         private void CriarSeedProdutos(ModelBuilder builder, List<Categoria> categorias)
         {
-            builder.Entity<Item>().HasData(
-                new Item
+            builder.Entity<Produto>().HasData(
+                new Produto
                 {
                     Id = 1,
                     Nome = "Churros Doce Tradicional",
                     CategoriaId = 1,
                     Valor = 8
                 },
-                new Item
+                new Produto
                 {
                     Id = 2,
                     Nome = "Churros Doce Especial",
                     CategoriaId = 2,
                     Valor = 12
                 },
-                new Item
+                new Produto
                 {
                     Id = 3,
                     CategoriaId = 3,
                     Nome = "Churros Doce Gelado",
                     Valor = 16
                 },
-                new Item
+                new Produto
                 {
                     Id = 4,
                     CategoriaId = 4,
                     Nome = "Churros Salgado",
                     Valor = 10
                 },
-                new Item
+                new Produto
                 {
                     Id = 5,
                     CategoriaId = 5,
-                    Nome = "Churros Salgado",
+                    Nome = "Churros Salgado Especial",
                     Valor = 12
                 }
             );

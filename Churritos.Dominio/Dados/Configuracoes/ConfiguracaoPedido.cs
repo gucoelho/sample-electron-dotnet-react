@@ -17,11 +17,11 @@ namespace Churritos.Dominio.Dados.Configuracoes
             builder.Property(x => x.DataCriação)
                 .HasColumnName("DataCriacao");
             
-            builder.HasMany(Pedido.ItensPedidoField)
+            builder.HasMany(Pedido.ProdutosPedidoField)
                 .WithOne()
                 .HasForeignKey("PedidoId");
             
-            builder.Ignore(x => x.Itens);
+            builder.Ignore(x => x.Produtos);
         }
     }
 }

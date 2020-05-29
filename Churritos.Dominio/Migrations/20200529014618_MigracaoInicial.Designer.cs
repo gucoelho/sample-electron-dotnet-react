@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200503022621_EstruturaInicial")]
-    partial class EstruturaInicial
+    [Migration("20200529014618_MigracaoInicial")]
+    partial class MigracaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,7 +215,22 @@ namespace Churritos.Dominio.Migrations
                     b.ToTable("CategoriaRecheio");
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.Item", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Pedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DataCriação")
+                        .HasColumnName("DataCriacao")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pedido");
+                });
+
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,7 +249,7 @@ namespace Churritos.Dominio.Migrations
 
                     b.HasIndex("CategoriaId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Produto");
 
                     b.HasData(
                         new
@@ -248,29 +263,33 @@ namespace Churritos.Dominio.Migrations
                         {
                             Id = 2,
                             CategoriaId = 2,
+                            Nome = "Churros Doce Especial",
                             Valor = 12m
                         },
                         new
                         {
                             Id = 3,
                             CategoriaId = 3,
+                            Nome = "Churros Doce Gelado",
                             Valor = 16m
                         },
                         new
                         {
                             Id = 4,
                             CategoriaId = 4,
+                            Nome = "Churros Salgado",
                             Valor = 10m
                         },
                         new
                         {
                             Id = 5,
                             CategoriaId = 5,
+                            Nome = "Churros Salgado Especial",
                             Valor = 12m
                         });
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.ItemPedido", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.ProdutoPedido", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,10 +298,10 @@ namespace Churritos.Dominio.Migrations
                     b.Property<int?>("CoberturaSelecionadaId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("PedidoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("PedidoId")
+                    b.Property<int?>("ProdutoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("RecheioSelecionadoId")
@@ -295,28 +314,13 @@ namespace Churritos.Dominio.Migrations
 
                     b.HasIndex("CoberturaSelecionadaId");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("PedidoId");
+
+                    b.HasIndex("ProdutoId");
 
                     b.HasIndex("RecheioSelecionadoId");
 
-                    b.ToTable("ItemPedido");
-                });
-
-            modelBuilder.Entity("Churritos.Dominio.Modelos.Pedido", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DataCriação")
-                        .HasColumnName("DataCriacao")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pedido");
+                    b.ToTable("ProdutoPedido");
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.Recheio", b =>
@@ -441,7 +445,7 @@ namespace Churritos.Dominio.Migrations
                         .HasForeignKey("RecheioId2");
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.Item", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Produto", b =>
                 {
                     b.HasOne("Churritos.Dominio.Modelos.Categoria", "Categoria")
                         .WithMany()
@@ -450,19 +454,19 @@ namespace Churritos.Dominio.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Churritos.Dominio.Modelos.ItemPedido", b =>
+            modelBuilder.Entity("Churritos.Dominio.Modelos.ProdutoPedido", b =>
                 {
                     b.HasOne("Churritos.Dominio.Modelos.Cobertura", "CoberturaSelecionada")
                         .WithMany()
                         .HasForeignKey("CoberturaSelecionadaId");
 
-                    b.HasOne("Churritos.Dominio.Modelos.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("Churritos.Dominio.Modelos.Pedido", null)
-                        .WithMany("_itens")
+                        .WithMany("_produtos")
                         .HasForeignKey("PedidoId");
+
+                    b.HasOne("Churritos.Dominio.Modelos.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId");
 
                     b.HasOne("Churritos.Dominio.Modelos.Recheio", "RecheioSelecionado")
                         .WithMany()

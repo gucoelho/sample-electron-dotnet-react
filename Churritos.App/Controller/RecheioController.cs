@@ -20,5 +20,10 @@ namespace Churritos.App.Controller
         [HttpGet]
         public async Task<IEnumerable<Recheio>> Get() => 
             await _repositorio.ObterTodosOsRecheios();
+            
+        
+        [HttpGet("{categoriaId}")]
+        public IEnumerable<Recheio> Get(int categoriaId) => 
+             _repositorio.ObterTodosOsRecheiosDaCategoria(categoriaId);
     }
 }

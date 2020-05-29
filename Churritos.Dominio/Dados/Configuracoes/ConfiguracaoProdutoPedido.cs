@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Churritos.Dominio.Dados.Configuracoes
 {
-    public class ConfiguracaoItemPedido : IEntityTypeConfiguration<ItemPedido>
+    public class ConfiguracaoProdutoPedido : IEntityTypeConfiguration<ProdutoPedido>
     {
-        public void Configure(EntityTypeBuilder<ItemPedido> builder)
+        public void Configure(EntityTypeBuilder<ProdutoPedido> builder)
         {
-            builder.ToTable("ItemPedido");
+            builder.ToTable("ProdutoPedido");
             
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
@@ -16,8 +16,6 @@ namespace Churritos.Dominio.Dados.Configuracoes
 
             builder.HasOne(x => x.CoberturaSelecionada);
             builder.HasOne(x => x.RecheioSelecionado);
-            
-
         }
     }
 }

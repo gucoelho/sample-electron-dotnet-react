@@ -1,6 +1,6 @@
 ﻿namespace Churritos.Dominio.Modelos
 {
-    public class Item
+    public class Produto
     {    
         public int Id { get; set; }
 

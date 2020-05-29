@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Churritos.Dominio.Repositorios
 {
-    public class ItemRepositório
+    public class ProdutoRepositório
     {
         private readonly ContextoDaAplicação _contexto;
 
-        public ItemRepositório(ContextoDaAplicação contexto) => _contexto = contexto;
+        public ProdutoRepositório(ContextoDaAplicação contexto) => _contexto = contexto;
         
-        public async Task<IEnumerable<Item>> ObterTodosOsItens() => await _contexto.Itens.ToListAsync();
+        public async Task<IEnumerable<Produto>> ObterTodosOsProdutos() => await _contexto.Produtos.ToListAsync();
     }
 }

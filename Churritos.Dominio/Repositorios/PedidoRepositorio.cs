@@ -14,10 +14,10 @@ namespace Churritos.Dominio.Repositorios
 
         public async Task<IEnumerable<Pedido>> ObterTodosOsPedidos() => await _contexto.Pedidos.ToListAsync();
 
-        public async Task AdicionarItensNoPedido(IEnumerable<ItemPedido> itens, Pedido pedido)
+        public async Task AdicionarProdutosNoPedido(IEnumerable<ProdutoPedido> itens, Pedido pedido)
         {
             foreach (var itemPedido in itens)
-                pedido.AdicionarItemPedido(itemPedido);
+                pedido.AdicionarProdutoPedido(itemPedido);
 
             await _contexto.SaveChangesAsync();
         }

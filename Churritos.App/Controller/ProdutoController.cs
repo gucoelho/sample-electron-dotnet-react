@@ -11,15 +11,15 @@ namespace Churritos.App.Controller
     [Route("api/[controller]")]
     public class ProdutoController : ControllerBase
     {
-        private readonly ItemRepositório _repositorio;
+        private readonly ProdutoRepositório _repositorio;
 
-        public ProdutoController(ItemRepositório repositorio)
+        public ProdutoController(ProdutoRepositório repositorio)
         {
             _repositorio = repositorio;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Item>> Get() =>
-            await _repositorio.ObterTodosOsItens();
+        public async Task<IEnumerable<Produto>> Get() =>
+            await _repositorio.ObterTodosOsProdutos();
     }
 }

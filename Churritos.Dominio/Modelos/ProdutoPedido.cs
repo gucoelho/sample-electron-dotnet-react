@@ -2,10 +2,10 @@
 
  namespace Churritos.Dominio.Modelos
 {
-    public class ItemPedido
+    public class ProdutoPedido
     {
         public int Id { get; set; }
-        public Item Item { get; set; }
+        public Produto Produto { get; set; }
         public Cobertura CoberturaSelecionada { get; set; }
         public Recheio RecheioSelecionado { get; set; }
         

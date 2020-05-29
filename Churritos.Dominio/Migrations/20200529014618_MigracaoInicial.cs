@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Churritos.Dominio.Migrations
 {
-    public partial class EstruturaInicial : Migration
+    public partial class MigracaoInicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,7 +60,7 @@ namespace Churritos.Dominio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Item",
+                name: "Produto",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -71,9 +71,9 @@ namespace Churritos.Dominio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Item", x => x.Id);
+                    table.PrimaryKey("PK_Produto", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Item_Categoria_CategoriaId",
+                        name: "FK_Produto_Categoria_CategoriaId",
                         column: x => x.CategoriaId,
                         principalTable: "Categoria",
                         principalColumn: "Id",
@@ -157,12 +157,12 @@ namespace Churritos.Dominio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemPedido",
+                name: "ProdutoPedido",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ItemId = table.Column<int>(nullable: true),
+                    ProdutoId = table.Column<int>(nullable: true),
                     CoberturaSelecionadaId = table.Column<int>(nullable: true),
                     RecheioSelecionadoId = table.Column<int>(nullable: true),
                     Valor = table.Column<decimal>(nullable: false),
@@ -170,27 +170,27 @@ namespace Churritos.Dominio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemPedido", x => x.Id);
+                    table.PrimaryKey("PK_ProdutoPedido", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemPedido_Cobertura_CoberturaSelecionadaId",
+                        name: "FK_ProdutoPedido_Cobertura_CoberturaSelecionadaId",
                         column: x => x.CoberturaSelecionadaId,
                         principalTable: "Cobertura",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ItemPedido_Item_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Item",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ItemPedido_Pedido_PedidoId",
+                        name: "FK_ProdutoPedido_Pedido_PedidoId",
                         column: x => x.PedidoId,
                         principalTable: "Pedido",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ItemPedido_Recheio_RecheioSelecionadoId",
+                        name: "FK_ProdutoPedido_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProdutoPedido_Recheio_RecheioSelecionadoId",
                         column: x => x.RecheioSelecionadoId,
                         principalTable: "Recheio",
                         principalColumn: "Id",
@@ -373,29 +373,29 @@ namespace Churritos.Dominio.Migrations
                 values: new object[] { 12, "Pizza" });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Produto",
                 columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
                 values: new object[] { 1, 1, "Churros Doce Tradicional", 8m });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Produto",
                 columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
-                values: new object[] { 2, 2, null, 12m });
+                values: new object[] { 2, 2, "Churros Doce Especial", 12m });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Produto",
                 columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
-                values: new object[] { 3, 3, null, 16m });
+                values: new object[] { 3, 3, "Churros Doce Gelado", 16m });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Produto",
                 columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
-                values: new object[] { 4, 4, null, 10m });
+                values: new object[] { 4, 4, "Churros Salgado", 10m });
 
             migrationBuilder.InsertData(
-                table: "Item",
+                table: "Produto",
                 columns: new[] { "Id", "CategoriaId", "Nome", "Valor" },
-                values: new object[] { 5, 5, null, 12m });
+                values: new object[] { 5, 5, "Churros Salgado Especial", 12m });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoriaCobertura_CategoriaId1",
@@ -428,28 +428,28 @@ namespace Churritos.Dominio.Migrations
                 column: "RecheioId2");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_CategoriaId",
-                table: "Item",
+                name: "IX_Produto_CategoriaId",
+                table: "Produto",
                 column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemPedido_CoberturaSelecionadaId",
-                table: "ItemPedido",
+                name: "IX_ProdutoPedido_CoberturaSelecionadaId",
+                table: "ProdutoPedido",
                 column: "CoberturaSelecionadaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemPedido_ItemId",
-                table: "ItemPedido",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemPedido_PedidoId",
-                table: "ItemPedido",
+                name: "IX_ProdutoPedido_PedidoId",
+                table: "ProdutoPedido",
                 column: "PedidoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemPedido_RecheioSelecionadoId",
-                table: "ItemPedido",
+                name: "IX_ProdutoPedido_ProdutoId",
+                table: "ProdutoPedido",
+                column: "ProdutoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProdutoPedido_RecheioSelecionadoId",
+                table: "ProdutoPedido",
                 column: "RecheioSelecionadoId");
         }
 
@@ -462,16 +462,16 @@ namespace Churritos.Dominio.Migrations
                 name: "CategoriaRecheio");
 
             migrationBuilder.DropTable(
-                name: "ItemPedido");
+                name: "ProdutoPedido");
 
             migrationBuilder.DropTable(
                 name: "Cobertura");
 
             migrationBuilder.DropTable(
-                name: "Item");
+                name: "Pedido");
 
             migrationBuilder.DropTable(
-                name: "Pedido");
+                name: "Produto");
 
             migrationBuilder.DropTable(
                 name: "Recheio");

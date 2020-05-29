@@ -35,12 +35,13 @@ namespace Churritos.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<ContextoDaAplicação>(options => options.UseSqlite("Data Source=churritos.db;"));
+            services.AddDbContext<ContextoDaAplicação>(options => 
+                options.UseSqlite("Data Source=churritos.db;"));
             
             services.AddScoped<CoberturaRepositorio>();
             services.AddScoped<RecheioRepositorio>();
             services.AddScoped<CategoriaRepositorio>();
-            services.AddScoped<ItemRepositório>();
+            services.AddScoped<ProdutoRepositório>();
             
             services.AddSpaStaticFiles(config =>
             {
