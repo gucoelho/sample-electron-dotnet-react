@@ -17,7 +17,7 @@ namespace Churritos.Dominio.Modelos
 
         public IReadOnlyCollection<Produto> Produtos => _produtos.Select(x => x.Produto).ToArray();
 
-        public decimal ValorTotal => Produtos.Sum(x => x.Valor);
+        public decimal ValorTotal => _produtos.Sum(x => x.ValorTotal);
 
         public void AdicionarProdutoPedido(ProdutoPedido produtoPedido)
         {

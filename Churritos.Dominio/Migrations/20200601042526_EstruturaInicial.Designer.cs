@@ -3,14 +3,16 @@ using System;
 using Churritos.Dominio.Dados;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    partial class ContextoDaAplicaçãoModelSnapshot : ModelSnapshot
+    [Migration("20200601042526_EstruturaInicial")]
+    partial class EstruturaInicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

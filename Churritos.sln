@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Itens", "Solution 
 ProjectSection(SolutionItems) = preProject
 	Remove-Migration.ps1 = Remove-Migration.ps1
 	Add-Migration.ps1 = Add-Migration.ps1
+	Reset-Migrations.ps1 = Reset-Migrations.ps1
 EndProjectSection
 EndProject
 Global

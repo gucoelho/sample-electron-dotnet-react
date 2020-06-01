@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { LinearProgress, List, ListItemText, ListItem, Paper} from '@material-ui/core';
 import styled from 'styled-components'
+import { formatarValor } from '../../../utils';
 
 interface Recheio {
     id: number,
-    nome: string
+    nome: string,
+    valor: number
 }
 
 const SeletorProduto = styled(Paper)`
@@ -31,7 +33,8 @@ const SelecionarRecheio = ({adicionarRecheio, produtoId} : any) => {
              {recheios.map((p : Recheio) => 
              <SeletorProduto key={p.id}>
                 <ListItem button onClick={() => adicionarRecheio(p)}>
-                    <ListItemText primary={`${p.nome}`} />
+                   {p.valor <= 0 && <ListItemText primary={`${p.nome}`} />}
+                   {p.valor > 0 && <ListItemText primary={`${p.nome} + ${formatarValor(p.valor)}`} />}
                 </ListItem>
             </SeletorProduto>)}
          </List>)}

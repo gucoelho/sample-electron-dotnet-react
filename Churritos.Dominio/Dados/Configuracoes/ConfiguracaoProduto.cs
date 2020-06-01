@@ -21,14 +21,9 @@ namespace Churritos.Dominio.Dados.Configuracoes
                 .WithOne(x => x.Produto)
                 .HasForeignKey("ProdutoId");
             
-            builder.Ignore(x => x.Coberturas);
-            builder.Ignore(x => x.Recheios);
+            builder.Ignore(x => x.Adicionais);
 
-            builder.HasMany(x => x.ProdutoCoberturas)
-                .WithOne(x => x.Produto)
-                .HasForeignKey(x => x.ProdutoId);
-            
-            builder.HasMany(x => x.ProdutoRecheios)
+            builder.HasMany(x => x.AdicionaisProduto)
                 .WithOne(x => x.Produto)
                 .HasForeignKey(x => x.ProdutoId);
         }

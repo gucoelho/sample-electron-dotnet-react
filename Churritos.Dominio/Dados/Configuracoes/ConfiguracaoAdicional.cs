@@ -2,14 +2,15 @@
 using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Churritos.Dominio.Dados.Configuracoes
 {
-    public class ConfiguracaoRecheio : IEntityTypeConfiguration<Recheio>
+    public class ConfiguracaoAdicional : IEntityTypeConfiguration<Adicional>
     {
-        public void Configure(EntityTypeBuilder<Recheio> builder)
+        public void Configure(EntityTypeBuilder<Adicional> builder)
         {
-            builder.ToTable("Recheio");
+            builder.ToTable("Adicional");
             
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
@@ -17,9 +18,8 @@ namespace Churritos.Dominio.Dados.Configuracoes
 
             builder.Property(x => x.Nome);
 
-            builder.HasMany<ProdutoRecheio>()
-                .WithOne(x => x.Recheio)
-                .HasForeignKey(x => x.RecheioId);
+            builder.Property(x => x.Tipo)
+                .HasConversion(new EnumToStringConverter<TipoAdicional>());
         }
     }
 }

@@ -17,9 +17,8 @@ namespace Churritos.Dominio.Modelos
         public string Nome { get; set; }
         public decimal Valor { get; set; }
 
-        public IReadOnlyCollection<ProdutoCobertura> ProdutoCoberturas { get; set; }
-        public IReadOnlyCollection<ProdutoRecheio> ProdutoRecheios { get; set; }
-        public IReadOnlyCollection<Cobertura> Coberturas => ProdutoCoberturas.Select(x => x.Cobertura).ToArray();
-        public IReadOnlyCollection<Recheio> Recheios => ProdutoRecheios.Select(x => x.Recheio).ToArray();                
+        public IReadOnlyCollection<AdicionalProduto> AdicionaisProduto { get; set; }
+        public IReadOnlyCollection<Adicional> Adicionais => 
+            AdicionaisProduto.Select(x => x.Adicional).ToArray();                
     }
 }

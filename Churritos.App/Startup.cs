@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Churritos.Dominio.Dados;
+using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Churritos.Dominio.Repositorios;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -38,8 +39,7 @@ namespace Churritos.App
             services.AddDbContext<ContextoDaAplicação>(options => 
                 options.UseSqlite("Data Source=churritos.db;"));
             
-            services.AddScoped<CoberturaRepositorio>();
-            services.AddScoped<RecheioRepositorio>();
+            services.AddScoped<AdicionalRepositório>();
             services.AddScoped<CategoriaRepositorio>();
             services.AddScoped<ProdutoRepositório>();
             services.AddScoped<PedidoRepositório>();

@@ -12,6 +12,21 @@ import styled from 'styled-components'
 import Item from './Item'
 import ControleEtapas from './adicionar-item/ControleEtapas'
 
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+
+
+
+
 const ResumoPedido = ({ itens }: any) => (
   <Paper>
     <List>
@@ -41,11 +56,16 @@ interface ItemPedido {
 
 
 // TODO: Ajustar fluxo de adição de novos item no pedido
-const PaginaNovoPedido = ({history} : any) => {
+const PaginaNovoPedido = ({ history }: any) => {
   const [itens, setItens] = useState<ItemPedido[]>([]);
   const [adicionandoItem, setAdicionandoItem] = useState<Boolean>(false);
 
-  const adicionaItem = (i: ItemPedido) => { setItens([...itens, i]); setAdicionandoItem(false); }
+  const adicionaItem = (item: ItemPedido) => { 
+    if(item) 
+      setItens([...itens, item]); 
+      
+     setAdicionandoItem(false); 
+  }
 
   const finalizarPedido = async () => {
     const rawResponse = await fetch('/api/pedido', {
@@ -56,28 +76,70 @@ const PaginaNovoPedido = ({history} : any) => {
       },
       body: JSON.stringify(itens.map(x => ({
         idProduto: x.produto.id,
-        idRecheio: x.recheio.id,
-        idCobertura: x.cobertura.id
+        idRecheio: x.recheio?.id,
+        idCobertura: x.cobertura?.id
       })))
     });
 
-    if(rawResponse.status === 200){
-        history.push('/pedidos')
+    if (rawResponse.status === 200) {
+      history.push('/pedidos')
     }
   }
 
+  const calculaValorItem = (valorProduto: number, valorRecheio : number, valorCobertura: number) =>
+   (valorProduto ? valorProduto : 0) + (valorRecheio ? valorRecheio : 0) + (valorCobertura ? valorCobertura : 0) 
+  
   //TODO: Lista de resumo com tabela
   return <Layout pagename="Novo Pedido">
-    <Container>
-      {!adicionandoItem &&
-        <>
-          <Button onClick={() => setAdicionandoItem(true)}>Adicionar item</Button>
-          {itens && itens.map(x => <div>
-            {x.produto.nome} | Cobertura: {x.cobertura.nome} | Recheio: {x.recheio.nome} | Valor {x.produto.valor}
-          </div>)}
-          {itens && "Total:" + formatarValor(itens.map(x => x.produto.valor).reduce((acc, v) => acc + v, 0))}
+    {!adicionandoItem &&
+      <>
+        <Button onClick={() => setAdicionandoItem(true)}>Adicionar Item</Button>
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Produto</TableCell>
+                <TableCell/>
+                <TableCell/>
+                <TableCell>Valor</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {itens && itens.map(x => <TableRow key={x.produto.id}>
+                <TableCell/>
+                <TableCell>
+                  {x.produto.nome}
+                </TableCell>
+                  <TableCell>
+                    {x.recheio?.nome}
+                  </TableCell>
+                <TableCell>
+                  {x.cobertura?.nome}
+                </TableCell>
+                <TableCell>{formatarValor(calculaValorItem(x.produto.valor, x.recheio?.valor, x.cobertura?.valor))}</TableCell>
+              </TableRow>)}
+              <TableRow>
+                <TableCell />
+                <TableCell>
+                  <Typography variant="subtitle1">
+                    Total
+                  </Typography>
+                </TableCell>
+                <TableCell/>
+                <TableCell/>
+                <TableCell>
+                  <Typography variant="h6">
+                  {itens && formatarValor(itens.map(x => calculaValorItem(x.produto.valor, x.recheio?.valor, x.cobertura?.valor)).reduce((acc, v) => acc + v, 0))}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>}
 
-        </>}
+    <Container>
       {adicionandoItem &&
 
         <Etapas>
@@ -85,10 +147,9 @@ const PaginaNovoPedido = ({history} : any) => {
         </Etapas>
       }
 
-      {itens.length > 0 &&
+      {itens.length > 0 && !adicionandoItem &&
         <Button onClick={finalizarPedido}>Finalizar Pedido</Button>
       }
-
     </Container>
   </Layout>
 }

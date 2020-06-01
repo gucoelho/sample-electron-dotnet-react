@@ -14,8 +14,10 @@ namespace Churritos.Dominio.Dados.Configuracoes
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.HasOne(x => x.CoberturaSelecionada);
-            builder.HasOne(x => x.RecheioSelecionado);
+            builder.Ignore(x => x.Adicionais);
+
+            builder.HasOne(x => x.Produto).WithMany()
+                .HasForeignKey("ProdutoId");
         }
     }
 }

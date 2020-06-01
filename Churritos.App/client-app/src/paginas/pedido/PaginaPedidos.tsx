@@ -34,7 +34,8 @@ const PaginaPedidos = () => {
             ]}
             data={pedidos.map((p: Item) => ({...p, valor: formatarValor(p.valor)}))}
             title="Lista de pedidos"
-            options={{search: false}}
+            options={{search: false, pageSize: 10}}
+
             />
     </Layout>
 }

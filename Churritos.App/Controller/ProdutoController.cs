@@ -14,14 +14,13 @@ namespace Churritos.App.Controller
     public class ProdutoController : ControllerBase
     {
         private readonly ProdutoRepositório _repositorio;
-        private readonly RecheioRepositorio _recheioRepositorio;
+        private readonly AdicionalRepositório _adicionalRepositório;
 
-        public ProdutoController(ProdutoRepositório repositorio, RecheioRepositorio recheioRepositorio)
+        public ProdutoController(ProdutoRepositório repositorio, AdicionalRepositório adicionalRepositório)
         {
             _repositorio = repositorio;
-            _recheioRepositorio = recheioRepositorio;
+            _adicionalRepositório = adicionalRepositório;
         }
-
 
 
         [HttpGet]
@@ -39,19 +38,53 @@ namespace Churritos.App.Controller
 
             return views;
         }
+        
+        
+        [HttpGet("churros")]
+        public async Task<IEnumerable<ProdutoViewModel>> GetTodosOsChurros()
+        {
+            var produtos = await _repositorio.ObterTodosOsChurros();
+
+            var views = produtos.Select(x => new ProdutoViewModel
+            {
+                Id = x.Id,
+                Valor = x.Valor,
+                Nome = x.Nome,
+                Categoria = x.Categoria.Nome
+            });
+
+            return views;
+        }
+        
+        
+        [HttpGet("bebidas")]
+        public async Task<IEnumerable<ProdutoViewModel>> GetTodasAsBebidas()
+        {
+            var produtos = await _repositorio.ObterTodasAsBebidas();
+
+            var views = produtos.Select(x => new ProdutoViewModel
+            {
+                Id = x.Id,
+                Valor = x.Valor,
+                Nome = x.Nome,
+                Categoria = x.Categoria.Nome
+            });
+
+            return views;
+        }
 
         [HttpGet("{produtoid}/recheios")]
-        public IEnumerable<Recheio> GetRecheios(int produtoId)
+        public IEnumerable<Adicional> GetRecheios(int produtoId)
         {
             var produto = _repositorio.ObterProdutoPorId(produtoId);
-            return produto.Recheios;
+            return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Recheio);
         }
 
         [HttpGet("{produtoid}/coberturas")]
-        public IEnumerable<Cobertura> GetCoberturas(int produtoId)
+        public IEnumerable<Adicional> GetCoberturas(int produtoId)
         {
             var produto = _repositorio.ObterProdutoPorId(produtoId);
-            return produto.Coberturas;
+            return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Cobertura);
         }
     }
     

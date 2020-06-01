@@ -24,7 +24,7 @@ const PaginaCoberturas = () => {
             ]}
             data={categorias}
             title="Lista de categorias"
-            options={{search: false, pageSize:10}}
+            options={{search: false, pageSize:5}}
             isLoading={loading}
             />
     </Layout>

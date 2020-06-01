@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import {formatarValor} from '../../../utils'
 import { LinearProgress, List, ListItemText, ListItem, Paper} from '@material-ui/core';
 import styled from 'styled-components'
-import Item from '../Item'
+import {formatarValor} from '../../../utils';
+
+interface Bebida {
+    id: number,
+    nome: string,
+    valor: number
+}
 
 const SeletorProduto = styled(Paper)`
     margin: 0.6rem 0;
     border-radius: 0;
 `
 
-const SelecionarProduto = ({adicionarItem} : any) => {
-    const [produtos, setProdutos] = useState([])
+const SelecionarBebidas = ({ adicionarItem } : any) => {
+    const [bebidas, setBebidas] = useState([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
          setLoading(true)
-         fetch("/api/produto/churros")
+         fetch(`/api/produto/bebidas`)
             .then(res => res.json())
-            .then(data => setProdutos(data))
+            .then(data => setBebidas(data))
             .then(() => setLoading(false))
     }, [])
 
@@ -25,10 +30,10 @@ const SelecionarProduto = ({adicionarItem} : any) => {
      {loading && <LinearProgress />}
      {!loading && 
          (<List> 
-             {produtos.map((p :Item) => 
+             {bebidas.map((p : Bebida) => 
              <SeletorProduto key={p.id}>
                 <ListItem button onClick={() => adicionarItem(p)}>
-                    <ListItemText primary={`${p.nome} + ${formatarValor(p.valor)}`} />
+                   {p.valor > 0 && <ListItemText primary={`${p.nome} + ${formatarValor(p.valor)}`} />}
                 </ListItem>
             </SeletorProduto>)}
          </List>)}
@@ -36,4 +41,4 @@ const SelecionarProduto = ({adicionarItem} : any) => {
 }
 
 
-export default SelecionarProduto
+export default SelecionarBebidas

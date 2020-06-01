@@ -6,6 +6,7 @@ using System.Security.Authentication.ExtendedProtection;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Churritos.Dominio.Modelos;
+using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Churritos.Dominio.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,15 @@ namespace Churritos.App.Controller
     {
         private readonly PedidoRepositório _repositorio;
         private readonly ProdutoRepositório _produtoRepositório;
+        private readonly AdicionalRepositório _adicionalRepositório;
 
-        public PedidoController(PedidoRepositório repositorio, ProdutoRepositório produtoRepositório)
+        public PedidoController(PedidoRepositório repositorio, 
+            ProdutoRepositório produtoRepositório,
+            AdicionalRepositório adicionalRepositório)
         {
             _repositorio = repositorio;
             _produtoRepositório = produtoRepositório;
+            _adicionalRepositório = adicionalRepositório;
         }
 
         [HttpGet]
@@ -50,14 +55,34 @@ namespace Churritos.App.Controller
             foreach (var item in itens)
             {
                 var produto = _produtoRepositório.ObterProdutoPorId(item.IdProduto);
-                pedido.AdicionarProdutoPedido(new ProdutoPedido
+                var produtoPedido = new ProdutoPedido
                 {
                     Produto = produto,
-                    Valor = item.Valor,
-                    // TODO: Adicionar Coberturas
-                }); 
-            }
+                    Valor = produto.Valor
+                };
+                
+                if (produto.Categoria.Nome == "Churros")
+                {
+                    var cobertura = _adicionalRepositório.ObterCoberturaPorId(item.IdCobertura);
+                    var recheio = _adicionalRepositório.ObterRecheioPorId(item.IdRecheio);
 
+                    produtoPedido.AdicionaisProdutoPedido = new List<AdicionalProdutoPedido>
+                    {
+                        new AdicionalProdutoPedido
+                        {
+                            Produto = produtoPedido,
+                            Adicional = recheio,
+                        },
+                        new AdicionalProdutoPedido
+                        {
+                            Produto = produtoPedido,
+                            Adicional = cobertura,
+                        }
+                    };    
+                }
+                pedido.AdicionarProdutoPedido(produtoPedido); 
+            }
+            
             await _repositorio.AdicionarPedido(pedido);
         }
     }

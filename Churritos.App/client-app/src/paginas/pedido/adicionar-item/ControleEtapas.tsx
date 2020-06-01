@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -7,9 +7,14 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import Item from '../Item'
 import SelecionarProduto from './SelecionarProduto'
+import SelecionarBebida from './SelecionarBebida'
 import SelecionarCobertura from './SelecionarCobertura'
 import SelecionarRecheio from './SelecionarRecheio'
 import styled from 'styled-components'
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,7 +51,7 @@ function getStepContent(step: number) {
 }
 
 
-function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem } : any) {
+function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem, voltar } : any) {
   const classes = useStyles();
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const steps = getSteps();
@@ -59,18 +64,10 @@ function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem } : 
     return skipped.has(step);
   };
 
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep : number) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
   const handleBack = () => {
+    if(activeStep === 0)
+      voltar()
+
     setActiveStep((prevActiveStep : number) => prevActiveStep - 1);
   };
 
@@ -124,8 +121,8 @@ function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem } : 
           <div>
             <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
             <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
+              <Button onClick={handleBack} className={classes.button}>
+                Voltar
               </Button>
 
               <Button disabled={activeStep !== 3} onClick={adicionarItem} className={classes.button}>
@@ -135,6 +132,32 @@ function HorizontalLinearStepper({ activeStep, setActiveStep, adicionarItem } : 
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={1}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 }
@@ -150,11 +173,37 @@ interface Recheio {
 }
 
 
+interface Categoria {
+    id: number,
+    nome: string
+}
+
+
 const ControleEtapas = ({adicionarItemPedido} : any) => {
     const [etapa, setEtapa] = useState(0);
     const [item, setItem] = useState<Item>()
     const [cobertura, setCobertura] = useState<Cobertura>()
     const [recheio, setRecheio] = useState<Recheio>()
+    const [valorAba, setValorAba] = useState(0);
+    const [categorias, setCategorias] = useState<Categoria[]>();
+    const [loading, setLoading] = useState(false);
+
+
+    useEffect(() => {
+      fetch('/api/categoria')
+            .then(res => res.json())
+            .then(data => setCategorias(data))
+            .then(() => setValorAba(0))
+            .then(() => setLoading(false))
+    }, [])
+
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+      setItem(undefined)
+      setCobertura(undefined)
+      setRecheio(undefined)
+      setValorAba(newValue);
+    }
+
 
     const adicionarItem = (i: Item) => { 
         setItem(i) 
@@ -184,16 +233,32 @@ const ControleEtapas = ({adicionarItemPedido} : any) => {
         })
     }
 
+    const adicionarBebida = (bebida : Item) => {
+        adicionarItemPedido({produto: bebida})
+    }
+
 
     return (
     <>
-        <HorizontalLinearStepper activeStep={etapa} setActiveStep={setEtapa} adicionarItem={finalizarItem} />
-        <div>{item?.nome}</div>
-        <div>{cobertura?.nome}</div>
-        <div>{recheio?.nome}</div>
+    <AppBar position="static">
+        <Tabs value={valorAba} onChange={handleChange} aria-label="simple tabs example">
+          {categorias && categorias.map((c : Categoria) => <Tab key={`tab-${c.nome}`} label={c.nome} />)}
+       </Tabs>
+      </AppBar>
+      <TabPanel value={valorAba} index={0}>
+        <HorizontalLinearStepper 
+        activeStep={etapa} 
+        setActiveStep={setEtapa} 
+        adicionarItem={finalizarItem}
+        voltar={() => adicionarItemPedido(undefined)} 
+        />
         {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
         {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
         {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
+      </TabPanel>
+      <TabPanel value={valorAba} index={1}>
+        {<SelecionarBebida adicionarItem={adicionarBebida} />}
+      </TabPanel>
     </>
     )
 
