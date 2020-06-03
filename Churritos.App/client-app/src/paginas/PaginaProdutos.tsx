@@ -10,14 +10,14 @@ interface Item {
 
 
 const PaginaProdutos = () => {
-    const [produtos, setProdutos] = useState([]);
+    const [produtos, setProdutos] = useState([])
 
     useEffect(() => {
-        fetch("/api/produto")
+        fetch('/api/produto')
             .then(res => res.json())
             .then(data => data.map((item: Item) => ({...item, valor: formatarValor(item.valor)})))
             .then(data => setProdutos(data))
-    }, []);
+    }, [])
 
     return <Layout pagename="Produtos">
         <MaterialTable
@@ -29,7 +29,7 @@ const PaginaProdutos = () => {
             data={produtos}
             title="Lista dos produtos"
             options={{search: false, pageSize: 10}}
-            />
+        />
     </Layout>
 }
 

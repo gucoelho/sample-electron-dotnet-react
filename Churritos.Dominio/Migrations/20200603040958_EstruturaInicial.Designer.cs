@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200601042526_EstruturaInicial")]
+    [Migration("20200603040958_EstruturaInicial")]
     partial class EstruturaInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,6 +255,13 @@ namespace Churritos.Dominio.Migrations
                             Nome = "Bacon",
                             Tipo = "Extra",
                             Valor = 2m
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Nome = "Teste",
+                            Tipo = "Extra",
+                            Valor = 2.34m
                         });
                 });
 
@@ -373,6 +380,16 @@ namespace Churritos.Dominio.Migrations
                         {
                             ProdutoId = 4,
                             AdicionalId = 30
+                        },
+                        new
+                        {
+                            ProdutoId = 4,
+                            AdicionalId = 31
+                        },
+                        new
+                        {
+                            ProdutoId = 4,
+                            AdicionalId = 32
                         },
                         new
                         {

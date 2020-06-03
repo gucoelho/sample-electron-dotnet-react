@@ -3,16 +3,16 @@ import Layout from './Layout'
 import MaterialTable from 'material-table'
 
 const PaginaCoberturas = () => {
-    const [categorias, setCategorias] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [categorias, setCategorias] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        setLoading(true);
-        fetch("/api/categoria")
+        setLoading(true)
+        fetch('/api/categoria')
             .then(res => res.json())
             .then(data => setCategorias(data))
             .then(() => setLoading(false))
-    }, []);
+    }, [])
 
     return <Layout pagename="Categorias">
         <MaterialTable
@@ -24,9 +24,9 @@ const PaginaCoberturas = () => {
             ]}
             data={categorias}
             title="Lista de categorias"
-            options={{search: false, pageSize:5}}
+            options={{ search: false, pageSize: 5 }}
             isLoading={loading}
-            />
+        />
     </Layout>
 }
 

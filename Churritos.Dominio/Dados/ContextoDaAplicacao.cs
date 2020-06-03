@@ -64,6 +64,16 @@ namespace Churritos.Dominio.Dados
                 {
                     ProdutoId = 4,
                     AdicionalId = 30
+                },
+                new AdicionalProduto
+                {
+                    ProdutoId = 4,
+                    AdicionalId = 31
+                },
+                new AdicionalProduto
+                {
+                    ProdutoId = 4,
+                    AdicionalId = 32
                 }
             );
 
@@ -405,6 +415,13 @@ namespace Churritos.Dominio.Dados
                     Tipo = TipoAdicional.Extra,
                     Nome = "Bacon",
                     Valor = 2
+                },
+                new Adicional
+                {
+                    Id = 32,
+                    Tipo = TipoAdicional.Extra,
+                    Nome = "Teste",
+                    Valor = 2.34m
                 }
             };
             builder.Entity<Adicional>().HasData(recheios);

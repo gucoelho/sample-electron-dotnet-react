@@ -1,11 +1,11 @@
 
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
+import React from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import styled from 'styled-components'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const ApplicationBar = styled(AppBar)`
       width: ${`calc(100% - ${drawerWidth}px)`};

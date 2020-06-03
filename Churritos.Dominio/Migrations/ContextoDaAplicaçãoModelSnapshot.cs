@@ -253,6 +253,13 @@ namespace Churritos.Dominio.Migrations
                             Nome = "Bacon",
                             Tipo = "Extra",
                             Valor = 2m
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Nome = "Teste",
+                            Tipo = "Extra",
+                            Valor = 2.34m
                         });
                 });
 
@@ -371,6 +378,16 @@ namespace Churritos.Dominio.Migrations
                         {
                             ProdutoId = 4,
                             AdicionalId = 30
+                        },
+                        new
+                        {
+                            ProdutoId = 4,
+                            AdicionalId = 31
+                        },
+                        new
+                        {
+                            ProdutoId = 4,
+                            AdicionalId = 32
                         },
                         new
                         {

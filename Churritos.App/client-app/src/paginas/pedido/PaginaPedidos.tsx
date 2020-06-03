@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
 import MaterialTable from 'material-table'
-import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
 import { formatarValor } from '../../utils'
 
 // TODO: Unificar Itens
-interface Item {
+interface Pedido {
     id: number,
     nome: string,
+    quantidade: number,
     valor: number
 }
 
-
-
 const PaginaPedidos = () => {
-    const [pedidos, setPedidos] = useState([]);
+    const [pedidos, setPedidos] = useState([])
 
     useEffect(() => {
-        fetch("/api/pedido")
+        fetch('/api/pedido')
             .then(res => res.json())
             .then(data => setPedidos(data))
-    }, []);
+    }, [])
 
     return <Layout pagename="Pedidos">
         <Button component={Link} to="/pedidos/criar" >Novo pedido</Button>
@@ -32,11 +31,11 @@ const PaginaPedidos = () => {
                 { title: 'Quantidade', field: 'quantidade' },
                 { title: 'Valor', field: 'valor' },
             ]}
-            data={pedidos.map((p: Item) => ({...p, valor: formatarValor(p.valor)}))}
+            data={pedidos.map((p: Pedido) => ({ ...p, valor: formatarValor(p.valor) }))}
             title="Lista de pedidos"
-            options={{search: false, pageSize: 10}}
+            options={{ search: false, pageSize: 10 }}
 
-            />
+        />
     </Layout>
 }
 

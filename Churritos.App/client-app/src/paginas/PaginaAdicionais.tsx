@@ -10,13 +10,13 @@ interface Adicionais {
 }
 
 const PaginaAdicionais = () => {
-    const [adicionais, setAdicionais] = useState([]);
+    const [adicionais, setAdicionais] = useState([])
 
     useEffect(() => {
-        fetch("/api/adicional")
+        fetch('/api/adicional')
             .then(res => res.json())
             .then(data => setAdicionais(data))
-    }, []);
+    }, [])
 
     return <Layout pagename="Adicionais">
         <MaterialTable
@@ -29,7 +29,7 @@ const PaginaAdicionais = () => {
             data={adicionais.map((item : Adicionais) => ({...item, valor: formatarValor(item.valor)}))}
             title="Lista de adicionais"
             options={{search: false}}
-            />
+        />
     </Layout>
 }
 

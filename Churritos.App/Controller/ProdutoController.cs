@@ -86,6 +86,13 @@ namespace Churritos.App.Controller
             var produto = _repositorio.ObterProdutoPorId(produtoId);
             return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Cobertura);
         }
+        
+        [HttpGet("{produtoid}/extras")]
+        public IEnumerable<Adicional> GetExtras(int produtoId)
+        {
+            var produto = _repositorio.ObterProdutoPorId(produtoId);
+            return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Extra);
+        }
     }
     
     public class ProdutoViewModel

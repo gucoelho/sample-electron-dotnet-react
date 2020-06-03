@@ -154,6 +154,11 @@ namespace Churritos.Dominio.Migrations
             migrationBuilder.InsertData(
                 table: "Adicional",
                 columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 32, "Teste", "Extra", 2.34m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
                 values: new object[] { 31, "Bacon", "Extra", 2m });
 
             migrationBuilder.InsertData(
@@ -229,67 +234,12 @@ namespace Churritos.Dominio.Migrations
             migrationBuilder.InsertData(
                 table: "Adicional",
                 columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 8, "Kit kat preto", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 15, "Banana", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 14, "Morango", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 13, "Ninho em pó", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 12, "Ovomantine", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 11, "Sonho de valsa", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 10, "Ouro branco", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 9, "Kit kat branco", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
                 values: new object[] { 16, "Cheddar", "Cobertura", 0m });
 
             migrationBuilder.InsertData(
                 table: "Adicional",
                 columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 7, "Oreo", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 6, "Amendoim moído", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 5, "Choco ball", "Cobertura", 0m });
-
-            migrationBuilder.InsertData(
-                table: "Adicional",
-                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 4, "Granulado colorido", "Cobertura", 0m });
+                values: new object[] { 2, "Confete", "Cobertura", 0m });
 
             migrationBuilder.InsertData(
                 table: "Adicional",
@@ -299,7 +249,62 @@ namespace Churritos.Dominio.Migrations
             migrationBuilder.InsertData(
                 table: "Adicional",
                 columns: new[] { "Id", "Nome", "Tipo", "Valor" },
-                values: new object[] { 2, "Confete", "Cobertura", 0m });
+                values: new object[] { 4, "Granulado colorido", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 5, "Choco ball", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 6, "Amendoim moído", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 7, "Oreo", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 8, "Kit kat preto", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 10, "Ouro branco", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 11, "Sonho de valsa", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 12, "Ovomantine", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 13, "Ninho em pó", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 14, "Morango", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 15, "Banana", "Cobertura", 0m });
+
+            migrationBuilder.InsertData(
+                table: "Adicional",
+                columns: new[] { "Id", "Nome", "Tipo", "Valor" },
+                values: new object[] { 9, "Kit kat branco", "Cobertura", 0m });
 
             migrationBuilder.InsertData(
                 table: "Categoria",
@@ -355,6 +360,16 @@ namespace Churritos.Dominio.Migrations
                 table: "AdicionalProduto",
                 columns: new[] { "ProdutoId", "AdicionalId" },
                 values: new object[] { 4, 16 });
+
+            migrationBuilder.InsertData(
+                table: "AdicionalProduto",
+                columns: new[] { "ProdutoId", "AdicionalId" },
+                values: new object[] { 4, 32 });
+
+            migrationBuilder.InsertData(
+                table: "AdicionalProduto",
+                columns: new[] { "ProdutoId", "AdicionalId" },
+                values: new object[] { 4, 31 });
 
             migrationBuilder.InsertData(
                 table: "AdicionalProduto",

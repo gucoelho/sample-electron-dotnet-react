@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Churritos.Dominio.Dados;
 using Churritos.Dominio.Modelos;
@@ -21,6 +22,7 @@ namespace Churritos.Dominio.Repositorios
 
         public async Task AdicionarPedido(Pedido pedido)
         {
+            pedido.DataCriação = DateTime.Now;
             _contexto.Add(pedido);
             await _contexto.SaveChangesAsync();
         }

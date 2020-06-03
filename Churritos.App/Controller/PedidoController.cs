@@ -47,38 +47,26 @@ namespace Churritos.App.Controller
         [HttpPost]
         public async Task Post(IEnumerable<ItemPedidoViewModel> itens)
         {
-            var pedido = new Pedido()
-            {
-                DataCriação = DateTime.Now,
-            };
+            var pedido = new Pedido();
 
             foreach (var item in itens)
             {
-                var produto = _produtoRepositório.ObterProdutoPorId(item.IdProduto);
+                var produto = _produtoRepositório.ObterProdutoPorId(item.ProdutoId);
                 var produtoPedido = new ProdutoPedido
                 {
                     Produto = produto,
                     Valor = produto.Valor
                 };
                 
-                if (produto.Categoria.Nome == "Churros")
+                if (item.Adicionais?.Length > 0)
                 {
-                    var cobertura = _adicionalRepositório.ObterCoberturaPorId(item.IdCobertura);
-                    var recheio = _adicionalRepositório.ObterRecheioPorId(item.IdRecheio);
-
-                    produtoPedido.AdicionaisProdutoPedido = new List<AdicionalProdutoPedido>
+                    var vinculoAdicionais = item.Adicionais.Select(x => new AdicionalProdutoPedido
                     {
-                        new AdicionalProdutoPedido
-                        {
-                            Produto = produtoPedido,
-                            Adicional = recheio,
-                        },
-                        new AdicionalProdutoPedido
-                        {
-                            Produto = produtoPedido,
-                            Adicional = cobertura,
-                        }
-                    };    
+                        Produto = produtoPedido,
+                        Adicional = produto.Adicionais.Single(y => y.Id == x.Id)
+                    }).ToList();
+
+                    produtoPedido.AdicionaisProdutoPedido = vinculoAdicionais;
                 }
                 pedido.AdicionarProdutoPedido(produtoPedido); 
             }
@@ -97,9 +85,14 @@ namespace Churritos.App.Controller
 
     public class ItemPedidoViewModel
     {
-        public int IdProduto { get; set; }
-        public int IdCobertura { get; set; }
-        public int IdRecheio { get; set; }
-        public int Valor { get; set; }
+        public int ProdutoId { get; set; }
+        public AdicionalViewModel[] Adicionais { get; set; }
+    }
+    
+    public class AdicionalViewModel
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public decimal Valor { get; set; }
     }
 }
