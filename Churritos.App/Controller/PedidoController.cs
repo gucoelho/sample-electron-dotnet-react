@@ -45,11 +45,14 @@ namespace Churritos.App.Controller
         }
 
         [HttpPost]
-        public async Task Post(IEnumerable<ItemPedidoViewModel> itens)
+        public async Task Post(PedidoDTO pedidoDto)
         {
-            var pedido = new Pedido();
+            var pedido = new Pedido()
+            {
+                Desconto = pedidoDto.Desconto
+            };
 
-            foreach (var item in itens)
+            foreach (var item in pedidoDto.Itens)
             {
                 var produto = _produtoRepositório.ObterProdutoPorId(item.ProdutoId);
                 var produtoPedido = new ProdutoPedido
@@ -87,6 +90,12 @@ namespace Churritos.App.Controller
     {
         public int ProdutoId { get; set; }
         public AdicionalViewModel[] Adicionais { get; set; }
+    }
+
+    public class PedidoDTO
+    {
+        public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
+        public decimal Desconto { get; set; }
     }
     
     public class AdicionalViewModel

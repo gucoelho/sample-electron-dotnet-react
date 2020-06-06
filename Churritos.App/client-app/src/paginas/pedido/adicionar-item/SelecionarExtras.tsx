@@ -6,9 +6,15 @@ import { Adicional } from '../Models'
 
 type Extra = Adicional
 
-const SeletorProduto = styled(Paper)`
+const SeletorExtra = styled(Paper)`
     margin: 0.6rem 0;
     border-radius: 0;
+
+    cursor: pointer;
+`
+const BotãoAdicionarExtra = styled(Button)`
+    background-color: #6c3317;
+    color: white;
 `
 
 const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
@@ -31,21 +37,24 @@ const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
             setExtrasSelecionados([...extrasSelecionados, extra])
     }
 
+    const mensagemBotão = extrasSelecionados.length > 0 ? `Adicionar ${extrasSelecionados.length} extras` : 'Não adicionar extras'
+
     return <div>
         {loading && <LinearProgress />}
         {!loading &&
             <>
-                <Button onClick={() => adicionarExtras(extrasSelecionados)} >Adicionar</Button>
+                <BotãoAdicionarExtra variant="contained" onClick={() => adicionarExtras(extrasSelecionados)} >{mensagemBotão}</BotãoAdicionarExtra>
                 <List>
                     {recheios.map((extra: Extra) =>
-                        <SeletorProduto key={extra.id}>
-                            <ListItem>
-                                <Checkbox name={extra.nome} checked={extrasSelecionados.includes(extra)} onChange={(event: ChangeEvent, checked: boolean) => adicionaOuRemoveExtra(extra)} />
+                        <SeletorExtra key={extra.id}>
+                            <ListItem onClick={() => adicionaOuRemoveExtra(extra)}>
+                                <Checkbox name={extra.nome} checked={extrasSelecionados.includes(extra)} />
                                 {extra.valor <= 0 && <ListItemText primary={`${extra.nome}`} />}
                                 {extra.valor > 0 && <ListItemText primary={`${extra.nome} + ${formatarValor(extra.valor)}`} />}
                             </ListItem>
-                        </SeletorProduto>)}
-                </List> </>}
+                        </SeletorExtra>)}
+                </List> 
+            </>}
     </div>
 }
 

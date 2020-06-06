@@ -41,7 +41,8 @@ namespace Churritos.Dominio.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DataCriacao = table.Column<DateTime>(nullable: false)
+                    DataCriacao = table.Column<DateTime>(nullable: false),
+                    Desconto = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {

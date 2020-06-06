@@ -437,6 +437,9 @@ namespace Churritos.Dominio.Migrations
                         .HasColumnName("DataCriacao")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("Desconto")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Pedido");

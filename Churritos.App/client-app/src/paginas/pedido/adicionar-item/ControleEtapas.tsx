@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -15,24 +14,10 @@ import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        button: {
-            marginRight: theme.spacing(1),
-        },
-        instructions: {
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1),
-        },
-    }),
-)
+import styled from 'styled-components'
 
 function getSteps() {
-    return ['Selecionar produto', 'Selecionar recheio', 'Selecionar cobertura', 'Selecionar adicional']
+    return ['Selecionar produto', 'Selecionar recheio', 'Selecionar cobertura', 'Selecionar extra']
 }
 
 function getStepContent(step: number) {
@@ -50,21 +35,12 @@ function getStepContent(step: number) {
     }
 }
 
-
-function HorizontalLinearStepper({ activeStep, setActiveStep }: any) {
+const Container = styled.div`
+    display: flex;
+    padding: 1rem 0;
+`
+function HorizontalLinearStepper({ activeStep, botaoVoltar }: any) {
     const steps = getSteps()
-
-    const isStepOptional = (step: number) => {
-        return step > 0
-    }
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep: number) => prevActiveStep - 1)
-    }
-
-    const handleReset = () => {
-        setActiveStep(0)
-    }
 
     return (
         <div>
@@ -72,9 +48,6 @@ function HorizontalLinearStepper({ activeStep, setActiveStep }: any) {
                 {steps.map((label, index) => {
                     const stepProps: { completed?: boolean } = {}
                     const labelProps: { optional?: React.ReactNode } = {}
-                    if (isStepOptional(index)) {
-                        labelProps.optional = <Typography variant="caption">Optional</Typography>
-                    }
                     return (
                         <Step key={label} {...stepProps}>
                             <StepLabel {...labelProps}>{label}</StepLabel>
@@ -83,12 +56,12 @@ function HorizontalLinearStepper({ activeStep, setActiveStep }: any) {
                 })}
             </Stepper>
             <div>
-                {activeStep !== steps.length && (<div>
-                    <Typography>{getStepContent(activeStep)}</Typography>
-                    <div>
-                        <Button onClick={handleBack}>Voltar</Button>
-                    </div>
-                </div>)}
+                {activeStep !== steps.length && (
+                <>
+                    <Container>{botaoVoltar}</Container>
+                    <Typography variant="h6">{getStepContent(activeStep)}</Typography>
+                </>)
+                }
             </div>
         </div>
     )
@@ -126,10 +99,6 @@ type Recheio = Adicional
 interface Categoria {
     id: number,
     nome: number
-}
-
-interface ControleEtapasProps {
-    adicionarItemPedido: (item: ItemPedido) => void
 }
 
 const ControleEtapas = ({ adicionarItemPedido }: any) => {
@@ -175,10 +144,11 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
         proximaEtapa()
     }
 
-
-    const proximaEtapa = () => {
+    const proximaEtapa = () => 
         setEtapa((prevActiveStep: number) => prevActiveStep + 1)
-    }
+
+    const voltarEtapa = () =>
+        setEtapa((prevActiveStep: number) => prevActiveStep - 1)
 
     const finalizarItem = () => {
         const adicionais: Adicional[] = []
@@ -216,13 +186,17 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
                 <HorizontalLinearStepper
                     activeStep={etapa}
                     setActiveStep={setEtapa}
-                    adicionarItem={finalizarItem}
+                    botaoVoltar={
+                        etapa > 0 && <Button onClick={voltarEtapa}>Voltar</Button>
+                    }
                 />
                 {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
                 {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
                 {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
-                {(etapa === 3) && (<SelecionarExtras adicionarExtras={adicionarExtras} produtoId={item?.id} />)}
-                {(etapa === 4) && (<Button onClick={finalizarItem}> Adicionar Item </Button>)}
+                {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extras : any) => {
+                    adicionarExtras(extras)
+                    finalizarItem()
+                   }} produtoId={item?.id} />)}
             </TabPanel>
             <TabPanel value={valorAba} index={1}>
                 {<SelecionarBebida adicionarItem={adicionarBebida} />}
