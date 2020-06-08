@@ -19,6 +19,6 @@ namespace Churritos.Dominio.Modelos
 
         public IReadOnlyCollection<AdicionalProduto> AdicionaisProduto { get; set; }
         public IReadOnlyCollection<Adicional> Adicionais => 
-            AdicionaisProduto.Select(x => x.Adicional).ToArray();                
+            AdicionaisProduto?.Select(x => x.Adicional).ToArray();                
     }
 }

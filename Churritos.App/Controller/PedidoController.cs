@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Churritos.App.Controller
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class PedidoController : ControllerBase
@@ -21,7 +21,7 @@ namespace Churritos.App.Controller
         private readonly ProdutoRepositório _produtoRepositório;
         private readonly AdicionalRepositório _adicionalRepositório;
 
-        public PedidoController(PedidoRepositório repositorio, 
+        public PedidoController(PedidoRepositório repositorio,
             ProdutoRepositório produtoRepositório,
             AdicionalRepositório adicionalRepositório)
         {
@@ -33,7 +33,7 @@ namespace Churritos.App.Controller
         [HttpGet]
         public async Task<IEnumerable<PedidoViewModel>> Get()
         {
-            var pedidos= await _repositorio.ObterTodosOsPedidos();
+            var pedidos = await _repositorio.ObterTodosOsPedidos();
 
             return pedidos.Select(x => new PedidoViewModel
             {
@@ -60,7 +60,7 @@ namespace Churritos.App.Controller
                     Produto = produto,
                     Valor = produto.Valor
                 };
-                
+
                 if (item.Adicionais?.Length > 0)
                 {
                     var vinculoAdicionais = item.Adicionais.Select(x => new AdicionalProdutoPedido
@@ -71,11 +71,77 @@ namespace Churritos.App.Controller
 
                     produtoPedido.AdicionaisProdutoPedido = vinculoAdicionais;
                 }
-                pedido.AdicionarProdutoPedido(produtoPedido); 
+
+                pedido.AdicionarProdutoPedido(produtoPedido);
             }
-            
+
             await _repositorio.AdicionarPedido(pedido);
         }
+
+        [HttpGet("download")]
+        public async Task<IEnumerable<PedidoDownloadViewModel>> GetPedidosDownload()
+        {
+            var pedidos = await _repositorio.ObterTodosOsPedidos();
+
+            var download = pedidos
+                .SelectMany(pedido =>
+                {
+                    var pedidoDownload = pedido.Produtos
+                        .SelectMany(produto =>
+                        {
+                            var listaDeRetorno = new List<PedidoDownloadViewModel>
+                            {
+                                new PedidoDownloadViewModel
+                                {
+                                    PedidoId = pedido.Id,
+                                    Data = pedido.DataCriação,
+                                    ProdutoId = produto.Id,
+                                    NomeProduto = produto.Nome,
+                                    Valor = produto.Valor
+                                }
+                            };
+
+                            if (pedido.Adicionais[produto].Any())
+                                listaDeRetorno.AddRange(pedido.Adicionais[produto]
+                                    .Select(adicional =>
+                                        new PedidoDownloadViewModel
+                                        {
+                                            PedidoId = pedido.Id,
+                                            Data = pedido.DataCriação,
+                                            ProdutoId = produto.Id,
+                                            NomeProduto = produto.Nome,
+                                            Valor = adicional.Valor,
+                                            AdicionalId = adicional.Id,
+                                            AdicionalNome = adicional.Nome
+                                        }));
+
+                            return listaDeRetorno;
+                        }).ToList();
+                    if(pedido.Desconto > 0)
+                        pedidoDownload.Add(new PedidoDownloadViewModel
+                        {
+                            Data = pedido.DataCriação,
+                            Valor = - pedido.Desconto,
+                            PedidoId = pedido.Id,
+                            NomeProduto = "Desconto"
+                        });
+
+                    return pedidoDownload;
+                });
+
+            return download.ToList();
+        }
+    }
+
+    public class PedidoDownloadViewModel
+    {
+        public int PedidoId { get; set; }
+        public DateTime Data { get; set; }
+        public int ProdutoId { get; set; }
+        public string NomeProduto { get; set; }
+        public int AdicionalId { get; set; }
+        public string AdicionalNome { get; set; }
+        public decimal Valor { get; set; }
     }
 
     public class PedidoViewModel
@@ -97,7 +163,7 @@ namespace Churritos.App.Controller
         public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
         public decimal Desconto { get; set; }
     }
-    
+
     public class AdicionalViewModel
     {
         public int Id { get; set; }

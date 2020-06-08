@@ -22,6 +22,7 @@ namespace Churritos.Dominio.Dados.Configuracoes
                 .HasForeignKey("PedidoId");
             
             builder.Ignore(x => x.Produtos);
+            builder.Ignore(x => x.Adicionais);
         }
     }
 }

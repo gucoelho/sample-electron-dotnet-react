@@ -57,10 +57,10 @@ function HorizontalLinearStepper({ activeStep, botaoVoltar }: any) {
             </Stepper>
             <div>
                 {activeStep !== steps.length && (
-                <>
-                    <Container>{botaoVoltar}</Container>
-                    <Typography variant="h6">{getStepContent(activeStep)}</Typography>
-                </>)
+                    <>
+                        <Container>{botaoVoltar}</Container>
+                        <Typography variant="h6">{getStepContent(activeStep)}</Typography>
+                    </>)
                 }
             </div>
         </div>
@@ -144,7 +144,7 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
         proximaEtapa()
     }
 
-    const proximaEtapa = () => 
+    const proximaEtapa = () =>
         setEtapa((prevActiveStep: number) => prevActiveStep + 1)
 
     const voltarEtapa = () =>
@@ -193,10 +193,10 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
                 {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
                 {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
                 {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
-                {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extras : any) => {
+                {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extras: any) => {
                     adicionarExtras(extras)
                     finalizarItem()
-                   }} produtoId={item?.id} />)}
+                }} produtoId={item?.id} />)}
             </TabPanel>
             <TabPanel value={valorAba} index={1}>
                 {<SelecionarBebida adicionarItem={adicionarBebida} />}
