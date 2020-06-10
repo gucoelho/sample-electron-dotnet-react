@@ -19,15 +19,12 @@ namespace Churritos.App.Controller
     {
         private readonly PedidoRepositório _repositorio;
         private readonly ProdutoRepositório _produtoRepositório;
-        private readonly AdicionalRepositório _adicionalRepositório;
 
         public PedidoController(PedidoRepositório repositorio,
-            ProdutoRepositório produtoRepositório,
-            AdicionalRepositório adicionalRepositório)
+            ProdutoRepositório produtoRepositório)
         {
             _repositorio = repositorio;
             _produtoRepositório = produtoRepositório;
-            _adicionalRepositório = adicionalRepositório;
         }
 
         [HttpGet]
@@ -35,6 +32,20 @@ namespace Churritos.App.Controller
         {
             var pedidos = await _repositorio.ObterTodosOsPedidos();
 
+            return pedidos.Select(x => new PedidoViewModel
+            {
+                Id = x.Id,
+                Quantidade = x.Produtos.Count,
+                DataCriacao = x.DataCriação,
+                Valor = x.ValorTotal
+            });
+        }
+        
+        [HttpGet("{data}")]
+        public async Task<IEnumerable<PedidoViewModel>> Get(DateTime data)
+        {
+            var pedidos = await _repositorio.ObterTodosOsPedidosDoDia(data);
+        
             return pedidos.Select(x => new PedidoViewModel
             {
                 Id = x.Id,
@@ -78,10 +89,10 @@ namespace Churritos.App.Controller
             await _repositorio.AdicionarPedido(pedido);
         }
 
-        [HttpGet("download")]
-        public async Task<IEnumerable<PedidoDownloadViewModel>> GetPedidosDownload()
+        [HttpGet("download/{data}")]
+        public async Task<IEnumerable<PedidoDownloadViewModel>> GetPedidosDownload(DateTime data)
         {
-            var pedidos = await _repositorio.ObterTodosOsPedidos();
+            var pedidos = await _repositorio.ObterTodosOsPedidosDoDia(data);
 
             var download = pedidos
                 .SelectMany(pedido =>

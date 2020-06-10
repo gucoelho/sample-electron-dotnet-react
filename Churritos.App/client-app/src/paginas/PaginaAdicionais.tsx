@@ -26,9 +26,9 @@ const PaginaAdicionais = () => {
                 { title: 'Nome', field: 'nome' },
                 { title: 'Valor', field: 'valor' },
             ]}
-            data={adicionais.map((item : Adicionais) => ({...item, valor: formatarValor(item.valor)}))}
+            data={adicionais.map((item: Adicionais) => ({ ...item, valor: formatarValor(item.valor) }))}
             title="Lista de adicionais"
-            options={{search: false}}
+            options={{ search: false, pageSize: 10 }}
         />
     </Layout>
 }

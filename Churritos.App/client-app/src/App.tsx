@@ -9,7 +9,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import ShoppingIcon from '@material-ui/icons/ShoppingBasket'
-import InvertColors from '@material-ui/icons/InvertColors'
 import { StylesProvider } from '@material-ui/core/styles'
 import Category from '@material-ui/icons/Category'
 import BrokenImageIcon from '@material-ui/icons/BrokenImage'
@@ -21,6 +20,12 @@ import PaginaNovoPedido from './paginas/pedido/PaginaNovoPedido'
 import PaginaAdicionais from './paginas/PaginaAdicionais'
 import PaginaCategorias from './paginas/PaginaCategorias'
 import PaginaProdutos from './paginas/PaginaProdutos'
+import MomentUtils from '@date-io/moment'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import moment from 'moment'
+
+import 'moment/locale/pt-br'
+moment.locale('pt-br')
 
 
 const drawerWidth = 240
@@ -48,62 +53,58 @@ const Logo = styled.img`
   height: 100%;
 `
 
-function App() {
 
-    return (
-        <StylesProvider injectFirst>
-            <Container>
-                <BrowserRouter>
-                    <CssBaseline />
-                    <AppDrawer
-                        variant="permanent"
-                        anchor="left"
-                    >
-                        <ToolbarGap>
-                            <Logo src={ChurritosImg} /> 
-                        </ToolbarGap>
-                        <Divider />
-                        <List>
-                            <ListItem button component={Link} to="/pedidos" key="pedidos">
-                                <ListItemIcon>
-                                    <ShoppingIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Pedidos" />
-                            </ListItem>
-                            <ListItem button component={Link} to="/produtos" key="produtos">
-                                <ListItemIcon>
-                                    <ViewListIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Produtos" />
-                            </ListItem>
-                            <ListItem button component={Link} to="/categorias" key="categorias">
-                                <ListItemIcon>
-                                    <Category />
-                                </ListItemIcon>
-                                <ListItemText primary="Categorias" />
-                            </ListItem>
-                            <ListItem button component={Link} to="/adicionais" key="adicionais">
-                                <ListItemIcon>
-                                    <BrokenImageIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Adicionais" />
-                            </ListItem>
-                        </List>
-                        <Divider />
-                    </AppDrawer>
-                    <Switch>
-                        <Route exact path="/pedidos" component={PaginaPedido} />
-                        <Route exact path="/pedidos/criar" component={PaginaNovoPedido} />
-                        <Route exact path="/categorias" component={PaginaCategorias} />
-                        <Route exact path="/adicionais" component={PaginaAdicionais} />
-                        <Route exact path="/produtos" component={PaginaProdutos} />
-                        <Route path="/" component={PaginaPedido} />
-                    </Switch>
-                </BrowserRouter>
-            </Container>
-        </StylesProvider>
-    )
-}
+
+const App = () => (<StylesProvider injectFirst>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Container>
+            <BrowserRouter>
+                <CssBaseline />
+                <AppDrawer variant="permanent" anchor="left">
+                    <ToolbarGap>
+                        <Logo src={ChurritosImg} />
+                    </ToolbarGap>
+                    <Divider />
+                    <List>
+                        <ListItem button component={Link} to="/pedidos" key="pedidos">
+                            <ListItemIcon>
+                                <ShoppingIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Pedidos" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/produtos" key="produtos">
+                            <ListItemIcon>
+                                <ViewListIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Produtos" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/categorias" key="categorias">
+                            <ListItemIcon>
+                                <Category />
+                            </ListItemIcon>
+                            <ListItemText primary="Categorias" />
+                        </ListItem>
+                        <ListItem button component={Link} to="/adicionais" key="adicionais">
+                            <ListItemIcon>
+                                <BrokenImageIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Adicionais" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                </AppDrawer>
+                <Switch>
+                    <Route exact path="/pedidos" component={PaginaPedido} />
+                    <Route exact path="/pedidos/criar" component={PaginaNovoPedido} />
+                    <Route exact path="/categorias" component={PaginaCategorias} />
+                    <Route exact path="/adicionais" component={PaginaAdicionais} />
+                    <Route exact path="/produtos" component={PaginaProdutos} />
+                    <Route path="/" component={PaginaPedido} />
+                </Switch>
+            </BrowserRouter>
+        </Container>
+    </MuiPickersUtilsProvider>
+</StylesProvider>)
 
 
 export default App
