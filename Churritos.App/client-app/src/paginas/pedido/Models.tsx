@@ -8,6 +8,7 @@ export interface Adicional {
     id: number,
     nome: string,
     valor: number,
+    tipo: string
 }
 
 export interface ItemPedido {

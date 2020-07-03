@@ -55,6 +55,26 @@ namespace Churritos.App.Controller
 
             return views;
         }
+        [HttpGet("{id}/adicionais")]
+        public async Task<IEnumerable<VinculoAdicionalViewModel>> GetVinculoAdicionais(int id)
+        {
+            var produto = await _repositorio.ObterProdutoPorId(id);
+            var adicionais = await _adicionalRepositório.ObterTodosOsAdicionais();
+
+            var relacao = adicionais.Select(a => new VinculoAdicionalViewModel()
+            {
+                Adicional = new AdicionalViewModel()
+                {
+                    Id = a.Id,
+                    Nome = a.Nome,
+                    Valor = a.Valor,
+                    Tipo = a.Tipo.ToString()
+                },
+                Vinculado = produto.Adicionais.Contains(a)
+            });
+
+            return relacao;
+        }
         
         
         [HttpGet("bebidas")]
@@ -74,27 +94,33 @@ namespace Churritos.App.Controller
         }
 
         [HttpGet("{produtoid}/recheios")]
-        public IEnumerable<Adicional> GetRecheios(int produtoId)
+        public async Task<IEnumerable<Adicional>> GetRecheios(int produtoId)
         {
-            var produto = _repositorio.ObterProdutoPorId(produtoId);
+            var produto = await _repositorio.ObterProdutoPorId(produtoId);
             return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Recheio);
         }
 
         [HttpGet("{produtoid}/coberturas")]
-        public IEnumerable<Adicional> GetCoberturas(int produtoId)
+        public async Task<IEnumerable<Adicional>> GetCoberturas(int produtoId)
         {
-            var produto = _repositorio.ObterProdutoPorId(produtoId);
+            var produto = await _repositorio.ObterProdutoPorId(produtoId);
             return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Cobertura);
         }
         
         [HttpGet("{produtoid}/extras")]
-        public IEnumerable<Adicional> GetExtras(int produtoId)
+        public async Task<IEnumerable<Adicional>> GetExtras(int produtoId)
         {
-            var produto = _repositorio.ObterProdutoPorId(produtoId);
+            var produto = await _repositorio.ObterProdutoPorId(produtoId);
             return produto.Adicionais.Where(x => x.Tipo == TipoAdicional.Extra);
         }
     }
-    
+
+    public class VinculoAdicionalViewModel
+    {
+        public AdicionalViewModel Adicional { get; set; }
+        public bool Vinculado { get; set; }
+    }
+
     public class ProdutoViewModel
     {
         public int Id { get; set; }

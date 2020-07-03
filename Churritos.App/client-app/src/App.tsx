@@ -20,6 +20,7 @@ import PaginaDetalhePedido from './paginas/pedido/PaginaPedido'
 import PaginaNovoPedido from './paginas/pedido/PaginaNovoPedido'
 import PaginaAdicionais from './paginas/PaginaAdicionais'
 import PaginaCategorias from './paginas/PaginaCategorias'
+import VincularAdicionais from './paginas/produto/VincularAdicionais'
 import PaginaProdutos from './paginas/PaginaProdutos'
 import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -127,6 +128,7 @@ const App = () => (<StylesProvider injectFirst>
                         <Route exact path="/categorias" component={PaginaCategorias} />
                         <Route exact path="/adicionais" component={PaginaAdicionais} />
                         <Route exact path="/produtos" component={PaginaProdutos} />
+                        <Route exact path="/produto/:id" component={VincularAdicionais} />
                         <Route path="/" component={PaginaPedidos} />
                     </Switch>
                 </BrowserRouter>

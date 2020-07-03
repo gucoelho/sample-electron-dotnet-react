@@ -25,10 +25,11 @@ namespace Churritos.Dominio.Repositorios
         public async Task<IEnumerable<Produto>> ObterTodosOsChurros() =>
             await Consulta().Where(x => x.Categoria.Nome == "Churros").ToListAsync();
 
-        public Produto ObterProdutoPorId(int produtoId) => 
-            Consulta().Single(x => x.Id == produtoId);
+        public async Task<Produto> ObterProdutoPorId(int produtoId) => 
+            await Consulta().SingleAsync(x => x.Id == produtoId);
 
         public async Task<IEnumerable<Produto>> ObterTodasAsBebidas() => 
             await Consulta().Where(x => x.Categoria.Nome == "Bebidas").ToListAsync();
+
     }
 }

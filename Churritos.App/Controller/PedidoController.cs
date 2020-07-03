@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Authentication.ExtendedProtection;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Churritos.Dominio.Modelos;
 using Churritos.Dominio.Modelos.EntidadesAuxiliares;
@@ -96,7 +94,7 @@ namespace Churritos.App.Controller
 
             foreach (var item in pedidoDto.Itens)
             {
-                var produto = _produtoRepositório.ObterProdutoPorId(item.ProdutoId);
+                var produto = await _produtoRepositório.ObterProdutoPorId(item.ProdutoId);
                 var produtoPedido = new ProdutoPedido
                 {
                     Produto = produto,
@@ -227,6 +225,7 @@ namespace Churritos.App.Controller
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public string Tipo { get; set; }
         public decimal Valor { get; set; }
     }
 }
