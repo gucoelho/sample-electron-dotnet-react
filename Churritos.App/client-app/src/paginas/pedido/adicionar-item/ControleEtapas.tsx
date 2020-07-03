@@ -121,6 +121,7 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
     }, [])
 
     const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
+        setEtapa(0)
         setItem(undefined)
         setCobertura(undefined)
         setRecheio(undefined)

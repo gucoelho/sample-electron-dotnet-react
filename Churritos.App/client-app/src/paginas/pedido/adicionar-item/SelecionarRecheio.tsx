@@ -30,7 +30,7 @@ const SelecionarRecheio = ({adicionarRecheio, produtoId} : any) => {
         {loading && <LinearProgress />}
         {!loading && 
          (<List> 
-             {recheios.map((p : Recheio) => 
+             {recheios?.map((p : Recheio) => 
                  <SeletorProduto key={p.id}>
                      <ListItem button onClick={() => adicionarRecheio(p)}>
                          {p.valor <= 0 && <ListItemText primary={`${p.nome}`} />}

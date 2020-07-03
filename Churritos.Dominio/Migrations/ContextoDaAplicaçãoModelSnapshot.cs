@@ -440,6 +440,12 @@ namespace Churritos.Dominio.Migrations
                     b.Property<decimal>("Desconto")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Origem")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Pedido");

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200606045001_EstruturaInicial")]
+    [Migration("20200703035512_EstruturaInicial")]
     partial class EstruturaInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -440,6 +440,12 @@ namespace Churritos.Dominio.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Desconto")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Origem")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

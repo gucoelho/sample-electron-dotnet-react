@@ -10,7 +10,9 @@ namespace Churritos.Dominio.Modelos
         protected ICollection<ProdutoPedido> _produtos;
 
         public Pedido() => _produtos = new List<ProdutoPedido>();
-
+        
+        public string Origem { get; set; }
+        public string Tipo { get; set; }
         public int Id { get; set; }
         
         public DateTime DataCriação { get; set; }
@@ -22,15 +24,13 @@ namespace Churritos.Dominio.Modelos
                 .GroupBy(x => x.Produto)
                 .ToDictionary(
                     x => x.Key, 
-                    x => x.SelectMany(y => y.Adicionais).ToArray());
+                    x => x.SelectMany(y => y.Adicionais).ToArray()
+                    );
 
         public decimal ValorTotal => _produtos.Sum(x => x.ValorTotal) - Desconto;
 
         public decimal Desconto { get; set; } = 0.0m;
         
-        public void AdicionarProdutoPedido(ProdutoPedido produtoPedido)
-        {
-            _produtos.Add(produtoPedido);
-        }
+        public void AdicionarProdutoPedido(ProdutoPedido produtoPedido) => _produtos.Add(produtoPedido);
     }
 }

@@ -12,5 +12,5 @@ export interface Adicional {
 
 export interface ItemPedido {
     produto: Produto,
-    adicionais?: Adicional[] | undefined[]
+    adicionais?: Adicional[]
 }

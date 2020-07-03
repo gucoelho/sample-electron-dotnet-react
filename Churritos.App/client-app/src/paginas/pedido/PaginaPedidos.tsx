@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
-import MaterialTable from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 import { formatarValor } from '../../utils'
@@ -8,7 +8,8 @@ import { CSVLink } from 'react-csv'
 import styled from 'styled-components'
 import { DatePicker } from '@material-ui/pickers'
 import moment, { Moment } from 'moment'
-
+import { Paper, Typography } from '@material-ui/core'
+import ExcelSvg from '../../assets/icons8-microsoft-excel-2019.svg'
 interface Pedido {
     id: number,
     nome: string,
@@ -36,20 +37,77 @@ const BotãoBaixarRelatório = styled(CSVLink)`
     border-radius: 4px;
     text-transform: uppercase;
     text-decoration: none;
+    background-color: #1f8b57;
+    color: white;
+    
+    position: relative;
+    display: flex;
+    height: 35px;
+    width: 150px;
+    padding: 5px;
+    align-items: center;
+
+    &:hover {
+        background-color: #10613a;
+        transition: background-color 0.2s ease-in;
+    }
 `
 
-const PaginaPedidos = () => {
+const Icone = styled.img`
+    position:relative;
+    height: 90%;
+    width: auto;
+    margin: 2px 10px;
+`
+
+const ActionBar = styled(Paper)`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    margin-bottom: 10px;
+`
+
+const CampoData = styled(DatePicker)`
+  & .MuiOutlinedInput-input {
+        padding: 10px;
+  }
+`
+
+const TableToolbar = styled.div`
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & .MTableToolbar-root-225 {
+        flex: 1;
+    }
+`
+
+const ValorTotal = styled(Typography)`
+    flex: 1;
+    align-content: flex-end;
+    justify-content: flex-end;
+    align-items: flex-end;
+    display: flex;
+    padding-right: 24px;
+`
+
+const PaginaPedidos = ({ history }: any) => {
     const [pedidos, setPedidos] = useState([])
     const [pedidosDownload, setPedidosDownload] = useState([])
     const [relatórioGerado, setRelatórioGerado] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [dataSelecionada, setDataSelecionada] = useState<Moment | null>(moment())
 
     useEffect(() => {
         setRelatórioGerado(false)
+        setLoading(true)
 
-        fetch(`/api/pedido/${dataSelecionada?.toISOString()}`)
+        fetch(`/api/pedidos?data=${dataSelecionada?.toISOString()}`)
             .then(res => res.json())
             .then(data => setPedidos(data))
+            .then(() => setLoading(false))
 
         fetch(`/api/pedido/download/${dataSelecionada?.toISOString()}`)
             .then(res => res.json())
@@ -59,26 +117,18 @@ const PaginaPedidos = () => {
     }, [dataSelecionada])
 
     return <Layout pagename="Pedidos">
-        <Button component={Link} to="/pedidos/criar" >Novo pedido</Button>
+        <ActionBar>
+            <Button component={Link} variant="contained" to="/pedidos/criar" color="primary">Novo pedido</Button>
 
-        <DatePicker value={dataSelecionada}
-            inputVariant="outlined"
-            variant="inline"
-            format="DD/MM/yyyy"
-            autoOk
-            onChange={(date) => setDataSelecionada(date)} />
+            <CampoData value={dataSelecionada}
+                inputVariant="outlined"
+                variant="inline"
+                format="DD/MM/yyyy"
+                label="Filtrar por dia:"
+                autoOk
+                onChange={(date) => setDataSelecionada(date)} />
 
-        {relatórioGerado &&
-            <BotãoBaixarRelatório
-                data={pedidosDownload}
-                target="_blank"
-                headers={csvHeaders}
-                filename={`relatorio-${new Date().toISOString()}.csv`}
-                onClick={() => setRelatórioGerado(true)}
-            > Baixar</BotãoBaixarRelatório>
-        }
-
-        {formatarValor(pedidos.map((x: Pedido) => x.valor).reduce((acc, a) => acc + a, 0))}
+        </ActionBar>
 
         <MaterialTable
             columns={[
@@ -90,8 +140,37 @@ const PaginaPedidos = () => {
             data={pedidos.map((p: Pedido) => ({ ...p, valor: formatarValor(p.valor) }))}
             title="Lista de pedidos"
             options={{ search: false, pageSize: 10 }}
+            isLoading={loading}
+            components={{
+                // eslint-disable-next-line react/display-name
+                Toolbar: props => (
+                    <TableToolbar>
+                        <MTableToolbar {...props} />
+
+
+                        <ValorTotal
+                            variant="h6"
+                        >
+                            Total: {formatarValor(pedidos.map((x: Pedido) => x.valor).reduce((acc, a) => acc + a, 0))}
+                        </ValorTotal>
+                    </TableToolbar>
+                ),
+            }}
+            onRowClick={(event, rowData, togglePanel) => history.push(`pedido/${rowData?.id}`)}
 
         />
+        {!relatórioGerado && 'Carregando relatório'}
+        {
+            relatórioGerado &&
+            <BotãoBaixarRelatório
+                className="MuiButton-contained"
+                data={pedidosDownload}
+                target="_blank"
+                headers={csvHeaders}
+                filename={`relatorio-${new Date().toISOString()}.csv`}
+                onClick={() => setRelatórioGerado(true)}
+            ><Icone src={ExcelSvg} /> Baixar</BotãoBaixarRelatório>
+        }
     </Layout>
 }
 

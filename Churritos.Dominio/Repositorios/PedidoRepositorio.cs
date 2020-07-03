@@ -30,7 +30,7 @@ namespace Churritos.Dominio.Repositorios
             await _contexto.SaveChangesAsync();
         }
 
-        public async Task ObterPedido(int id) => await _contexto.Pedidos.SingleAsync(x => x.Id == id);
+        public async Task<Pedido> ObterPedido(int id) => await Consulta().SingleAsync(x => x.Id == id);
 
         public async Task<IEnumerable<Pedido>> ObterTodosOsPedidosDoDia(DateTime data) =>
             await Consulta().Where(x => x.DataCriação.Date == data.Date).ToListAsync();

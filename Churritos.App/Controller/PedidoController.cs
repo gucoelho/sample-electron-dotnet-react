@@ -40,9 +40,40 @@ namespace Churritos.App.Controller
                 Valor = x.ValorTotal
             });
         }
-        
-        [HttpGet("{data}")]
-        public async Task<IEnumerable<PedidoViewModel>> Get(DateTime data)
+
+
+        [HttpGet("{id}")]
+        public async Task<PedidoDetalhadoViewModel> Get(int id)
+        {
+            var pedido = await _repositorio.ObterPedido(id);
+
+            return new PedidoDetalhadoViewModel()
+            {
+                Id = pedido.Id,
+                DataCriacao = pedido.DataCriação,
+                Valor = pedido.ValorTotal,
+                Desconto = pedido.Desconto,
+                Itens = pedido.Produtos.Select(p => new ItemPedidoViewModel()
+                {
+                    Adicionais = pedido.Adicionais[p].Select(a => new AdicionalViewModel()
+                    {
+                        Id = a.Id,
+                        Nome = a.Nome,
+                        Valor = a.Valor
+                    }).ToArray(),
+                    ProdutoId = p.Id,
+                    Produto = new ProdutoViewModel()
+                    {
+                       Id = p.Id,
+                       Nome = p.Nome,
+                       Valor = p.Valor,
+                    }
+                })
+            };
+        }
+
+        [HttpGet("/api/pedidos")]
+        public async Task<IEnumerable<PedidoViewModel>> GetByData([FromQuery] DateTime data)
         {
             var pedidos = await _repositorio.ObterTodosOsPedidosDoDia(data);
         
@@ -128,6 +159,7 @@ namespace Churritos.App.Controller
 
                             return listaDeRetorno;
                         }).ToList();
+                        
                     if(pedido.Desconto > 0)
                         pedidoDownload.Add(new PedidoDownloadViewModel
                         {
@@ -147,6 +179,10 @@ namespace Churritos.App.Controller
     public class PedidoDownloadViewModel
     {
         public int PedidoId { get; set; }
+ 
+        public string Local { get; set; }
+        
+        public string Tipo { get; set; }
         public DateTime Data { get; set; }
         public int ProdutoId { get; set; }
         public string NomeProduto { get; set; }
@@ -166,6 +202,8 @@ namespace Churritos.App.Controller
     public class ItemPedidoViewModel
     {
         public int ProdutoId { get; set; }
+        
+        public ProdutoViewModel Produto { get; set; }
         public AdicionalViewModel[] Adicionais { get; set; }
     }
 
@@ -173,6 +211,16 @@ namespace Churritos.App.Controller
     {
         public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
         public decimal Desconto { get; set; }
+    }
+    
+    
+    public class PedidoDetalhadoViewModel
+    {
+        public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
+        public decimal Desconto { get; set; }
+        public int Id { get; set; }
+        public DateTime DataCriacao { get; set; }
+        public decimal Valor { get; set; }
     }
 
     public class AdicionalViewModel
