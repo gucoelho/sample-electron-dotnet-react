@@ -68,7 +68,8 @@ const ActionBar = styled(Paper)`
     margin-bottom: 10px;
 `
 
-// TODO: Ajustar fluxo de adição de novos item no pedido
+
+
 const PaginaNovoPedido = ({ history }: any) => {
     const [itens, setItens] = useState<ItemPedido[]>([])
     const [adicionandoItem, setAdicionandoItem] = useState<boolean>(false)

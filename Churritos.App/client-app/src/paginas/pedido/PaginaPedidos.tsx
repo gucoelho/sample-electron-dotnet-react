@@ -156,7 +156,7 @@ const PaginaPedidos = ({ history }: any) => {
                     </TableToolbar>
                 ),
             }}
-            onRowClick={(event, rowData, togglePanel) => history.push(`pedido/${rowData?.id}`)}
+            onRowClick={(event, rowData) => history.push(`pedido/${rowData?.id}`)}
 
         />
         {!relatórioGerado && 'Carregando relatório'}

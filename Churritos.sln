@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	Remove-Migration.ps1 = Remove-Migration.ps1
 	Add-Migration.ps1 = Add-Migration.ps1
 	Reset-Migrations.ps1 = Reset-Migrations.ps1
+	.config\dotnet-tools.json = .config\dotnet-tools.json
 EndProjectSection
 EndProject
 Global

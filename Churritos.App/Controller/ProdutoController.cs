@@ -55,25 +55,34 @@ namespace Churritos.App.Controller
 
             return views;
         }
-        [HttpGet("{id}/adicionais")]
-        public async Task<IEnumerable<VinculoAdicionalViewModel>> GetVinculoAdicionais(int id)
+        
+        [HttpGet("{id}")]
+        public async Task<ProdutoDetalheViewModel> Get(int id)
         {
             var produto = await _repositorio.ObterProdutoPorId(id);
             var adicionais = await _adicionalRepositório.ObterTodosOsAdicionais();
 
-            var relacao = adicionais.Select(a => new VinculoAdicionalViewModel()
+            var relacao = adicionais.Select(adicional => new VinculoAdicionalViewModel()
             {
                 Adicional = new AdicionalViewModel()
                 {
-                    Id = a.Id,
-                    Nome = a.Nome,
-                    Valor = a.Valor,
-                    Tipo = a.Tipo.ToString()
+                    Id = adicional.Id,
+                    Nome = adicional.Nome,
+                    Valor = adicional.Valor,
+                    Tipo = adicional.Tipo.ToString()
                 },
-                Vinculado = produto.Adicionais.Contains(a)
+                Vinculado = produto.Adicionais.Contains(adicional)
             });
 
-            return relacao;
+            return new ProdutoDetalheViewModel()
+            {
+                Id = produto.Id,
+                CategoriaId = produto.Categoria.Id,
+                Nome = produto.Nome,
+                Valor = produto.Valor,
+                
+                AdicionaisVinculados = relacao
+            };
         }
         
         
@@ -130,6 +139,17 @@ namespace Churritos.App.Controller
 
         public List<CoberturaViewModel> Coberturas { get;set; }
         public List<RecheioViewModel> Recheios { get;set; }
+    }
+    
+    
+    public class ProdutoDetalheViewModel
+    {
+        public int Id { get; set; }
+        public int CategoriaId  { get; set; }
+        public string Nome { get; set; }
+        public decimal Valor { get; set; }
+        
+        public IEnumerable<VinculoAdicionalViewModel> AdicionaisVinculados { get; set; }
     }
 
     public class CoberturaViewModel

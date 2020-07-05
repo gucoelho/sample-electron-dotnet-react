@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactElement } from 'react'
 import Layout from './Layout'
 import MaterialTable from 'material-table'
 import { formatarValor } from '../utils'
+import EditIcon from '@material-ui/icons/Edit'
 interface Item {
     id: number,
     nome: string,
@@ -9,13 +10,13 @@ interface Item {
 }
 
 
-const PaginaProdutos = () => {
+const PaginaProdutos = ({ history }: any) => {
     const [produtos, setProdutos] = useState([])
 
     useEffect(() => {
         fetch('/api/produto')
             .then(res => res.json())
-            .then(data => data.map((item: Item) => ({...item, valor: formatarValor(item.valor)})))
+            .then(data => data.map((item: Item) => ({ ...item, valor: formatarValor(item.valor) })))
             .then(data => setProdutos(data))
     }, [])
 
@@ -28,7 +29,25 @@ const PaginaProdutos = () => {
             ]}
             data={produtos}
             title="Lista dos produtos"
-            options={{search: false, pageSize: 10}}
+            options={{
+                search: false, pageSize: 10,
+                actionsColumnIndex: -1,
+            }}
+            localization={{
+                header: {
+                    actions: 'Ações'
+                },
+                body: {
+                    emptyDataSourceMessage: 'Não tem produtos'
+                }
+            }}
+            actions={[
+                {
+                    icon: 'edit',
+                    tooltip: 'Editar produto',
+                    onClick: (event, rowData: any) => history.push(`produto/${rowData.id}`)
+                }
+            ]}
         />
     </Layout>
 }
