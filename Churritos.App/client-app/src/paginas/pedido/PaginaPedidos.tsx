@@ -128,6 +128,18 @@ const PaginaPedidos = ({ history }: any) => {
                 autoOk
                 onChange={(date) => setDataSelecionada(date)} />
 
+            {!relatórioGerado && 'Carregando relatório'}
+            {
+                relatórioGerado &&
+                <BotãoBaixarRelatório
+                    className="MuiButton-contained"
+                    data={pedidosDownload}
+                    target="_blank"
+                    headers={csvHeaders}
+                    filename={`relatorio-${new Date().toISOString()}.csv`}
+                    onClick={() => setRelatórioGerado(true)}
+                ><Icone src={ExcelSvg} /> Baixar</BotãoBaixarRelatório>
+            }
         </ActionBar>
 
         <MaterialTable
@@ -146,11 +158,7 @@ const PaginaPedidos = ({ history }: any) => {
                 Toolbar: props => (
                     <TableToolbar>
                         <MTableToolbar {...props} />
-
-
-                        <ValorTotal
-                            variant="h6"
-                        >
+                        <ValorTotal variant="h6" >
                             Total: {formatarValor(pedidos.map((x: Pedido) => x.valor).reduce((acc, a) => acc + a, 0))}
                         </ValorTotal>
                     </TableToolbar>
@@ -159,18 +167,7 @@ const PaginaPedidos = ({ history }: any) => {
             onRowClick={(event, rowData) => history.push(`pedido/${rowData?.id}`)}
 
         />
-        {!relatórioGerado && 'Carregando relatório'}
-        {
-            relatórioGerado &&
-            <BotãoBaixarRelatório
-                className="MuiButton-contained"
-                data={pedidosDownload}
-                target="_blank"
-                headers={csvHeaders}
-                filename={`relatorio-${new Date().toISOString()}.csv`}
-                onClick={() => setRelatórioGerado(true)}
-            ><Icone src={ExcelSvg} /> Baixar</BotãoBaixarRelatório>
-        }
+
     </Layout>
 }
 

@@ -1,42 +1,26 @@
-import React, { useState } from 'react'
-import Layout from '../Layout'
-import Button from '@material-ui/core/Button'
+import React, { Fragment } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { formatarValor } from '../../utils'
 import { Paper } from '@material-ui/core'
 import styled from 'styled-components'
 import Table from '@material-ui/core/Table'
-import { TextField, InputAdornment } from '@material-ui/core'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-import NumberFormat from 'react-number-format'
-import { Produto, Adicional, ItemPedido } from './Models'
+import { PedidoDetalhe } from './Models'
 
 interface TabelaPedidoProps {
-    itens: ItemPedido[],
-    desconto: number
+    pedido: PedidoDetalhe
 }
 
 const CelulaAdicional = styled(TableCell)`
     padding: 0.2rem 16px;
 `
 
-const calcularValorTotalProduto = (itemPedido: ItemPedido): number => {
-    let valorDosAdicionais = itemPedido.adicionais?.map(a => a.valor).reduce((a, acc) => acc + a, 0)
-
-    if (!valorDosAdicionais)
-        valorDosAdicionais = 0
-
-    return itemPedido.produto.valor + valorDosAdicionais
-}
-
-const TabelaPedido = ({ itens, desconto }: TabelaPedidoProps) => {
-    const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0)
-
+const TabelaPedido = ({ pedido }: TabelaPedidoProps) => {
     return <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
             <TableHead>
@@ -51,10 +35,10 @@ const TabelaPedido = ({ itens, desconto }: TabelaPedidoProps) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {itens && itens.map(itemPedido => {
+                {pedido.itens && pedido.itens.map(itemPedido => {
                     return (
-                        <>
-                            <TableRow key={itemPedido.produto.id}>
+                        <Fragment key={itemPedido.produto.id}>
+                            <TableRow>
                                 <TableCell />
                                 <TableCell>
                                     {itemPedido.produto.nome}
@@ -80,7 +64,7 @@ const TabelaPedido = ({ itens, desconto }: TabelaPedidoProps) => {
                                     <CelulaAdicional />
                                 </TableRow>
                             )}
-                        </>
+                        </Fragment>
                     )
                 }
                 )}
@@ -107,7 +91,7 @@ const TabelaPedido = ({ itens, desconto }: TabelaPedidoProps) => {
                     <TableCell />
                     <TableCell align="right">
                         <Typography variant="h6">
-                            {itens && formatarValor(valorTotalPedido)}
+                            {formatarValor(pedido.valor)}
                         </Typography>
                     </TableCell>
                     <TableCell />

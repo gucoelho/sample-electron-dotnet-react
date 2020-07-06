@@ -418,6 +418,9 @@ namespace Churritos.Dominio.Migrations
                     b.Property<int>("ProdutoPedidoId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdicionalId");

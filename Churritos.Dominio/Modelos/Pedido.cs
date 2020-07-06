@@ -17,7 +17,13 @@ namespace Churritos.Dominio.Modelos
         
         public DateTime DataCriação { get; set; }
 
-        public IReadOnlyCollection<Produto> Produtos => _produtos.Select(x => x.Produto).ToArray();
+
+        public IReadOnlyCollection<Produto> Produtos => _produtos.Select(x =>
+        {
+            var produto = x.Produto;
+            produto.Valor = x.Valor;
+             return x.Produto;
+        }).ToArray();
 
         public Dictionary<Produto, Adicional[]> Adicionais =>
             _produtos

@@ -5,6 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Churritos.Dominio.Dados;
 using Churritos.Dominio.Modelos;
+using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Microsoft.EntityFrameworkCore;
 
 namespace Churritos.Dominio.Repositorios
@@ -31,5 +32,10 @@ namespace Churritos.Dominio.Repositorios
         public async Task<IEnumerable<Produto>> ObterTodasAsBebidas() => 
             await Consulta().Where(x => x.Categoria.Nome == "Bebidas").ToListAsync();
 
+        public async Task AtualizarProduto(Produto produto)
+        {
+            _contexto.Update(produto);
+            await _contexto.SaveChangesAsync();
+        }
     }
 }

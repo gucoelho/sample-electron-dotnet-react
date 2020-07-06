@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
 import TabelaPedido from './TabelaPedido'
-import { ItemPedido } from './Models'
-
-interface Pedido {
-    itens: ItemPedido[]
-    desconto: number
-}
-
+import { PedidoDetalhe } from './Models'
+import { LinearProgress } from '@material-ui/core'
 
 interface Params {
     id: number
@@ -22,7 +17,7 @@ interface PaginaPedidoProps {
 }
 
 const PaginaPedidos = ({ match: { params } }: PaginaPedidoProps) => {
-    const [pedido, setPedido] = useState<Pedido>()
+    const [pedido, setPedido] = useState<PedidoDetalhe>()
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -35,9 +30,9 @@ const PaginaPedidos = ({ match: { params } }: PaginaPedidoProps) => {
 
     }, [params.id])
 
-    return <Layout pagename={`Pedido ${params.id}`} > {
-        pedido && <TabelaPedido itens={pedido.itens} desconto={pedido.desconto} />
-    }
+    return <Layout pagename={`Pedido ${params.id}`} >
+        {loading && <LinearProgress />}
+        {!loading && pedido && <TabelaPedido pedido={pedido} />}
     </Layout >
 }
 

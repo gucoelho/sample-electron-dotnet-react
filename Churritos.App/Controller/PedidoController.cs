@@ -28,7 +28,7 @@ namespace Churritos.App.Controller
         [HttpGet]
         public async Task<IEnumerable<PedidoViewModel>> Get()
         {
-            var pedidos = await _repositorio.ObterTodosOsPedidos();
+            var pedidos = (await _repositorio.ObterTodosOsPedidos()).OrderByDescending(x => x.DataCriação);
 
             return pedidos.Select(x => new PedidoViewModel
             {
@@ -103,10 +103,15 @@ namespace Churritos.App.Controller
 
                 if (item.Adicionais?.Length > 0)
                 {
-                    var vinculoAdicionais = item.Adicionais.Select(x => new AdicionalProdutoPedido
+                    var vinculoAdicionais = item.Adicionais.Select(x =>
                     {
-                        Produto = produtoPedido,
-                        Adicional = produto.Adicionais.Single(y => y.Id == x.Id)
+                        var adicional = produto.Adicionais.Single(y => y.Id == x.Id);
+                        return new AdicionalProdutoPedido
+                        {
+                            Produto = produtoPedido,
+                            Adicional = adicional,
+                            Valor = adicional.Valor 
+                        };
                     }).ToList();
 
                     produtoPedido.AdicionaisProdutoPedido = vinculoAdicionais;
@@ -225,6 +230,7 @@ namespace Churritos.App.Controller
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public int TipoId { get; set; }
         public string Tipo { get; set; }
         public decimal Valor { get; set; }
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { formatarValor } from '../../../utils'
 import { LinearProgress, List, ListItemText, ListItem, Paper } from '@material-ui/core'
 import styled from 'styled-components'
-import { Produto, Adicional } from '../Models'
+import { Produto } from '../Models'
 
 const SeletorProduto = styled(Paper)`
     margin: 0.6rem 0;

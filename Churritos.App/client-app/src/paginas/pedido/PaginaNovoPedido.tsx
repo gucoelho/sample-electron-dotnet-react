@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import Layout from '../Layout'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -60,15 +60,15 @@ const CampoDesconto = styled(TextField)`
         text-align: end;
     }
 `
+interface ActionBarProps { emProgresso: boolean }
+
 const ActionBar = styled(Paper)`
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: ${(props: ActionBarProps) => props.emProgresso ? 'space-between' : 'flex-end'};
     padding: 10px;
     margin-bottom: 10px;
 `
-
-
 
 const PaginaNovoPedido = ({ history }: any) => {
     const [itens, setItens] = useState<ItemPedido[]>([])
@@ -105,12 +105,15 @@ const PaginaNovoPedido = ({ history }: any) => {
     }
 
     const calcularValorTotalProduto = (itemPedido: ItemPedido): number => {
-        let valorDosAdicionais = itemPedido.adicionais?.map(a => a.valor).reduce((a, acc) => acc + a, 0)
+        if (itemPedido.produto) {
+            let valorDosAdicionais = itemPedido.adicionais?.map(a => a.valor).reduce((a, acc) => acc + a, 0)
 
-        if (!valorDosAdicionais)
-            valorDosAdicionais = 0
+            if (!valorDosAdicionais)
+                valorDosAdicionais = 0
 
-        return itemPedido.produto.valor + valorDosAdicionais
+            return itemPedido.produto.valor + valorDosAdicionais
+        }
+        return 0
     }
 
     const handleChange = (valor: any) => {
@@ -122,11 +125,13 @@ const PaginaNovoPedido = ({ history }: any) => {
 
     const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0)
 
-
     return <Layout pagename="Novo Pedido">
         {!adicionandoItem &&
             <>
-                <ActionBar>
+                <ActionBar emProgresso={itens.length > 0}>
+                    {itens.length > 0 && !adicionandoItem && valorTotalPedido > 0 &&
+                        <Button onClick={finalizarPedido} color="primary" variant="contained">Finalizar Pedido</Button>
+                    }
                     <Button variant="contained" color="primary" onClick={(): void => setAdicionandoItem(true)}>Adicionar Item</Button>
                 </ActionBar>
                 <TableContainer component={Paper}>
@@ -145,8 +150,8 @@ const PaginaNovoPedido = ({ history }: any) => {
                         <TableBody>
                             {itens && itens.map(itemPedido => {
                                 return (
-                                    <>
-                                        <TableRow key={itemPedido.produto.id}>
+                                    <Fragment key={itemPedido.produto.id} >
+                                        <TableRow>
                                             <TableCell />
                                             <TableCell>
                                                 {itemPedido.produto.nome}
@@ -172,7 +177,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                                                 <CelulaAdicional />
                                             </TableRow>
                                         )}
-                                    </>
+                                    </Fragment>
                                 )
                             }
                             )}
@@ -221,9 +226,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                     <ControleEtapas adicionarItemPedido={adicionaItem} />
                 </Etapas>
             }
-            {itens.length > 0 && !adicionandoItem && valorTotalPedido > 0 &&
-                <Button onClick={finalizarPedido}>Finalizar Pedido</Button>
-            }
+
         </Container>
     </Layout>
 }

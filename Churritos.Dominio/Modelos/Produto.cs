@@ -17,7 +17,7 @@ namespace Churritos.Dominio.Modelos
         public string Nome { get; set; }
         public decimal Valor { get; set; }
 
-        public IReadOnlyCollection<AdicionalProduto> AdicionaisProduto { get; set; }
+        public ICollection<AdicionalProduto> AdicionaisProduto { get; set; }
         public IReadOnlyCollection<Adicional> Adicionais => 
             AdicionaisProduto?.Select(x => x.Adicional).ToArray();                
     }

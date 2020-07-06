@@ -1,14 +1,12 @@
-import React, { useState, useEffect, ReactElement } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from './Layout'
 import MaterialTable from 'material-table'
 import { formatarValor } from '../utils'
-import EditIcon from '@material-ui/icons/Edit'
 interface Item {
     id: number,
     nome: string,
     valor: number
 }
-
 
 const PaginaProdutos = ({ history }: any) => {
     const [produtos, setProdutos] = useState([])

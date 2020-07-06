@@ -130,7 +130,8 @@ namespace Churritos.Dominio.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AdicionalId = table.Column<int>(nullable: false),
-                    ProdutoPedidoId = table.Column<int>(nullable: false)
+                    ProdutoPedidoId = table.Column<int>(nullable: false),
+                    Valor = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {

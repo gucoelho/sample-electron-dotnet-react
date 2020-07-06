@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, LinearProgress, List, ListItemText, ListItem, Paper, Checkbox } from '@material-ui/core'
 import styled from 'styled-components'
 import { formatarValor } from '../../../utils'
@@ -18,7 +18,7 @@ const BotãoAdicionarExtra = styled(Button)`
 `
 
 const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
-    const [recheios, setRecheios] = useState([])
+    const [extras, setExtras] = useState<Adicional[]>([])
     const [loading, setLoading] = useState(false)
     const [extrasSelecionados, setExtrasSelecionados] = useState<Extra[]>([])
 
@@ -26,7 +26,7 @@ const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
         setLoading(true)
         fetch(`/api/produto/${produtoId}/extras`)
             .then(res => res.json())
-            .then(data => setRecheios(data))
+            .then(data => setExtras(data))
             .then(() => setLoading(false))
     }, [produtoId])
 
@@ -45,7 +45,7 @@ const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
             <>
                 <BotãoAdicionarExtra variant="contained" onClick={() => adicionarExtras(extrasSelecionados)} >{mensagemBotão}</BotãoAdicionarExtra>
                 <List>
-                    {recheios.map((extra: Extra) =>
+                    {extras.map((extra: Extra) =>
                         <SeletorExtra key={extra.id}>
                             <ListItem onClick={() => adicionaOuRemoveExtra(extra)}>
                                 <Checkbox name={extra.nome} checked={extrasSelecionados.includes(extra)} />
@@ -53,7 +53,7 @@ const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
                                 {extra.valor > 0 && <ListItemText primary={`${extra.nome} + ${formatarValor(extra.valor)}`} />}
                             </ListItem>
                         </SeletorExtra>)}
-                </List> 
+                </List>
             </>}
     </div>
 }

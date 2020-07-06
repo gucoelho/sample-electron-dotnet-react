@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Button from '@material-ui/core/Button'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Typography from '@material-ui/core/Typography'
-import { Produto, ItemPedido, Adicional } from '../Models'
+import { Produto, Adicional } from '../Models'
 import SelecionarProduto from './SelecionarProduto'
 import SelecionarBebida from './SelecionarBebida'
 import SelecionarCobertura from './SelecionarCobertura'
@@ -15,6 +15,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
+import { LinearProgress } from '@material-ui/core'
 
 function getSteps() {
     return ['Selecionar produto', 'Selecionar recheio', 'Selecionar cobertura', 'Selecionar extra']
@@ -45,7 +46,7 @@ function HorizontalLinearStepper({ activeStep, botaoVoltar }: any) {
     return (
         <div>
             <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
+                {steps.map((label) => {
                     const stepProps: { completed?: boolean } = {}
                     const labelProps: { optional?: React.ReactNode } = {}
                     return (
@@ -111,14 +112,34 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
     const [extras, setExtras] = useState<Adicional[]>()
     const [loading, setLoading] = useState(false)
 
+    const finalizarItem = useCallback(() => {
+        const adicionais: Adicional[] = []
+
+        if (cobertura)
+            adicionais.push(cobertura)
+
+        if (recheio)
+            adicionais.push(recheio)
+
+        if (extras && extras?.length > 0)
+            adicionais.push(...extras)
+
+        adicionarItemPedido({ produto: item, adicionais })
+    }, [cobertura, recheio, extras, adicionarItemPedido, item])
 
     useEffect(() => {
+        setLoading(true)
         fetch('/api/categoria')
             .then(res => res.json())
             .then(data => setCategorias(data))
             .then(() => setValorAba(0))
             .then(() => setLoading(false))
     }, [])
+
+    useEffect(() => {
+        if (extras && extras.length > 0)
+            finalizarItem()
+    }, [extras, finalizarItem])
 
     const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
         setEtapa(0)
@@ -150,58 +171,43 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
 
     const voltarEtapa = () =>
         setEtapa((prevActiveStep: number) => prevActiveStep - 1)
-
-    const finalizarItem = () => {
-        const adicionais: Adicional[] = []
-
-        if (cobertura)
-            adicionais.push(cobertura)
-
-        if (recheio)
-            adicionais.push(recheio)
-
-        if (extras && extras?.length > 0)
-            adicionais.push(...extras)
-
-        adicionarItemPedido({ produto: item!, adicionais })
-    }
-
     const adicionarBebida = (bebida: Produto) => {
         adicionarItemPedido({ produto: bebida })
     }
 
     const adicionarExtras = (extras: Adicional[]) => {
         setExtras(extras)
-        proximaEtapa()
     }
 
 
     return (
         <>
-            <AppBar position="static">
-                <Tabs value={valorAba} onChange={handleChange} aria-label="simple tabs example">
-                    {categorias && categorias.map((c: Categoria) => <Tab key={`tab-${c.nome}`} label={c.nome} />)}
-                </Tabs>
-            </AppBar>
-            <TabPanel value={valorAba} index={0}>
-                <HorizontalLinearStepper
-                    activeStep={etapa}
-                    setActiveStep={setEtapa}
-                    botaoVoltar={
-                        etapa > 0 && <Button onClick={voltarEtapa}>Voltar</Button>
-                    }
-                />
-                {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
-                {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
-                {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
-                {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extras: any) => {
-                    adicionarExtras(extras)
-                    finalizarItem()
-                }} produtoId={item?.id} />)}
-            </TabPanel>
-            <TabPanel value={valorAba} index={1}>
-                {<SelecionarBebida adicionarItem={adicionarBebida} />}
-            </TabPanel>
+            {loading && <LinearProgress />}
+            {!loading && <>
+                <AppBar position="static">
+                    <Tabs value={valorAba} onChange={handleChange} aria-label="simple tabs example">
+                        {categorias && categorias.map((c: Categoria) => <Tab key={`tab-${c.nome}`} label={c.nome} />)}
+                    </Tabs>
+                </AppBar>
+                <TabPanel value={valorAba} index={0}>
+                    <HorizontalLinearStepper
+                        activeStep={etapa}
+                        setActiveStep={setEtapa}
+                        botaoVoltar={
+                            etapa > 0 && <Button onClick={voltarEtapa}>Voltar</Button>
+                        }
+                    />
+                    {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
+                    {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
+                    {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
+                    {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extrasSelecionados: any) => {
+                        adicionarExtras(extrasSelecionados)
+                    }} produtoId={item?.id} />)}
+                </TabPanel>
+                <TabPanel value={valorAba} index={1}>
+                    {<SelecionarBebida adicionarItem={adicionarBebida} />}
+                </TabPanel>
+            </>}
         </>
     )
 
