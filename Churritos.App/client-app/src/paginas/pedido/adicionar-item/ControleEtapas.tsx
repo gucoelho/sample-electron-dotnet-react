@@ -171,6 +171,7 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
 
     const voltarEtapa = () =>
         setEtapa((prevActiveStep: number) => prevActiveStep - 1)
+
     const adicionarBebida = (bebida: Produto) => {
         adicionarItemPedido({ produto: bebida })
     }
@@ -201,7 +202,10 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
                     {(etapa === 1) && (<SelecionarRecheio adicionarRecheio={adicionarRecheio} produtoId={item?.id} />)}
                     {(etapa === 2) && (<SelecionarCobertura adicionarCobertura={adicionarCobertura} produtoId={item?.id} />)}
                     {(etapa === 3) && (<SelecionarExtras adicionarExtras={(extrasSelecionados: any) => {
-                        adicionarExtras(extrasSelecionados)
+                        if (extrasSelecionados && extrasSelecionados.length > 0)
+                            adicionarExtras(extrasSelecionados)
+                        else
+                            finalizarItem()
                     }} produtoId={item?.id} />)}
                 </TabPanel>
                 <TabPanel value={valorAba} index={1}>

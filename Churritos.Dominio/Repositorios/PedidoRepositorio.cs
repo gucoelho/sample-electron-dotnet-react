@@ -17,7 +17,7 @@ namespace Churritos.Dominio.Repositorios
 
         protected IQueryable<Pedido> Consulta() =>
             _contexto.Pedidos
-                .Include($"{Pedido.ProdutosPedidoField}.{nameof(ProdutoPedido.Produto)}")
+                .Include($"{Pedido.ProdutosPedidoField}.{nameof(ProdutoPedido.Produto)}.{nameof(Produto.Categoria)}")
                 .Include(
                     $"{Pedido.ProdutosPedidoField}.{nameof(ProdutoPedido.AdicionaisProdutoPedido)}.{nameof(AdicionalProdutoPedido.Adicional)}");
 

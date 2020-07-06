@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { formatarValor } from '../../utils'
-import { Paper } from '@material-ui/core'
+import { Paper, Chip } from '@material-ui/core'
 import styled from 'styled-components'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -27,7 +27,7 @@ const TabelaPedido = ({ pedido }: TabelaPedidoProps) => {
                 <TableRow>
                     <TableCell />
                     <TableCell>Produto</TableCell>
-                    <TableCell />
+                    <TableCell>Categoria</TableCell>
                     <TableCell />
                     <TableCell />
                     <TableCell align="right">Valor</TableCell>
@@ -43,7 +43,9 @@ const TabelaPedido = ({ pedido }: TabelaPedidoProps) => {
                                 <TableCell>
                                     {itemPedido.produto.nome}
                                 </TableCell>
-                                <TableCell />
+                                <TableCell >
+                                    <Chip label={itemPedido.produto.categoria} color="secondary" variant="outlined" />
+                                </TableCell>
                                 <TableCell />
                                 <TableCell />
                                 <TableCell align="right">+ {formatarValor(itemPedido.produto.valor)}</TableCell>
@@ -56,9 +58,11 @@ const TabelaPedido = ({ pedido }: TabelaPedidoProps) => {
                                         <SubdirectoryArrowRightIcon />
                                     </CelulaAdicional>
                                     <CelulaAdicional>
+                                        <Chip label={a.tipo} size="small" color="primary" variant="outlined" />
+                                    </CelulaAdicional>
+                                    <CelulaAdicional>
                                         {a.nome}
                                     </CelulaAdicional>
-                                    <CelulaAdicional />
                                     <CelulaAdicional />
                                     <CelulaAdicional align="right">+ {formatarValor(a.valor)}</CelulaAdicional>
                                     <CelulaAdicional />

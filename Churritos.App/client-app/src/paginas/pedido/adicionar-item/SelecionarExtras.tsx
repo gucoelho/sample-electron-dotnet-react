@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, LinearProgress, List, ListItemText, ListItem, Paper, Checkbox } from '@material-ui/core'
+import { Button, LinearProgress, ListItemText, Paper, Checkbox, Grid } from '@material-ui/core'
 import styled from 'styled-components'
 import { formatarValor } from '../../../utils'
 import { Adicional } from '../Models'
@@ -9,7 +9,9 @@ type Extra = Adicional
 const SeletorExtra = styled(Paper)`
     margin: 0.6rem 0;
     border-radius: 0;
-
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     cursor: pointer;
 `
 const BotãoAdicionarExtra = styled(Button)`
@@ -44,18 +46,22 @@ const SelecionarExtras = ({ adicionarExtras, produtoId }: any) => {
         {!loading &&
             <>
                 <BotãoAdicionarExtra variant="contained" onClick={() => adicionarExtras(extrasSelecionados)} >{mensagemBotão}</BotãoAdicionarExtra>
-                <List>
+                <Grid container spacing={3}>
                     {extras.map((extra: Extra) =>
-                        <SeletorExtra key={extra.id}>
-                            <ListItem onClick={() => adicionaOuRemoveExtra(extra)}>
+                        <Grid key={extra.id} item xs={3} onClick={() => adicionaOuRemoveExtra(extra)}>
+                            <SeletorExtra key={extra.id}>
                                 <Checkbox name={extra.nome} checked={extrasSelecionados.includes(extra)} />
                                 {extra.valor <= 0 && <ListItemText primary={`${extra.nome}`} />}
                                 {extra.valor > 0 && <ListItemText primary={`${extra.nome} + ${formatarValor(extra.valor)}`} />}
-                            </ListItem>
-                        </SeletorExtra>)}
-                </List>
-            </>}
-    </div>
+                            </SeletorExtra>
+                        </Grid>
+
+                    )}
+
+                </Grid>
+            </>
+        }
+    </div >
 }
 
 

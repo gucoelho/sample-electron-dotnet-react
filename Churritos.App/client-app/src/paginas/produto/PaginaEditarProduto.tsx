@@ -4,9 +4,9 @@ import {
     Checkbox,
     FormControlLabel,
     TextField,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     ListItem,
     MenuItem,
@@ -217,8 +217,8 @@ const PaginaEditarProduto = ({ match: { params }, history }: any) => {
                             {[...new Set(listaAdicionais.map(a => a.tipo))].map(categoria => {
                                 const adicionaisSelecionadosDaCategoria = adicionaisSelecionados(categoria)
 
-                                return <ExpansionPanel key={categoria}>
-                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} id={`${categoria}-panel`}>
+                                return <Accordion key={categoria}>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`${categoria}-panel`}>
                                         <TituloPainel>
                                             <Typography>
                                                 {categoria}
@@ -226,8 +226,8 @@ const PaginaEditarProduto = ({ match: { params }, history }: any) => {
                                             {adicionaisSelecionadosDaCategoria.length > 0 &&
                                                 <Chip color="primary" label={`${adicionaisSelecionadosDaCategoria.length} selecionados`} variant="outlined" />}
                                         </TituloPainel>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
                                         <Grid container spacing={0}>
                                             {adicionais.filter(a => a.adicional.tipo === categoria).map((vinculo: VinculoAdicional) => (
                                                 <Grid key={vinculo.adicional.id} item xs={3}>
@@ -235,10 +235,8 @@ const PaginaEditarProduto = ({ match: { params }, history }: any) => {
                                                 </Grid>)
                                             )}
                                         </Grid>
-
-
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
+                                    </AccordionDetails>
+                                </Accordion>
                             }
                             )}
                         </SecaoEdicao>

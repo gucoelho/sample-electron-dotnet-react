@@ -17,7 +17,7 @@ const PaginaCoberturas = () => {
     return <Layout pagename="Categorias">
         <MaterialTable
             columns={[
-                { title: 'ID', field: 'id' },
+                { title: 'ID', field: 'id', editable: 'never' },
                 { title: 'Nome', field: 'nome' },
                 { title: '', field: '' },
                 { title: '', field: '' },
@@ -26,6 +26,17 @@ const PaginaCoberturas = () => {
             title="Lista de categorias"
             options={{ search: false, pageSize: 5 }}
             isLoading={loading}
+            editable={{
+                onRowAdd: newData =>
+                    new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            /* setData([...data, newData]); */
+
+                            resolve()
+                        }, 1000)
+
+                    })
+            }}
         />
     </Layout>
 }

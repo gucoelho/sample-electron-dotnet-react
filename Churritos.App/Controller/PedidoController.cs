@@ -57,7 +57,9 @@ namespace Churritos.App.Controller
                     {
                         Id = a.Id,
                         Nome = a.Nome,
-                        Valor = a.Valor
+                        Valor = a.Valor,
+                        Tipo = a.Tipo.ToString(),
+                        TipoId = (int) a.Tipo
                     }).ToArray(),
                     ProdutoId = p.Id,
                     Produto = new ProdutoViewModel()
@@ -65,6 +67,7 @@ namespace Churritos.App.Controller
                        Id = p.Id,
                        Nome = p.Nome,
                        Valor = p.Valor,
+                       Categoria = p.Categoria.Nome
                     }
                 })
             };
@@ -73,7 +76,7 @@ namespace Churritos.App.Controller
         [HttpGet("/api/pedidos")]
         public async Task<IEnumerable<PedidoViewModel>> GetByData([FromQuery] DateTime data)
         {
-            var pedidos = await _repositorio.ObterTodosOsPedidosDoDia(data);
+            var pedidos = (await _repositorio.ObterTodosOsPedidosDoDia(data)).OrderByDescending(x => x.DataCriação);
         
             return pedidos.Select(x => new PedidoViewModel
             {

@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { Produto, Adicional } from './Models'
 import ControleEtapas from './adicionar-item/ControleEtapas'
 import Table from '@material-ui/core/Table'
-import { TextField, InputAdornment } from '@material-ui/core'
+import { TextField, InputAdornment, Chip, Grid, MenuItem } from '@material-ui/core'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
@@ -16,6 +16,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
 import NumberFormat from 'react-number-format'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const Container = styled.div`
   display: flex;
@@ -55,6 +56,11 @@ function NumberFormatCustom(props: NumberFormatCustomProps) {
     )
 }
 
+const ContainerDados = styled(Paper)`
+    padding: 15px;
+    margin: 10px 0;
+`
+
 const CampoDesconto = styled(TextField)`
     & input {
         text-align: end;
@@ -70,16 +76,37 @@ const ActionBar = styled(Paper)`
     margin-bottom: 10px;
 `
 
+const SecaoEdicao = styled.div`
+  margin: 10px;
+`
+
+const origensDisponíveis = [
+    'WhatsApp',
+    'iFood'
+]
+
+const tipoPedido = [
+    'App',
+    'Padrão'
+]
+
 const PaginaNovoPedido = ({ history }: any) => {
     const [itens, setItens] = useState<ItemPedido[]>([])
     const [adicionandoItem, setAdicionandoItem] = useState<boolean>(false)
     const [desconto, setDesconto] = useState<number>()
+    const [tipoPedidoSelecionado, setTipoPedidoSelecionado] = useState<string>(tipoPedido[0])
+    const [origemSelecionada, setOrigemSelecionada] = useState<string>(origensDisponíveis[0])
 
     const adicionaItem = (item: ItemPedido) => {
         if (item)
             setItens([...itens, item])
 
         setAdicionandoItem(false)
+    }
+
+    const removerItem = (indice: number) => {
+        itens.splice(indice, 1)
+        setItens([...itens])
     }
 
     const finalizarPedido = async () => {
@@ -123,6 +150,9 @@ const PaginaNovoPedido = ({ history }: any) => {
             setDesconto(valor)
     }
 
+    const handleOrigemChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setOrigemSelecionada(event.target.value)
+    const handleTipoPedidoChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setTipoPedidoSelecionado(event.target.value)
+
     const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0)
 
     return <Layout pagename="Novo Pedido">
@@ -132,15 +162,17 @@ const PaginaNovoPedido = ({ history }: any) => {
                     {itens.length > 0 && !adicionandoItem && valorTotalPedido > 0 &&
                         <Button onClick={finalizarPedido} color="primary" variant="contained">Finalizar Pedido</Button>
                     }
-                    <Button variant="contained" color="primary" onClick={(): void => setAdicionandoItem(true)}>Adicionar Item</Button>
+                    <Button variant="outlined" color="primary" onClick={(): void => setAdicionandoItem(true)}>Adicionar Item</Button>
                 </ActionBar>
+
+
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
                                 <TableCell />
                                 <TableCell>Produto</TableCell>
-                                <TableCell />
+                                <TableCell>Categoria</TableCell>
                                 <TableCell />
                                 <TableCell />
                                 <TableCell align="right">Valor</TableCell>
@@ -148,7 +180,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {itens && itens.map(itemPedido => {
+                            {itens && itens.map((itemPedido, i) => {
                                 return (
                                     <Fragment key={itemPedido.produto.id} >
                                         <TableRow>
@@ -156,22 +188,28 @@ const PaginaNovoPedido = ({ history }: any) => {
                                             <TableCell>
                                                 {itemPedido.produto.nome}
                                             </TableCell>
-                                            <TableCell />
+                                            <TableCell>
+                                                <Chip label={itemPedido.produto.categoria} color="secondary" variant="outlined" />
+                                            </TableCell>
                                             <TableCell />
                                             <TableCell />
                                             <TableCell align="right">+ {formatarValor(itemPedido.produto.valor)}</TableCell>
-                                            <TableCell />
+                                            <TableCell>
+                                                <Button color="primary" onClick={() => removerItem(i)}><DeleteIcon /></Button>
+                                            </TableCell>
                                         </TableRow>
                                         {itemPedido.adicionais?.map(a =>
                                             <TableRow key={a.id}>
                                                 <CelulaAdicional />
                                                 <CelulaAdicional align="center">
-                                                    <SubdirectoryArrowRightIcon />
+                                                    <SubdirectoryArrowRightIcon color="secondary" />
+                                                </CelulaAdicional>
+                                                <CelulaAdicional>
+                                                    <Chip label={a.tipo} color="primary" size="small" variant="outlined" />
                                                 </CelulaAdicional>
                                                 <CelulaAdicional>
                                                     {a.nome}
                                                 </CelulaAdicional>
-                                                <CelulaAdicional />
                                                 <CelulaAdicional />
                                                 <CelulaAdicional align="right">+ {formatarValor(a.valor)}</CelulaAdicional>
                                                 <CelulaAdicional />
@@ -219,6 +257,38 @@ const PaginaNovoPedido = ({ history }: any) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+
+                <ContainerDados>
+                    <Typography color="primary" variant="subtitle1" gutterBottom>Dados do pedido:</Typography>
+                    <SecaoEdicao>
+                        <Grid container spacing={3}>
+                            <Grid item xs={3}>
+                                <TextField
+                                    select
+                                    label="Origem"
+                                    value={origemSelecionada ?? origensDisponíveis[0]}
+                                    onChange={handleOrigemChange}
+                                    variant="outlined"
+                                    fullWidth
+                                >
+                                    {origensDisponíveis.map(o => <MenuItem key={o} value={o}>{o}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    select
+                                    label="Tipo"
+                                    value={tipoPedidoSelecionado ?? tipoPedido[0]}
+                                    onChange={handleTipoPedidoChange}
+                                    variant="outlined"
+                                    fullWidth
+                                >
+                                    {tipoPedido.map(tp => <MenuItem key={tp} value={tp}>{tp}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                        </Grid>
+                    </SecaoEdicao>
+                </ContainerDados>
             </>}
         <Container>
             {adicionandoItem &&

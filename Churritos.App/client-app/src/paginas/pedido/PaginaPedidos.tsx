@@ -85,7 +85,6 @@ const TableToolbar = styled.div`
 `
 
 const ValorTotal = styled(Typography)`
-    flex: 1;
     align-content: flex-end;
     justify-content: flex-end;
     align-items: flex-end;

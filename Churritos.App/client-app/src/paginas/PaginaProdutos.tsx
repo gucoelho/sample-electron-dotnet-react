@@ -22,6 +22,7 @@ const PaginaProdutos = ({ history }: any) => {
         <MaterialTable
             columns={[
                 { title: 'ID', field: 'id' },
+                { title: 'Categoria', field: 'categoria' },
                 { title: 'Nome', field: 'nome' },
                 { title: 'Valor', field: 'valor' },
             ]}
