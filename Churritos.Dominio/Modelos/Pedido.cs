@@ -13,6 +13,10 @@ namespace Churritos.Dominio.Modelos
         
         public string Origem { get; set; }
         public string Tipo { get; set; }
+        public string MeioDePagamento { get; set; }
+        
+        public decimal TaxaDeEntrega { get; set; }
+        public int TempoEstimado { get; set; }
         public int Id { get; set; }
         
         public DateTime DataCriação { get; set; }
@@ -33,7 +37,7 @@ namespace Churritos.Dominio.Modelos
                     x => x.SelectMany(y => y.Adicionais).ToArray()
                     );
 
-        public decimal ValorTotal => _produtos.Sum(x => x.ValorTotal) - Desconto;
+        public decimal ValorTotal => _produtos.Sum(x => x.ValorTotal) - Desconto + TaxaDeEntrega;
 
         public decimal Desconto { get; set; } = 0.0m;
         

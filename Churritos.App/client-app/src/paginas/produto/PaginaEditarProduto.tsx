@@ -17,6 +17,7 @@ import {
     LinearProgress,
     Fade
 } from '@material-ui/core'
+import { formatarValor } from '../../utils'
 import Layout from '../Layout'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import NumberFormat from 'react-number-format'
@@ -160,8 +161,7 @@ const PaginaEditarProduto = ({ match: { params }, history }: any) => {
                 control={<Checkbox checked={adicionais.find(vin => vin === vinculo)?.vinculado} value={adicional.id}
                     onChange={() => alterarVinculo(vinculo)}
                 />}
-                // TODO: Mascara Valor
-                label={`${adicional.nome} ${adicional.valor > 0 ? adicional.valor : ''}`}
+                label={`${adicional.nome} ${adicional.valor > 0 ? formatarValor(adicional.valor) : ''}`}
             />
         </ListItem>
     }, [adicionais, alterarVinculo])

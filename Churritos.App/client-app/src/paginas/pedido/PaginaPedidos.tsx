@@ -14,7 +14,12 @@ interface Pedido {
     id: number,
     nome: string,
     quantidade: number,
-    valor: number
+    valor: number,
+    taxaEntrega: number,
+    tipo: string,
+    origem: string,
+    meioPagamento: string,
+    dataCriacao: Date
 }
 
 const csvHeaders = [
@@ -78,8 +83,9 @@ const TableToolbar = styled.div`
     display:flex;
     justify-content: space-between;
     align-items: center;
+    flex: 1;
 
-    & .MTableToolbar-root-225 {
+    & .MuiToolbar-root {
         flex: 1;
     }
 `
@@ -145,10 +151,14 @@ const PaginaPedidos = ({ history }: any) => {
             columns={[
                 { title: 'ID', field: 'id' },
                 { title: 'Data de criação', field: 'dataCriacao' },
+                { title: 'Meio de pagamento', field: 'meioPagamento' },
+                { title: 'Origem', field: 'origem' },
+                { title: 'Tipo', field: 'tipo' },
                 { title: 'Quantidade', field: 'quantidade' },
+                { title: 'Taxa de entrega', field: 'taxaEntrega' },
                 { title: 'Valor', field: 'valor' },
             ]}
-            data={pedidos.map((p: Pedido) => ({ ...p, valor: formatarValor(p.valor) }))}
+            data={pedidos.map((p: Pedido) => ({ ...p, valor: formatarValor(p.valor), taxaEntrega: formatarValor(p.taxaEntrega), dataCriacao: moment(p.dataCriacao).format('DD/MM/YYYY hh:mm:ss') }))}
             title="Lista de pedidos"
             options={{ search: false, pageSize: 10 }}
             isLoading={loading}

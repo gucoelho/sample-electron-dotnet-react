@@ -2,11 +2,28 @@ import React, { useState, useEffect } from 'react'
 import Layout from './Layout'
 import MaterialTable from 'material-table'
 import { formatarValor } from '../utils'
+import {Button } from '@material-ui/core'
+import styled from 'styled-components'
+
 interface Item {
     id: number,
     nome: string,
     valor: number
 }
+
+const EditarBotão= styled(Button)`
+
+    .MuiIconButton-root:hover {
+        background-color: transparent;
+    }
+`
+
+const CustomTable = styled(MaterialTable) `
+    button.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit {
+            background-color: transparent;
+    }
+    
+`
 
 const PaginaProdutos = ({ history }: any) => {
     const [produtos, setProdutos] = useState([])
@@ -19,7 +36,7 @@ const PaginaProdutos = ({ history }: any) => {
     }, [])
 
     return <Layout pagename="Produtos">
-        <MaterialTable
+        <CustomTable
             columns={[
                 { title: 'ID', field: 'id' },
                 { title: 'Categoria', field: 'categoria' },
@@ -30,7 +47,6 @@ const PaginaProdutos = ({ history }: any) => {
             title="Lista dos produtos"
             options={{
                 search: false, pageSize: 10,
-                actionsColumnIndex: -1,
             }}
             localization={{
                 header: {
@@ -42,7 +58,7 @@ const PaginaProdutos = ({ history }: any) => {
             }}
             actions={[
                 {
-                    icon: 'edit',
+                    icon: () => (<EditarBotão color="primary" variant="outlined">Editar</EditarBotão> as React.ReactElement),
                     tooltip: 'Editar produto',
                     onClick: (event, rowData: any) => history.push(`produto/${rowData.id}`)
                 }

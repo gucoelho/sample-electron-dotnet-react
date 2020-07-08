@@ -12,6 +12,8 @@ ProjectSection(SolutionItems) = preProject
 	.config\dotnet-tools.json = .config\dotnet-tools.json
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Churritos.Tests", "Churritos.Tests\Churritos.Tests.csproj", "{C6CFE64E-BF65-450D-A087-A6875F592A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{AFCD87ED-29B0-4205-9B3E-E40FD82575EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFCD87ED-29B0-4205-9B3E-E40FD82575EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFCD87ED-29B0-4205-9B3E-E40FD82575EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6CFE64E-BF65-450D-A087-A6875F592A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6CFE64E-BF65-450D-A087-A6875F592A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6CFE64E-BF65-450D-A087-A6875F592A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CFE64E-BF65-450D-A087-A6875F592A7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

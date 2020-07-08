@@ -48,10 +48,13 @@ function NumberFormatCustom(props: NumberFormatCustomProps) {
             {...other}
             getInputRef={inputRef}
             onValueChange={(values) => onChange(values.value)}
-            thousandSeparator="."
+            thousandSeparator={''}
             decimalSeparator=","
             isNumericString
             allowNegative={false}
+            allowLeadingZeros={false}
+            decimalScale={2}
+            fixedDecimalScale
         />
     )
 }
@@ -90,12 +93,19 @@ const tipoPedido = [
     'Padrão'
 ]
 
+const meiosDePagamento = [
+    'Cartão de crédito',
+    'Dinheiro'
+]
+
 const PaginaNovoPedido = ({ history }: any) => {
     const [itens, setItens] = useState<ItemPedido[]>([])
     const [adicionandoItem, setAdicionandoItem] = useState<boolean>(false)
-    const [desconto, setDesconto] = useState<number>()
+    const [desconto, setDesconto] = useState<number>(0.0)
     const [tipoPedidoSelecionado, setTipoPedidoSelecionado] = useState<string>(tipoPedido[0])
     const [origemSelecionada, setOrigemSelecionada] = useState<string>(origensDisponíveis[0])
+    const [meioDePagamentoSelecionado, setMeioPagamentoSelecionado] = useState<string>(meiosDePagamento[0])
+    const [taxaEntrega, setTaxaEntrega] = useState<number>(0.0)
 
     const adicionaItem = (item: ItemPedido) => {
         if (item)
@@ -118,11 +128,15 @@ const PaginaNovoPedido = ({ history }: any) => {
             },
             body: JSON.stringify(
                 {
-                    desconto: desconto,
+                    taxaEntrega,
+                    desconto,
                     itens: itens.map(i => ({
                         produtoId: i.produto.id,
                         adicionais: i.adicionais
-                    }))
+                    })),
+                    origem: origemSelecionada,
+                    tipo: tipoPedidoSelecionado,
+                    meioDePagamento: meioDePagamentoSelecionado
                 })
         })
 
@@ -143,17 +157,13 @@ const PaginaNovoPedido = ({ history }: any) => {
         return 0
     }
 
-    const handleChange = (valor: any) => {
-        if (valor)
-            setDesconto(Number(valor))
-        else
-            setDesconto(valor)
-    }
-
     const handleOrigemChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setOrigemSelecionada(event.target.value)
     const handleTipoPedidoChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setTipoPedidoSelecionado(event.target.value)
+    const handleMeioPagamentosChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMeioPagamentoSelecionado(event.target.value)
+    const handleTaxaEntregaChange = (value: any) => value ? setTaxaEntrega(Number(value)) : setTaxaEntrega(0.0)
+    const handleDescontoChange = (valor: any) => valor ? setDesconto(Number(valor)) : setDesconto(0.0)
 
-    const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0)
+    const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0) + taxaEntrega
 
     return <Layout pagename="Novo Pedido">
         {!adicionandoItem &&
@@ -230,7 +240,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                                 <TableCell align="right">
                                     <CampoDesconto
                                         value={desconto}
-                                        onChange={handleChange}
+                                        onChange={handleDescontoChange}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">- R$</InputAdornment>,
                                             inputComponent: NumberFormatCustom as any,
@@ -284,6 +294,33 @@ const PaginaNovoPedido = ({ history }: any) => {
                                     fullWidth
                                 >
                                     {tipoPedido.map(tp => <MenuItem key={tp} value={tp}>{tp}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    select
+                                    label="Meio de pagamento"
+                                    value={meioDePagamentoSelecionado ?? meiosDePagamento[0]}
+                                    onChange={handleMeioPagamentosChange}
+                                    variant="outlined"
+                                    fullWidth
+                                >
+                                    {meiosDePagamento.map(mp => <MenuItem key={mp} value={mp}>{mp}</MenuItem>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    label="Taxa de entrega"
+                                    value={taxaEntrega}
+                                    onChange={handleTaxaEntregaChange}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                                        inputComponent: NumberFormatCustom as any,
+                                    }}
+                                    variant="outlined"
+                                    fullWidth
+                                >
+                                    {meiosDePagamento.map(mp => <MenuItem key={mp} value={mp}>{mp}</MenuItem>)}
                                 </TextField>
                             </Grid>
                         </Grid>

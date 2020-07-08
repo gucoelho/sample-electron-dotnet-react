@@ -443,8 +443,17 @@ namespace Churritos.Dominio.Migrations
                     b.Property<decimal>("Desconto")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MeioDePagamento")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Origem")
                         .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TaxaDeEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TempoEstimado")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Tipo")
                         .HasColumnType("TEXT");

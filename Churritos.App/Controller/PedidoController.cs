@@ -26,11 +26,11 @@ namespace Churritos.App.Controller
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PedidoViewModel>> Get()
+        public async Task<IEnumerable<PedidoListaViewModel>> Get()
         {
             var pedidos = (await _repositorio.ObterTodosOsPedidos()).OrderByDescending(x => x.DataCriação);
 
-            return pedidos.Select(x => new PedidoViewModel
+            return pedidos.Select(x => new PedidoListaViewModel
             {
                 Id = x.Id,
                 Quantidade = x.Produtos.Count,
@@ -74,16 +74,20 @@ namespace Churritos.App.Controller
         }
 
         [HttpGet("/api/pedidos")]
-        public async Task<IEnumerable<PedidoViewModel>> GetByData([FromQuery] DateTime data)
+        public async Task<IEnumerable<PedidoListaViewModel>> GetByData([FromQuery] DateTime data)
         {
             var pedidos = (await _repositorio.ObterTodosOsPedidosDoDia(data)).OrderByDescending(x => x.DataCriação);
         
-            return pedidos.Select(x => new PedidoViewModel
+            return pedidos.Select(x => new PedidoListaViewModel
             {
                 Id = x.Id,
                 Quantidade = x.Produtos.Count,
                 DataCriacao = x.DataCriação,
-                Valor = x.ValorTotal
+                Valor = x.ValorTotal,
+                Origem = x.Origem,
+                Tipo = x.Tipo,
+                MeioPagamento = x.MeioDePagamento,
+                TaxaEntrega = x.TaxaDeEntrega
             });
         }
 
@@ -92,7 +96,11 @@ namespace Churritos.App.Controller
         {
             var pedido = new Pedido()
             {
-                Desconto = pedidoDto.Desconto
+                Desconto = pedidoDto.Desconto,
+                Origem = pedidoDto.Origem,
+                Tipo = pedidoDto.Tipo,
+                TaxaDeEntrega = pedidoDto.TaxaEntrega,
+                MeioDePagamento = pedidoDto.MeioDePagamento
             };
 
             foreach (var item in pedidoDto.Itens)
@@ -197,12 +205,20 @@ namespace Churritos.App.Controller
         public decimal Valor { get; set; }
     }
 
-    public class PedidoViewModel
+    public class PedidoListaViewModel
     {
         public int Id { get; set; }
         public DateTime DataCriacao { get; set; }
         public int Quantidade { get; set; }
         public decimal Valor { get; set; }
+        
+        public string Origem { get; set; }
+        
+        public string Tipo { get; set; }
+        
+        public string MeioPagamento { get; set; }
+        
+        public decimal TaxaEntrega { get; set; }
     }
 
     public class ItemPedidoViewModel
@@ -217,8 +233,17 @@ namespace Churritos.App.Controller
     {
         public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
         public decimal Desconto { get; set; }
+        
+        public string Origem { get; set; }
+        
+        public string Tipo { get; set; }
+        
+        public string MeioDePagamento { get; set; }
+        
+        public decimal TaxaEntrega { get; set; }
+        
+        public int TempoEstimado { get; set; }
     }
-    
     
     public class PedidoDetalhadoViewModel
     {

@@ -43,6 +43,9 @@ namespace Churritos.Dominio.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Origem = table.Column<string>(nullable: true),
                     Tipo = table.Column<string>(nullable: true),
+                    MeioDePagamento = table.Column<string>(nullable: true),
+                    TaxaDeEntrega = table.Column<decimal>(nullable: false),
+                    TempoEstimado = table.Column<int>(nullable: false),
                     DataCriacao = table.Column<DateTime>(nullable: false),
                     Desconto = table.Column<decimal>(nullable: false)
                 },

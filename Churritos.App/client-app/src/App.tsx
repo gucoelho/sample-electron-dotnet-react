@@ -78,6 +78,15 @@ const theme = createMuiTheme({
         // Por exemplo, mude de Red 500 para Red 300 ou Red 700.
         tonalOffset: 0.2,
     },
+    overrides: {
+        MuiIconButton: {
+            root: {
+                '&:hover': {
+                    backgroundColor: 'transparent',
+                },
+            },
+        },
+    },
 })
 
 
