@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200708042945_EstruturaInicial")]
+    [Migration("20200727020003_EstruturaInicial")]
     partial class EstruturaInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,57 @@ namespace Churritos.Dominio.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Cpf")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Telefone")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cliente");
+                });
+
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Endereço", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Complemento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Logradouro")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("Endereço");
+                });
+
             modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.AdicionalProduto", b =>
                 {
                     b.Property<int>("ProdutoId")
@@ -560,6 +611,15 @@ namespace Churritos.Dominio.Migrations
                     b.HasIndex("ProdutoId");
 
                     b.ToTable("ProdutoPedido");
+                });
+
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Endereço", b =>
+                {
+                    b.HasOne("Churritos.Dominio.Modelos.Cliente", "Cliente")
+                        .WithMany("Endereços")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.AdicionalProduto", b =>

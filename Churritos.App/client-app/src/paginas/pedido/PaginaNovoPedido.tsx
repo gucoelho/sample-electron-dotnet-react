@@ -326,6 +326,84 @@ const PaginaNovoPedido = ({ history }: any) => {
                         </Grid>
                     </SecaoEdicao>
                 </ContainerDados>
+
+
+                <ContainerDados>
+                    <Typography color="primary" variant="subtitle1" gutterBottom>Dados do cliente:</Typography>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={6}>
+                            <TextField
+                                label="Nome"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <TextField
+                                label="CPF"
+                                variant="outlined"
+                                fullWidth
+                            />
+ 
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <TextField
+                                label="Telefone/Celular"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+
+
+                    <Typography color="primary" variant="subtitle1" gutterBottom>Endereço:</Typography>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={6}>
+                            <TextField
+                                label="Logradouro"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <TextField
+                                label="Complemento"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <TextField
+                                label="Bairro"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <TextField
+                                label="Estado"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <TextField
+                                label="Cidade"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+
+
+                </ContainerDados>
             </>}
         <Container>
             {adicionandoItem &&
@@ -333,7 +411,6 @@ const PaginaNovoPedido = ({ history }: any) => {
                     <ControleEtapas adicionarItemPedido={adicionaItem} />
                 </Etapas>
             }
-
         </Container>
     </Layout>
 }

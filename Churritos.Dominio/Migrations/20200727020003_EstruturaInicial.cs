@@ -36,6 +36,21 @@ namespace Churritos.Dominio.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cliente",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nome = table.Column<string>(nullable: true),
+                    Cpf = table.Column<string>(nullable: true),
+                    Telefone = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cliente", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pedido",
                 columns: table => new
                 {
@@ -71,6 +86,30 @@ namespace Churritos.Dominio.Migrations
                         name: "FK_Produto_Categoria_CategoriaId",
                         column: x => x.CategoriaId,
                         principalTable: "Categoria",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Endereço",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Estado = table.Column<string>(nullable: true),
+                    Cidade = table.Column<string>(nullable: true),
+                    Logradouro = table.Column<string>(nullable: true),
+                    Bairro = table.Column<string>(nullable: true),
+                    Complemento = table.Column<string>(nullable: true),
+                    ClienteId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Endereço", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Endereço_Cliente_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Cliente",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -474,6 +513,11 @@ namespace Churritos.Dominio.Migrations
                 column: "ProdutoPedidoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Endereço_ClienteId",
+                table: "Endereço",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Produto_CategoriaId",
                 table: "Produto",
                 column: "CategoriaId");
@@ -498,10 +542,16 @@ namespace Churritos.Dominio.Migrations
                 name: "AdicionalProdutoPedido");
 
             migrationBuilder.DropTable(
+                name: "Endereço");
+
+            migrationBuilder.DropTable(
                 name: "Adicional");
 
             migrationBuilder.DropTable(
                 name: "ProdutoPedido");
+
+            migrationBuilder.DropTable(
+                name: "Cliente");
 
             migrationBuilder.DropTable(
                 name: "Pedido");

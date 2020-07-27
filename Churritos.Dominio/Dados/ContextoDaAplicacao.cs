@@ -13,6 +13,9 @@ namespace Churritos.Dominio.Dados
         public DbSet<Adicional> Adicionais { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Produto> Produtos { get; set; }
+        
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Endereço> Endereços { get; set; }
  
         public ContextoDaAplicação(DbContextOptions<ContextoDaAplicação> options) : base(options)
         {
@@ -27,6 +30,8 @@ namespace Churritos.Dominio.Dados
             builder.ApplyConfiguration(new ConfiguracaoAdicionalProdutoPedido());
             builder.ApplyConfiguration(new ConfiguracaoPedido());
             builder.ApplyConfiguration(new ConfiguracaoProdutoPedido());
+            builder.ApplyConfiguration(new ConfiguracaoCliente());
+            builder.ApplyConfiguration(new ConfiguracaoEndereço());
 
             var coberturas = CriarSeedAdicionaisDeCobertura(builder);
             var recheios = CriarSeedRecheio(builder);
