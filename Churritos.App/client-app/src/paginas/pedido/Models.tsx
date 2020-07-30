@@ -24,9 +24,29 @@ export interface ItemPedido {
 }
 
 export interface PedidoDetalhe {
-    id: number,
-    dataCriacao: Date,
-    valor: number,
+    id: number
+    dataCriacao: Date
+    valor: number
     desconto: number
     itens: ItemPedido[]
+    cliente: Cliente
+    endereco: Endereco
+    origem: string
+    tipo: string
+    meioPagamento: string
+    taxaEntrega: string
+}
+
+export interface Cliente {
+    cpf: string
+    nome: string
+    telefone : string
+}
+
+export interface Endereco {
+    logradouro: string
+    bairro: string
+    cidade: string
+    estado: string
+    complemento: string
 }

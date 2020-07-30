@@ -17,7 +17,7 @@ import { Link, Switch, Route, BrowserRouter } from 'react-router-dom'
 import ChurritosImg from './assets/images/Churritos.png'
 import PaginaPedidos from './paginas/pedido/PaginaPedidos'
 import PaginaDetalhePedido from './paginas/pedido/PaginaPedido'
-import PaginaNovoPedido from './paginas/pedido/PaginaNovoPedido'
+import PaginaNovoPedido from './paginas/pedido/novo-pedido/PaginaNovoPedido'
 import PaginaAdicionais from './paginas/PaginaAdicionais'
 import PaginaCategorias from './paginas/PaginaCategorias'
 import PaginaEditarProduto from './paginas/produto/PaginaEditarProduto'
@@ -30,6 +30,7 @@ import {
     ThemeProvider,
 } from '@material-ui/core/styles'
 import 'moment/locale/pt-br'
+import { NovoPedidoContextProvider } from './paginas/pedido/novo-pedido/NovoPedidoContext'
 moment.locale('pt-br')
 
 
@@ -133,7 +134,11 @@ const App = () => (<StylesProvider injectFirst>
                     <Switch>
                         <Route exact path="/pedido/:id" component={PaginaDetalhePedido} />
                         <Route exact path="/pedidos" component={PaginaPedidos} />
-                        <Route exact path="/pedidos/criar" component={PaginaNovoPedido} />
+                        <Route exact path="/pedidos/criar" 
+                            render={(props) => (
+                                <NovoPedidoContextProvider>
+                                    <PaginaNovoPedido {...props} />
+                                </NovoPedidoContextProvider>)} />
                         <Route exact path="/categorias" component={PaginaCategorias} />
                         <Route exact path="/adicionais" component={PaginaAdicionais} />
                         <Route exact path="/produtos" component={PaginaProdutos} />

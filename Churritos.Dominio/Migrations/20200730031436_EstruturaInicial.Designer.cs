@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Churritos.Dominio.Migrations
 {
     [DbContext(typeof(ContextoDaAplicação))]
-    [Migration("20200727020003_EstruturaInicial")]
+    [Migration("20200730031436_EstruturaInicial")]
     partial class EstruturaInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -303,8 +303,8 @@ namespace Churritos.Dominio.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Telefone")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Telefone")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -339,7 +339,7 @@ namespace Churritos.Dominio.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Endereço");
+                    b.ToTable("Endereco");
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.EntidadesAuxiliares.AdicionalProduto", b =>
@@ -489,12 +489,18 @@ namespace Churritos.Dominio.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("DataCriação")
                         .HasColumnName("DataCriacao")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Desconto")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("EndereçoId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MeioDePagamento")
                         .HasColumnType("TEXT");
@@ -512,6 +518,10 @@ namespace Churritos.Dominio.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("EndereçoId");
 
                     b.ToTable("Pedido");
                 });
@@ -650,6 +660,17 @@ namespace Churritos.Dominio.Migrations
                         .HasForeignKey("ProdutoPedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Churritos.Dominio.Modelos.Pedido", b =>
+                {
+                    b.HasOne("Churritos.Dominio.Modelos.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId");
+
+                    b.HasOne("Churritos.Dominio.Modelos.Endereço", "Endereço")
+                        .WithMany()
+                        .HasForeignKey("EndereçoId");
                 });
 
             modelBuilder.Entity("Churritos.Dominio.Modelos.Produto", b =>

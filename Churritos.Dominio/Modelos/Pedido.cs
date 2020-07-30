@@ -21,6 +21,9 @@ namespace Churritos.Dominio.Modelos
         
         public DateTime DataCriação { get; set; }
 
+        public Cliente Cliente { get; set; }
+        public Endereço Endereço { get; set; }
+
 
         public IReadOnlyCollection<Produto> Produtos => _produtos.Select(x =>
         {

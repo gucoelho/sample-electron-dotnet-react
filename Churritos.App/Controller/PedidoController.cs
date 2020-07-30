@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using Churritos.Dominio.Modelos;
 using Churritos.Dominio.Modelos.EntidadesAuxiliares;
 using Churritos.Dominio.Repositorios;
@@ -44,6 +45,8 @@ namespace Churritos.App.Controller
         public async Task<PedidoDetalhadoViewModel> Get(int id)
         {
             var pedido = await _repositorio.ObterPedido(id);
+            var clienteDoPedido = pedido.Cliente;
+            var enderecoPrincipal = clienteDoPedido.Endereços.First();
 
             return new PedidoDetalhadoViewModel()
             {
@@ -69,7 +72,25 @@ namespace Churritos.App.Controller
                        Valor = p.Valor,
                        Categoria = p.Categoria.Nome
                     }
-                })
+                }),
+                Cliente = new ClienteViewModel
+                {
+                    Cpf = clienteDoPedido.Cpf,
+                    Nome = clienteDoPedido.Nome,
+                    Telefone = clienteDoPedido.Telefone
+                },
+                Endereco = new EnderecoViewModel()
+                {
+                    Bairro = enderecoPrincipal.Bairro,
+                    Cidade = enderecoPrincipal.Cidade,
+                    Complemento = enderecoPrincipal.Complemento,
+                    Logradouro = enderecoPrincipal.Logradouro,
+                    Estado = enderecoPrincipal.Estado
+                },
+                Origem = pedido.Origem,
+                Tipo = pedido.Tipo,
+                MeioPagamento = pedido.MeioDePagamento,
+                TaxaEntrega = pedido.TaxaDeEntrega
             };
         }
 
@@ -100,7 +121,24 @@ namespace Churritos.App.Controller
                 Origem = pedidoDto.Origem,
                 Tipo = pedidoDto.Tipo,
                 TaxaDeEntrega = pedidoDto.TaxaEntrega,
-                MeioDePagamento = pedidoDto.MeioDePagamento
+                MeioDePagamento = pedidoDto.MeioDePagamento,
+                Cliente = new Cliente()
+                {
+                    Cpf = pedidoDto.Cliente.Cpf,
+                    Nome = pedidoDto.Cliente.Nome,
+                    Telefone = pedidoDto.Cliente.Telefone,
+                    Endereços = new List<Endereço>()
+                    {
+                        new Endereço
+                        {
+                            Logradouro = pedidoDto.Endereco.Logradouro,
+                            Bairro = pedidoDto.Endereco.Bairro,
+                            Cidade = pedidoDto.Endereco.Cidade,
+                            Estado = pedidoDto.Endereco.Estado,
+                            Complemento = pedidoDto.Endereco.Complemento 
+                        }
+                    }
+                }
             };
 
             foreach (var item in pedidoDto.Itens)
@@ -224,7 +262,6 @@ namespace Churritos.App.Controller
     public class ItemPedidoViewModel
     {
         public int ProdutoId { get; set; }
-        
         public ProdutoViewModel Produto { get; set; }
         public AdicionalViewModel[] Adicionais { get; set; }
     }
@@ -243,8 +280,27 @@ namespace Churritos.App.Controller
         public decimal TaxaEntrega { get; set; }
         
         public int TempoEstimado { get; set; }
+        
+        public ClienteDTO Cliente { get; set; }
+        public EnderecoDTO Endereco { get; set; }
     }
-    
+
+    public class EnderecoDTO
+    {
+        public string Estado { get; set; }
+        public string Cidade { get; set; }
+        public string Logradouro { get; set; }
+        public string Bairro { get; set; }
+        public string Complemento { get; set; }
+    }
+
+    public class ClienteDTO
+    { 
+        public string Nome { get; set; }
+        public string Cpf { get; set; }
+        public string Telefone { get; set; }
+    }
+
     public class PedidoDetalhadoViewModel
     {
         public IEnumerable<ItemPedidoViewModel> Itens { get; set; }
@@ -252,6 +308,31 @@ namespace Churritos.App.Controller
         public int Id { get; set; }
         public DateTime DataCriacao { get; set; }
         public decimal Valor { get; set; }
+
+        public ClienteViewModel Cliente { get; set; }
+        
+        public EnderecoViewModel Endereco { get; set; }
+        public string Origem { get; set; }
+        public string Tipo { get; set; }
+        public string MeioPagamento { get; set; }
+        public decimal TaxaEntrega { get; set; }
+    }
+
+    public class EnderecoViewModel
+    {
+         public string Estado { get; set; }
+        public string Cidade { get; set; }
+        public string Logradouro { get; set; }
+        public string Bairro { get; set; }
+        public string Complemento { get; set; }
+    }
+
+    public class ClienteViewModel
+    {
+        
+        public string Nome { get; set; }
+        public string Cpf { get; set; }
+        public string Telefone { get; set; }
     }
 
     public class AdicionalViewModel
