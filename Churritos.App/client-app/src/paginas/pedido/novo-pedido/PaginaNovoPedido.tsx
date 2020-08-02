@@ -4,12 +4,13 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { Paper } from '@material-ui/core'
 import styled from 'styled-components'
-import { Produto, Adicional } from '../Models'
+import { ItemPedido } from '../Models'
 import ControleEtapas from '../adicionar-item/ControleEtapas'
 import { TextField, InputAdornment, Grid, MenuItem } from '@material-ui/core'
 import NumberFormat from 'react-number-format'
 import TabelaDosItensDoPedido from '../TabelaDeItensDoPedido'
 import { NovoPedidoContext } from './NovoPedidoContext'
+import {GerarRecibo} from './GerarRecibo'
 
 const Container = styled.div`
   display: flex;
@@ -18,11 +19,6 @@ const Container = styled.div`
 const Etapas = styled.div`
   flex-grow: 1;
 `
-
-interface ItemPedido {
-    produto: Produto;
-    adicionais?: Adicional[];
-}
 
 interface NumberFormatCustomProps {
     inputRef: (instance: NumberFormat | null) => void;
@@ -127,6 +123,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                 })
         })
 
+
         if (rawResponse.status === 200) {
             history.push('/pedidos')
         }
@@ -151,6 +148,9 @@ const PaginaNovoPedido = ({ history }: any) => {
     const handleDescontoChange = (valor: any) => valor ? setDesconto(Number(valor)) : setDesconto(0.0)
 
     const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0) + taxaEntrega
+
+
+    GerarRecibo(cliente, endereco, itens)
 
     return <Layout pagename="Novo Pedido">
         {!adicionandoItem &&
@@ -238,6 +238,7 @@ const PaginaNovoPedido = ({ history }: any) => {
                 </Etapas>
             }
         </Container>
+        <iframe width="1000" height="1000" id="recibo-pdf" />
     </Layout>
 }
 
