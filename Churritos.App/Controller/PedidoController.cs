@@ -67,10 +67,10 @@ namespace Churritos.App.Controller
                     ProdutoId = p.Id,
                     Produto = new ProdutoViewModel()
                     {
-                       Id = p.Id,
-                       Nome = p.Nome,
-                       Valor = p.Valor,
-                       Categoria = p.Categoria.Nome
+                        Id = p.Id,
+                        Nome = p.Nome,
+                        Valor = p.Valor,
+                        Categoria = p.Categoria.Nome
                     }
                 }),
                 Cliente = new ClienteViewModel
@@ -85,7 +85,8 @@ namespace Churritos.App.Controller
                     Cidade = enderecoPrincipal.Cidade,
                     Complemento = enderecoPrincipal.Complemento,
                     Logradouro = enderecoPrincipal.Logradouro,
-                    Estado = enderecoPrincipal.Estado
+                    Estado = enderecoPrincipal.Estado,
+                    Observacao = enderecoPrincipal.Observação
                 },
                 Origem = pedido.Origem,
                 Tipo = pedido.Tipo,
@@ -135,7 +136,8 @@ namespace Churritos.App.Controller
                             Bairro = pedidoDto.Endereco.Bairro,
                             Cidade = pedidoDto.Endereco.Cidade,
                             Estado = pedidoDto.Endereco.Estado,
-                            Complemento = pedidoDto.Endereco.Complemento 
+                            Complemento = pedidoDto.Endereco.Complemento,
+                            Observação = pedidoDto.Endereco.Observacao
                         }
                     }
                 }
@@ -188,8 +190,12 @@ namespace Churritos.App.Controller
                                 new PedidoDownloadViewModel
                                 {
                                     PedidoId = pedido.Id,
+                                    Tipo = pedido.Tipo,
+                                    Origem = pedido.Origem,
+                                    MeioDePagamento = pedido.MeioDePagamento,
                                     Data = pedido.DataCriação,
                                     ProdutoId = produto.Id,
+                                    Categoria = produto.Categoria.Nome,
                                     NomeProduto = produto.Nome,
                                     Valor = produto.Valor
                                 }
@@ -204,22 +210,44 @@ namespace Churritos.App.Controller
                                             Data = pedido.DataCriação,
                                             ProdutoId = produto.Id,
                                             NomeProduto = produto.Nome,
+                                            Categoria = "Adicional",
+                                            Tipo = pedido.Tipo,
+                                            Origem = pedido.Origem,
+                                            MeioDePagamento = pedido.MeioDePagamento,
                                             Valor = adicional.Valor,
                                             AdicionalId = adicional.Id,
-                                            AdicionalNome = adicional.Nome
+                                            AdicionalNome = adicional.Nome,
+                                            TipoAdicional = adicional.Tipo.ToString()
                                         }));
 
                             return listaDeRetorno;
                         }).ToList();
-                        
+                    
+                    if(pedido.TaxaDeEntrega > 0)
+                        pedidoDownload.Add(new PedidoDownloadViewModel
+                        {
+                            Data = pedido.DataCriação,
+                            Valor = pedido.TaxaDeEntrega,
+                            PedidoId = pedido.Id,
+                            Tipo = pedido.Tipo,
+                            Origem = pedido.Origem,
+                            MeioDePagamento = pedido.MeioDePagamento,
+                            Categoria = "Taxa",
+                            NomeProduto = "Taxa de Entrega"
+                        });    
+                    
                     if(pedido.Desconto > 0)
                         pedidoDownload.Add(new PedidoDownloadViewModel
                         {
                             Data = pedido.DataCriação,
                             Valor = - pedido.Desconto,
                             PedidoId = pedido.Id,
+                            Tipo = pedido.Tipo,
+                            Origem = pedido.Origem,
+                            MeioDePagamento = pedido.MeioDePagamento,
+                            Categoria = "Desconto",
                             NomeProduto = "Desconto"
-                        });
+                        }); 
 
                     return pedidoDownload;
                 });
@@ -232,9 +260,12 @@ namespace Churritos.App.Controller
     {
         public int PedidoId { get; set; }
  
-        public string Local { get; set; }
+        public string Origem { get; set; }
         
         public string Tipo { get; set; }
+        public string MeioDePagamento { get; set; }
+        public string Categoria { get; set; }
+        public string TipoAdicional { get; set; }
         public DateTime Data { get; set; }
         public int ProdutoId { get; set; }
         public string NomeProduto { get; set; }
@@ -292,6 +323,7 @@ namespace Churritos.App.Controller
         public string Logradouro { get; set; }
         public string Bairro { get; set; }
         public string Complemento { get; set; }
+        public string Observacao { get; set; }
     }
 
     public class ClienteDTO
@@ -320,11 +352,12 @@ namespace Churritos.App.Controller
 
     public class EnderecoViewModel
     {
-         public string Estado { get; set; }
+        public string Estado { get; set; }
         public string Cidade { get; set; }
         public string Logradouro { get; set; }
         public string Bairro { get; set; }
         public string Complemento { get; set; }
+        public string Observacao { get; set; }
     }
 
     public class ClienteViewModel

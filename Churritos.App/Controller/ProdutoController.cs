@@ -89,6 +89,24 @@ namespace Churritos.App.Controller
         }
         
         
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CriarProdutoCommand criarProduto)
+        {
+            var produto = new Produto();
+
+            produto.Nome = criarProduto.Nome;
+            produto.CategoriaId = criarProduto.CategoriaSelecionada;
+            produto.Valor = criarProduto.Valor;
+
+            produto.AdicionaisProduto = criarProduto.AdicionaisVinculados
+                .Where(x => x.Vinculado)
+                .Select(x => new AdicionalProduto() {AdicionalId = x.Adicional.Id, ProdutoId = produto.Id}).ToList();
+
+            await _repositorio.AdicionarProduto(produto);
+
+            return Ok();
+        }
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] EditarProdutoCommand editarProduto)
         {
@@ -107,6 +125,13 @@ namespace Churritos.App.Controller
             return Ok();
         }
 
+        public class CriarProdutoCommand
+        {
+            public int CategoriaSelecionada { get; set; }
+            public string Nome { get; set; }
+            public decimal Valor { get; set; }
+            public IEnumerable<VinculoAdicionalViewModel> AdicionaisVinculados { get; set; }
+        }
         public class EditarProdutoCommand
         {
             public int Id { get; set; }

@@ -82,6 +82,7 @@ namespace Churritos.Dominio.Migrations
                     Logradouro = table.Column<string>(nullable: true),
                     Bairro = table.Column<string>(nullable: true),
                     Complemento = table.Column<string>(nullable: true),
+                    Observacao = table.Column<string>(nullable: true),
                     ClienteId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

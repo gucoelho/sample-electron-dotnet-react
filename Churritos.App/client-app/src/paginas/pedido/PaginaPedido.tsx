@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
 import { PedidoDetalhe, Cliente, Endereco } from './Models'
-import { LinearProgress, Typography, Grid, TextField, Paper } from '@material-ui/core'
+import { Button, LinearProgress, Typography, Grid, TextField, Paper } from '@material-ui/core'
 import TabelaDosItensDoPedido from './TabelaDeItensDoPedido'
 import styled from 'styled-components'
 import { formatarValor } from '../../utils'
+import { GerarReciboDoPedido } from './novo-pedido/GerarRecibo'
 
 const ContainerDados = styled(Paper)`
     padding: 15px;
     margin: 10px 0;
 `
 
+const ActionBar = styled(Paper)`
+    display: flex;
+    align-items: center;
+    justify-content: 'flex-end';
+    padding: 10px;
+    margin-bottom: 10px;
+`
 interface Params {
     id: number
 }
@@ -41,6 +49,11 @@ const PaginaPedidos = ({ match: { params } }: PaginaPedidoProps) => {
         {loading && <LinearProgress />}
         {!loading && pedido && 
         <>
+            <ActionBar>
+                <Button color="primary" variant="contained" onClick={() => GerarReciboDoPedido(pedido)}>
+                Baixar recibo
+                </Button>
+            </ActionBar>
             <TabelaDosItensDoPedido 
                 itens={pedido.itens}
                 desconto={pedido.desconto}
@@ -154,7 +167,6 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Telefone/Celular"
                             variant="outlined"
                             fullWidth
-                            name="telefone"
                             value={cliente.telefone}
                             InputProps={{
                                 readOnly: true,
@@ -172,7 +184,6 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Logradouro"
                             variant="outlined"
                             fullWidth
-                            name="logradouro"
                             value={endereco.logradouro}
                             InputProps={{
                                 readOnly: true,
@@ -185,7 +196,6 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Complemento"
                             variant="outlined"
                             fullWidth
-                            name="complemento"
                             value={endereco.complemento}
                             InputProps={{
                                 readOnly: true,
@@ -198,7 +208,6 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Bairro"
                             variant="outlined"
                             fullWidth
-                            name="bairro"
                             value={endereco.bairro}
                             InputProps={{
                                 readOnly: true,
@@ -211,7 +220,6 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Estado"
                             variant="outlined"
                             fullWidth
-                            name="estado"
                             value={endereco.estado}
                             InputProps={{
                                 readOnly: true,
@@ -223,8 +231,18 @@ const AreaCliente = ({cliente, endereco} : PropsAreaCliente) => {
                             label="Cidade"
                             variant="outlined"
                             fullWidth
-                            name="cidade"
                             value={endereco.cidade}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            label="Observação"
+                            variant="outlined"
+                            fullWidth
+                            value={endereco.observacao}
                             InputProps={{
                                 readOnly: true,
                             }}

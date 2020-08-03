@@ -31,6 +31,7 @@ import {
 } from '@material-ui/core/styles'
 import 'moment/locale/pt-br'
 import { NovoPedidoContextProvider } from './paginas/pedido/novo-pedido/NovoPedidoContext'
+import PaginaCriarProduto from './paginas/produto/PaginaCriarProduto'
 moment.locale('pt-br')
 
 
@@ -142,6 +143,7 @@ const App = () => (<StylesProvider injectFirst>
                         <Route exact path="/categorias" component={PaginaCategorias} />
                         <Route exact path="/adicionais" component={PaginaAdicionais} />
                         <Route exact path="/produtos" component={PaginaProdutos} />
+                        <Route exact path="/produto/criar" component={PaginaCriarProduto} />
                         <Route exact path="/produto/:id" component={PaginaEditarProduto} />
                         <Route path="/" component={PaginaPedidos} />
                     </Switch>

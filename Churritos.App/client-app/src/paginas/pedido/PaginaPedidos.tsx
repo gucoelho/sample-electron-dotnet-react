@@ -25,8 +25,14 @@ interface Pedido {
 const csvHeaders = [
     { label: 'Id do Pedido', key: 'pedidoId' },
     { label: 'Data do Pedido', key: 'data' },
+    { label: 'Origem', key: 'origem' },
+    { label: 'Tipo do pedido', key: 'tipo' },
+    { label: 'Meio de pagamento', key: 'meioDePagamento' },
+    { label: 'Id do Produto', key: 'produtoId' },
+    { label: 'Categoria do Produto', key: 'categoria' },
     { label: 'Nome do Produto', key: 'nomeProduto' },
     { label: 'Id do adicional', key: 'adicionalId' },
+    { label: 'Tipo do adicional', key: 'tipoAdicional' },
     { label: 'Nome do adicional', key: 'adicionalNome' },
     { label: 'Valor', key: 'valor' },
 ]
@@ -154,7 +160,7 @@ const PaginaPedidos = ({ history }: any) => {
                 { title: 'Meio de pagamento', field: 'meioPagamento' },
                 { title: 'Origem', field: 'origem' },
                 { title: 'Tipo', field: 'tipo' },
-                { title: 'Quantidade', field: 'quantidade' },
+                { title: 'Quantidade de itens', field: 'quantidade' },
                 { title: 'Taxa de entrega', field: 'taxaEntrega' },
                 { title: 'Valor', field: 'valor' },
             ]}

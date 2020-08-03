@@ -333,6 +333,10 @@ namespace Churritos.Dominio.Migrations
                     b.Property<string>("Logradouro")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Observação")
+                        .HasColumnName("Observacao")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");

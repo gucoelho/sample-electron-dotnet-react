@@ -16,6 +16,7 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import styled from 'styled-components'
 import { LinearProgress } from '@material-ui/core'
+import ActionBar from '../../../components/ActionBar'
 
 function getSteps() {
     return ['Selecionar produto', 'Selecionar recheio', 'Selecionar cobertura', 'Selecionar extra']
@@ -23,16 +24,16 @@ function getSteps() {
 
 function getStepContent(step: number) {
     switch (step) {
-        case 0:
-            return 'Selecione o produto:'
-        case 1:
-            return 'Selecione o recheio:'
-        case 2:
-            return 'Selecione a cobertura:'
-        case 3:
-            return 'Selecione extras:'
-        default:
-            return 'Unknown step'
+    case 0:
+        return 'Selecione o produto:'
+    case 1:
+        return 'Selecione o recheio:'
+    case 2:
+        return 'Selecione a cobertura:'
+    case 3:
+        return 'Selecione extras:'
+    default:
+        return 'Unknown step'
     }
 }
 
@@ -40,6 +41,11 @@ const Container = styled.div`
     display: flex;
     padding: 1rem 0;
 `
+
+const BotaoVoltar = styled(Button)`
+    margin-right: 10px;
+`
+
 function HorizontalLinearStepper({ activeStep, botaoVoltar }: any) {
     const steps = getSteps()
 
@@ -59,8 +65,10 @@ function HorizontalLinearStepper({ activeStep, botaoVoltar }: any) {
             <div>
                 {activeStep !== steps.length && (
                     <>
-                        <Container>{botaoVoltar}</Container>
-                        <Typography variant="h6">{getStepContent(activeStep)}</Typography>
+                        <Container>
+                            {botaoVoltar} {' '} <Typography variant="h6">{getStepContent(activeStep)}</Typography>
+                        </Container>
+
                     </>)
                 }
             </div>
@@ -102,7 +110,7 @@ interface Categoria {
     nome: number
 }
 
-const ControleEtapas = ({ adicionarItemPedido }: any) => {
+const ControleEtapas = ({ adicionarItemPedido, cancelarAdicao }: any) => {
     const [etapa, setEtapa] = useState(0)
     const [item, setItem] = useState<Produto>()
     const [cobertura, setCobertura] = useState<Adicional>()
@@ -150,6 +158,11 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
         setValorAba(newValue)
     }
 
+    const cancelar = (event: React.MouseEvent) => {
+        handleChange(event, 0)
+        cancelarAdicao()
+    }
+
 
     const adicionarItem = (i: Produto) => {
         setItem(i)
@@ -185,17 +198,24 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
         <>
             {loading && <LinearProgress />}
             {!loading && <>
+
+                <ActionBar style={{ justifyContent: 'flex-end'}}>
+                    <Button onClick={cancelar} color="primary" variant="outlined">
+                        Cancelar
+                    </Button>
+                </ActionBar>
                 <AppBar position="static">
                     <Tabs value={valorAba} onChange={handleChange} aria-label="simple tabs example">
                         {categorias && categorias.map((c: Categoria) => <Tab key={`tab-${c.nome}`} label={c.nome} />)}
                     </Tabs>
+             
                 </AppBar>
                 <TabPanel value={valorAba} index={0}>
                     <HorizontalLinearStepper
                         activeStep={etapa}
                         setActiveStep={setEtapa}
                         botaoVoltar={
-                            etapa > 0 && <Button onClick={voltarEtapa}>Voltar</Button>
+                            etapa > 0 && <BotaoVoltar variant="outlined" onClick={voltarEtapa}>Voltar</BotaoVoltar>
                         }
                     />
                     {(etapa === 0) && (<SelecionarProduto adicionarItem={adicionarItem} />)}
@@ -216,5 +236,7 @@ const ControleEtapas = ({ adicionarItemPedido }: any) => {
     )
 
 }
+
+
 
 export default ControleEtapas

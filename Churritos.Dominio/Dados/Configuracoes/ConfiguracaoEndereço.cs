@@ -9,6 +9,9 @@ namespace Churritos.Dominio.Dados.Configuracoes
         public void Configure(EntityTypeBuilder<Endereço> builder)
         {
             builder.ToTable("Endereco");
+
+            builder.Property(x => x.Observação)
+                .HasColumnName("Observacao");
             
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)

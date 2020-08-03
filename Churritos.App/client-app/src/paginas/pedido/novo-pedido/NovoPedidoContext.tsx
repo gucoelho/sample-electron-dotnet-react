@@ -1,18 +1,5 @@
-import React, {createContext, useState}from 'react'
-
-interface Cliente {
-    cpf: string
-    nome: string
-    telefone : string
-}
-
-interface Endereco {
-    logradouro: string
-    bairro: string
-    cidade: string
-    estado: string
-    complemento: string
-}
+import React, {createContext, useState} from 'react'
+import {Cliente, Endereco} from '../Models'
 
 interface NovoPedido {
   cliente: Cliente
@@ -28,7 +15,8 @@ const defaultEndereco : Endereco = {
     complemento: '',
     bairro: '',
     cidade: '',
-    estado: 'SP'
+    estado: 'SP',
+    observacao: ''
 }
 
 export const NovoPedidoContext = createContext<NovoPedido>({

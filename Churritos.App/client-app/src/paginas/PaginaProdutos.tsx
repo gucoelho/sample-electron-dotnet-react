@@ -4,6 +4,7 @@ import MaterialTable from 'material-table'
 import { formatarValor } from '../utils'
 import {Button } from '@material-ui/core'
 import styled from 'styled-components'
+import ActionBar from '../components/ActionBar'
 
 interface Item {
     id: number,
@@ -36,6 +37,11 @@ const PaginaProdutos = ({ history }: any) => {
     }, [])
 
     return <Layout pagename="Produtos">
+        <ActionBar>
+            <Button variant="contained" color="primary" onClick={() => history.push('/produto/criar')}>
+                Criar produto
+            </Button>
+        </ActionBar>
         <CustomTable
             columns={[
                 { title: 'ID', field: 'id' },

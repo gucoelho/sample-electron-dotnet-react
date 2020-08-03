@@ -75,6 +75,8 @@ const tipoPedido = [
 
 const meiosDePagamento = [
     'Cartão de crédito',
+    'Cartão de débito',
+    'Vale refeição',
     'Dinheiro'
 ]
 
@@ -125,6 +127,7 @@ const PaginaNovoPedido = ({ history }: any) => {
 
 
         if (rawResponse.status === 200) {
+            GerarRecibo(cliente, endereco, itens, origemSelecionada, tipoPedidoSelecionado, meioDePagamentoSelecionado, taxaEntrega, desconto, new Date())
             history.push('/pedidos')
         }
     }
@@ -150,7 +153,6 @@ const PaginaNovoPedido = ({ history }: any) => {
     const valorTotalPedido: number = itens.map(x => calcularValorTotalProduto(x)).reduce((a, acc) => a + acc, 0) - (desconto ? desconto : 0) + taxaEntrega
 
 
-    GerarRecibo(cliente, endereco, itens)
 
     return <Layout pagename="Novo Pedido">
         {!adicionandoItem &&
@@ -234,11 +236,10 @@ const PaginaNovoPedido = ({ history }: any) => {
         <Container>
             {adicionandoItem &&
                 <Etapas>
-                    <ControleEtapas adicionarItemPedido={adicionaItem} />
+                    <ControleEtapas adicionarItemPedido={adicionaItem} cancelarAdicao={() => setAdicionandoItem(false)} />
                 </Etapas>
             }
         </Container>
-        <iframe width="1000" height="1000" id="recibo-pdf" />
     </Layout>
 }
 
@@ -356,6 +357,17 @@ const ClienteForm = ({somenteLeitura} : PropsClientForm = { somenteLeitura: fals
                             fullWidth
                             name="cidade"
                             value={endereco.cidade}
+                            onChange={handleCampoEndereco}
+                            disabled={somenteLeitura}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            label="Observação"
+                            variant="outlined"
+                            fullWidth
+                            name="observacao"
+                            value={endereco.observacao}
                             onChange={handleCampoEndereco}
                             disabled={somenteLeitura}
                         />

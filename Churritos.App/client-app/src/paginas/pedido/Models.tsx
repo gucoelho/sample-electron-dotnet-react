@@ -34,7 +34,7 @@ export interface PedidoDetalhe {
     origem: string
     tipo: string
     meioPagamento: string
-    taxaEntrega: string
+    taxaEntrega: number
 }
 
 export interface Cliente {
@@ -49,4 +49,5 @@ export interface Endereco {
     cidade: string
     estado: string
     complemento: string
+    observacao: string
 }

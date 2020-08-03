@@ -37,5 +37,11 @@ namespace Churritos.Dominio.Repositorios
             _contexto.Update(produto);
             await _contexto.SaveChangesAsync();
         }
+
+        public async Task AdicionarProduto(Produto produto)
+        {
+            _contexto.Add(produto);
+            await _contexto.SaveChangesAsync();
+        }
     }
 }
